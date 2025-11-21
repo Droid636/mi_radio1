@@ -1,0 +1,45 @@
+name: mi_radio1
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # ⭐ REPRODUCTOR DE RADIO
+  just_audio: ^0.9.39
+  just_audio_background: ^0.0.1-beta.17
+  audio_session: ^0.1.18
+
+  # ⭐ MANEJO DE ESTADO
+  provider: ^6.1.2
+
+  # ⭐ CARRUSEL PARA PROGRAMAS
+  carousel_slider: ^5.0.0
+  # ⭐ ABRIR LINKS EXTERNOS
+  url_launcher: ^6.3.1
+
+  # ⭐ TIPOGRAFÍAS OPCIONALES
+  google_fonts: ^6.2.1
+
+  shared_preferences: ^2.5.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
