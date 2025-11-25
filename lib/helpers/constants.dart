@@ -8,7 +8,7 @@ final List<StationModel> stations = [
     acronym: 'LJR',
     streamUrl: 'https://stream.freepi.io/8012/live',
     slogan: 'La síncopa de nuestras latitudes',
-    image: 'assets/images/ljr.jpg',
+    image: 'assets/images/Navbar.png',
     socials: {
       'web': 'https://example.com/ljr',
       'twitter': 'https://twitter.com/ljr',
@@ -20,7 +20,7 @@ final List<StationModel> stations = [
     acronym: 'RTX',
     streamUrl: 'https://stream.freepi.io/8010/stream',
     slogan: '¡La Radio Alternativa!',
-    image: 'assets/images/rtx.jpg',
+    image: 'assets/images/jazz_radio.png',
     socials: {
       'web': 'https://example.com/rtx',
       'facebook': 'https://facebook.com/rtx',
