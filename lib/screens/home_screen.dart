@@ -1,13 +1,14 @@
-// Archivo: lib/screens/home_screen.dart (Banner integrado en el AppBar)
+// Archivo: lib/screens/home_screen.dart (VERSIÓN FINAL CON DISEÑO Y MODAL RESTAURADO)
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../helpers/constants.dart';
-import '../helpers/providers/audio_provider.dart';
+import '../helpers/constants.dart'; // Contiene 'stations'
+import '../helpers/providers/audio_provider.dart'; // Contiene AudioProvider
 import '../widgets/station_card.dart';
 import '../widgets/program_carousel.dart';
 import '../models/program_model.dart';
+import '../app_theme.dart'; // Para acceder a colores específicos (primaryYellow, accentRedOrange)
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -29,35 +30,46 @@ class HomeScreen extends StatelessWidget {
     ),
   ];
 
-  final double kAppBarHeightWithBanner = 56.0 + 120.0;
+  // Altura para la imagen de cabecera
+  final double kAppBarImageHeight = 180.0;
 
   @override
   Widget build(BuildContext context) {
+    // Usamos listen: true aquí para que el Scaffold sepa si mostrar el BottomPlayer si decides usarlo.
     final audioProv = Provider.of<AudioProvider>(context);
 
     return Scaffold(
       // -----------------------------------------------------------------
-      // 1. APPBAR CON IMAGEN (Usando PreferredSize para altura personalizada)
+      // 1. APPBAR CON IMAGEN DE CABECERA Y LOGO
       // -----------------------------------------------------------------
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kAppBarHeightWithBanner),
+        preferredSize: Size.fromHeight(kAppBarImageHeight),
         child: AppBar(
-          title: const Text(
-            'Radioactiva TX',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
+          title: null,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: const IconThemeData(color: Colors.black),
 
-          // El botón del menú lateral (Drawer) aparecerá automáticamente aquí.
-          flexibleSpace: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+          flexibleSpace: Stack(
             children: [
-              // El Banner se coloca DENTRO del AppBar, justo debajo del título/botones
-              Image.asset(
-                'assets/images/banner.png', // <--- RUTA DE TU IMAGEN HORIZONTAL
-                width: double.infinity,
-                height: 120, // Altura delgada del banner
-                fit: BoxFit.cover,
+              // Imagen de Fondo
+              Positioned.fill(
+                child: Image.asset(
+                  'assets/images/header_background.jpg', // <--- RUTA DE IMAGEN ARTÍSTICA
+                  fit: BoxFit.cover,
+                ),
+              ),
+              // Logo R_TX superpuesto
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: Image.asset(
+                    'assets/images/logo_tx.png', // <--- RUTA DE TU LOGO (R_TX)
+                    height: 80,
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
             ],
           ),
@@ -65,69 +77,57 @@ class HomeScreen extends StatelessWidget {
       ),
 
       // -----------------------------------------------------------------
-      // 2. MENÚ LATERAL (DRAWER) - Se mantiene igual
+      // 2. MENÚ LATERAL (DRAWER) - Diseño finalizado
       // -----------------------------------------------------------------
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
+            // CABECERA DEL DRAWER
             DrawerHeader(
-              decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-              child: const Text(
-                'Radioactiva TX',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+              decoration: const BoxDecoration(
+                color: primaryYellow, // Color Amarillo
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Image.asset(
+                  'assets/images/logo_tx.png',
+                  height: 60,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.radio),
-              title: const Text('Inicio'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.favorite),
-              title: const Text('Favoritos'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Configuración'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
+
+            // ÍTEMS DEL DRAWER
+            _buildDrawerItem(context, 'Compartir con un amigo', Icons.share),
+            _buildDrawerItem(context, '¡Califica nuestra app!', Icons.star),
+            _buildDrawerItem(context, 'Nuestra Misión', Icons.groups),
+            _buildDrawerItem(context, 'Política de Privacidad', Icons.policy),
+            _buildDrawerItem(context, 'Escúchanos en', Icons.radio),
+
             const Divider(),
-            ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text('Acerca de'),
-              onTap: () {
-                Navigator.pop(context);
-              },
+            _buildDrawerItem(
+              context,
+              'Versión 1.1.8',
+              Icons.info_outline,
+              isVersion: true,
             ),
           ],
         ),
       ),
 
       // -----------------------------------------------------------------
-      // 3. BODY: El cuerpo ahora solo necesita el contenido desplazable
+      // 3. BODY: Contenido principal (Secciones y Estaciones)
       // -----------------------------------------------------------------
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Ya no necesitamos el banner aquí, estaba en el AppBar
-
                 /// ---------- ESTACIONES ----------
-                Text(
-                  'Estaciones',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
+                _buildSectionTitle(context, 'Nuestras', 'Estaciones'),
                 const SizedBox(height: 10),
 
                 GridView.builder(
@@ -135,23 +135,26 @@ class HomeScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: stations.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.88,
+                    crossAxisCount:
+                        1, // Una sola columna para diseño horizontal
+                    childAspectRatio: 5.0, // Ajusta la altura del Card
                     mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
                   ),
                   itemBuilder: (context, index) {
                     final s = stations[index];
                     return StationCard(
                       station: s,
                       onTap: () async {
+                        // Lógica de reproducción:
                         await audioProv.setStation(s);
                         await audioProv.play();
 
+                        // Muestra el reproductor modal (Bottom Sheet)
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
-                          backgroundColor: Colors.white,
+                          backgroundColor: Colors
+                              .transparent, // Permite que el Container defina el color
                           builder: (_) => _buildPlayerSheet(context),
                         );
                       },
@@ -162,9 +165,11 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 /// ---------- PROGRAMAS ----------
-                Text(
+                _buildSectionTitle(
+                  context,
+                  'Nuestros',
                   'Programas',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  showViewAll: true,
                 ),
                 const SizedBox(height: 10),
                 ProgramCarousel(programs: demoPrograms),
@@ -176,15 +181,98 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // ... (El widget _buildPlayerSheet se mantiene sin cambios)
+  // -----------------------------------------------------------------
+  // WIDGETS AUXILIARES
+  // -----------------------------------------------------------------
+
+  // WIDGET PARA LOS ÍTEMS DEL DRAWER
+  Widget _buildDrawerItem(
+    BuildContext context,
+    String title,
+    IconData icon, {
+    bool isVersion = false,
+  }) {
+    // Usamos el color de acento definido en app_theme.dart
+    final colorIcono = isVersion ? Colors.grey[600] : accentRedOrange;
+    final colorTexto = isVersion ? Colors.black54 : Colors.black;
+
+    return ListTile(
+      leading: Icon(icon, color: colorIcono),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: isVersion ? 14 : 16,
+          color: colorTexto,
+          fontWeight: isVersion ? FontWeight.normal : FontWeight.w500,
+        ),
+      ),
+      onTap: () => Navigator.pop(context),
+    );
+  }
+
+  // WIDGET PARA LOS TÍTULOS DE SECCIÓN
+  Widget _buildSectionTitle(
+    BuildContext context,
+    String part1,
+    String part2, {
+    bool showViewAll = false,
+  }) {
+    final yellowColor = Theme.of(context).primaryColor;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            Text(
+              part1,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              part2,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: yellowColor,
+              ),
+            ),
+          ],
+        ),
+        if (showViewAll)
+          TextButton(
+            onPressed: () {},
+            child: const Text(
+              'Ver Todos',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+          ),
+      ],
+    );
+  }
+
+  // WIDGET DEL REPRODUCTOR MODAL (CARD PLAYER RESTAURADO)
   Widget _buildPlayerSheet(BuildContext context) {
+    // Usamos listen: false ya que es un modal temporal.
     final audioProv = Provider.of<AudioProvider>(context, listen: false);
-    // ... (El contenido de _buildPlayerSheet es el mismo)
+    final yellowColor = Theme.of(context).primaryColor;
+
     return Container(
       padding: const EdgeInsets.all(20),
       height: 260,
+      decoration: const BoxDecoration(
+        color: Colors.white, // Fondo blanco para el Card Player
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       child: Column(
         children: [
+          // Barra de arrastre (Handle)
           Container(
             width: 40,
             height: 5,
@@ -195,32 +283,42 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
+          // Título de la Estación
           Text(
             audioProv.currentStation?.name ?? "Sin estación",
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
           ),
 
           const SizedBox(height: 8),
 
+          // Eslogan
           Text(
             audioProv.currentStation?.slogan ?? "",
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
           ),
 
           const Spacer(),
 
+          // Controles (Botones Play/Pause)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Botón de Play
               IconButton(
                 iconSize: 48,
-                icon: const Icon(Icons.play_circle_fill),
+                icon: Icon(Icons.play_circle_fill, color: yellowColor),
                 onPressed: () => audioProv.play(),
               ),
               const SizedBox(width: 20),
+              // Botón de Pausa
               IconButton(
                 iconSize: 48,
-                icon: const Icon(Icons.pause_circle_filled),
+                icon: Icon(Icons.pause_circle_filled, color: yellowColor),
                 onPressed: () => audioProv.pause(),
               ),
             ],
