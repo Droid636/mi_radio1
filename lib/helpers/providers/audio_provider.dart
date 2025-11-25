@@ -12,6 +12,9 @@ class AudioProvider with ChangeNotifier {
 
   AudioPlayer get player => _player;
   StationModel? get currentStation => _currentStation;
+  
+  // 🚀 NUEVA PROPIEDAD: Necesaria para el botón dinámico Play/Pause
+  bool get isPlaying => _player.playing;
 
   AudioProvider() {
     _init();
