@@ -1,85 +1,87 @@
-// lib/helpers/providers/audio_provider.dart
+// ** Nota: Este es un esqueleto de AudioProvider. DEBES copiar solo las adiciones si ya tienes la clase. **
 
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:rxdart/rxdart.dart';
-
-import '../../../models/station_model.dart';
+import '../../models/station_model.dart'; // Asegúrate de que esta ruta sea correcta
 
 class AudioProvider with ChangeNotifier {
-  final AudioPlayer _player = AudioPlayer();
+  final AudioPlayer player = AudioPlayer();
   StationModel? _currentStation;
+  bool _isPlaying = false;
 
-  AudioPlayer get player => _player;
+  // *** NUEVA PROPIEDAD: Controla si el mini-player debe mostrarse ***
+  bool _isMiniPlayerHidden = false;
+
   StationModel? get currentStation => _currentStation;
-  
-  // 🚀 NUEVA PROPIEDAD: Necesaria para el botón dinámico Play/Pause
-  bool get isPlaying => _player.playing;
+  bool get isPlaying => _isPlaying;
+  bool get isMiniPlayerHidden => _isMiniPlayerHidden; // NUEVO GETTER
 
   AudioProvider() {
-    _init();
+    // Escuchar cambios de estado de reproducción
+    player.playerStateStream.listen((state) {
+      final playing = state.playing;
+      final processingState = state.processingState;
+
+      // Actualiza _isPlaying
+      if (processingState == ProcessingState.ready) {
+        _isPlaying = playing;
+      } else if (processingState == ProcessingState.loading ||
+          processingState == ProcessingState.buffering) {
+        _isPlaying = playing;
+      } else if (processingState == ProcessingState.completed) {
+        _isPlaying = false;
+      }
+      notifyListeners();
+    });
   }
 
-  void _init() async {
-    // Si quieres configurar audio_session, puedes agregarlo aquí.
-    // Mantendremos esto simple de momento.
-  }
-
-  /// Cambiar estación y cargar su stream
   Future<void> setStation(StationModel station) async {
-    _currentStation = station;
-    try {
-      await _player.setAudioSource(
+    if (_currentStation?.id != station.id) {
+      _currentStation = station;
+      await player.setAudioSource(
         AudioSource.uri(Uri.parse(station.streamUrl)),
       );
+      _isMiniPlayerHidden = false; // Muestra el mini-player al seleccionar
       notifyListeners();
-    } catch (e) {
-      debugPrint("❌ Error al cargar el stream: $e");
     }
   }
 
-  /// Reproducir
   Future<void> play() async {
-    await _player.play();
-    notifyListeners();
+    if (_currentStation != null) {
+      await player.play();
+      _isPlaying = true;
+      _isMiniPlayerHidden = false; // Muestra el mini-player al reproducir
+      notifyListeners();
+    }
   }
 
-  /// Pausar
   Future<void> pause() async {
-    await _player.pause();
+    await player.pause();
+    _isPlaying = false;
     notifyListeners();
   }
 
-  /// Detener
+  // Detiene la reproducción y oculta el mini-player
   Future<void> stop() async {
-    await _player.stop();
+    await player.stop();
+    _currentStation = null;
+    _isPlaying = false;
+    _isMiniPlayerHidden = true;
     notifyListeners();
   }
 
-  /// Stream que combina posición, buffer y duración
-  Stream<PositionData> get positionDataStream =>
-      Rx.combineLatest3<Duration, Duration?, Duration?, PositionData>(
-        _player.positionStream,
-        _player.bufferedPositionStream,
-        _player.durationStream,
-        (position, buffered, duration) => PositionData(
-          position,
-          buffered ?? Duration.zero,
-          duration ?? Duration.zero,
-        ),
-      );
-
-  /// Liberar el reproductor (opcional)
-  void disposePlayer() {
-    _player.dispose();
+  // *** NUEVAS FUNCIONES PARA CONTROLAR LA VISIBILIDAD ***
+  void showMiniPlayer() {
+    if (_isMiniPlayerHidden) {
+      _isMiniPlayerHidden = false;
+      notifyListeners();
+    }
   }
-}
 
-/// Modelo para manejar datos de posición del reproductor
-class PositionData {
-  final Duration position;
-  final Duration buffered;
-  final Duration duration;
-
-  PositionData(this.position, this.buffered, this.duration);
+  void hideMiniPlayer() {
+    if (!_isMiniPlayerHidden) {
+      _isMiniPlayerHidden = true;
+      notifyListeners();
+    }
+  }
 }
