@@ -1,4 +1,3 @@
-// Archivo: lib/widgets/app_theme.dart (MODIFICADO)
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -6,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 // Amarillo Primario: #FFFFCC00 (usado en la cabecera, textos resaltados)
 const Color primaryYellow = Color(0xFFFFCC00);
 
-// Rojo/Naranja de Acento: #FFF55940 (usado para los íconos del Drawer)
+// Rojo/Naranja de Acento: #FFF55940 (usado para los íconos y el fondo de la cabecera)
 const Color accentRedOrange = Color(0xFFF55940);
 
 final ThemeData appTheme = ThemeData(
@@ -31,12 +30,16 @@ final ThemeData appTheme = ThemeData(
             900: Color(0xFF000000), // Usar negro o un color muy oscuro
           },
         ),
-        accentColor:
-            accentRedOrange, // Usamos el color de acento para botones, etc.
+        // IMPORTANTE: El color de acento se define como 'secondary'
+        accentColor: accentRedOrange,
         backgroundColor: Colors.white,
       ).copyWith(
+        // Aseguramos que 'accentRedOrange' esté disponible como 'secondary'
         secondary: accentRedOrange,
-      ), // Aseguramos que 'accentColor' también esté disponible como 'secondary'
+        // También establecemos el color de fondo de las tarjetas del mini-player
+        surface: Colors.white,
+      ),
+
   // 3. Estilos de texto (se mantienen)
   textTheme: TextTheme(
     titleLarge: GoogleFonts.inter(
@@ -46,6 +49,8 @@ final ThemeData appTheme = ThemeData(
     ), // Lo ajustamos a 22px para el título de sección
     titleMedium: GoogleFonts.inter(fontSize: 16),
     bodySmall: GoogleFonts.inter(fontSize: 12),
+    // Establecemos el color principal del bodyLarge para que el MiniPlayer lo use
+    bodyLarge: GoogleFonts.inter(color: Colors.black),
   ),
 
   // 4. Estilo del AppBar (para asegurar que el fondo sea transparente y los íconos negros)
@@ -55,6 +60,9 @@ final ThemeData appTheme = ThemeData(
     iconTheme: IconThemeData(color: Colors.black),
   ),
 
-  // 5. Estilo de los iconos (puedes usar el color de acento aquí)
+  // 5. Estilo de los iconos (usa el color de acento)
   iconTheme: const IconThemeData(color: accentRedOrange),
+
+  // 6. Color de la tarjeta (Mini-Player)
+  cardColor: Colors.white,
 );

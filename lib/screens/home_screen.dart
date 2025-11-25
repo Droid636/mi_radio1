@@ -95,7 +95,8 @@ class HomeScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.red.shade100,
+                  // CAMBIO CLAVE: Usamos un color acorde al esquema de la app
+                  color: Colors.amber.shade100,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ClipRRect(
@@ -104,17 +105,22 @@ class HomeScreen extends StatelessWidget {
                       ? Image.asset(
                           audioProv.currentStation!.image,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Center(
-                                child: Icon(
-                                  Icons.radio,
-                                  size: 24,
-                                  color: Colors.red,
-                                ),
-                              ),
+                          errorBuilder: (context, error, stackTrace) => Center(
+                            child: Icon(
+                              Icons.radio,
+                              size: 24,
+                              color: Colors
+                                  .amber
+                                  .shade800, // CAMBIO CLAVE: Icono ámbar/naranja
+                            ),
+                          ),
                         )
-                      : const Center(
-                          child: Icon(Icons.radio, size: 24, color: Colors.red),
+                      : Center(
+                          child: Icon(
+                            Icons.radio,
+                            size: 24,
+                            color: Colors.amber.shade800,
+                          ), // CAMBIO CLAVE: Icono ámbar/naranja
                         ),
                 ),
               ),
@@ -155,7 +161,9 @@ class HomeScreen extends StatelessWidget {
                       audio.isPlaying
                           ? Icons.pause_circle_filled
                           : Icons.play_circle_fill,
-                      color: Colors.red,
+                      color: Colors
+                          .amber
+                          .shade800, // CAMBIO CLAVE: Icono ámbar/naranja
                     ),
                     onPressed: () {
                       if (audio.isPlaying) {
@@ -198,52 +206,86 @@ class HomeScreen extends StatelessWidget {
     final double bottomPadding = isMiniPlayerActive ? 90.0 : 12.0;
 
     return Scaffold(
-      // ... (El Drawer sigue igual) ...
+      // -------------------------------------------------------------
+      // 1. DRAWER (Menú Lateral)
+      // -------------------------------------------------------------
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
+            // CAMBIO CLAVE: Usamos un Image.asset para el encabezado del Drawer
             Container(
               height: 150,
-              decoration: const BoxDecoration(color: Colors.red),
+              decoration: const BoxDecoration(
+                color: Colors.amber, // Color de fondo del Drawer (naranja)
+              ),
+              child: const SafeArea(
+                child: Center(
+                  // Esto podría ser la imagen del logo de tu radio
+                  child: Image(
+                    image: AssetImage('assets/images/Navbar.png'),
+                    width: 100,
+                    height: 100,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
             ListTile(
-              leading: const Icon(Icons.share, color: Colors.red),
+              leading: const Icon(
+                Icons.share,
+                color: Colors.amber,
+              ), // CAMBIO CLAVE: Icono ámbar/naranja
               title: const Text('Comparte con un amigo'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.star, color: Colors.red),
+              leading: const Icon(
+                Icons.star,
+                color: Colors.amber,
+              ), // CAMBIO CLAVE: Icono ámbar/naranja
               title: const Text('¡Califica nuestra app!'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.people, color: Colors.red),
+              leading: const Icon(
+                Icons.people,
+                color: Colors.amber,
+              ), // CAMBIO CLAVE: Icono ámbar/naranja
               title: const Text('Nuestra Misión'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.description, color: Colors.red),
+              leading: const Icon(
+                Icons.description,
+                color: Colors.amber,
+              ), // CAMBIO CLAVE: Icono ámbar/naranja
               title: const Text('Política de Privacidad'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.radio, color: Colors.red),
+              leading: const Icon(
+                Icons.radio,
+                color: Colors.amber,
+              ), // CAMBIO CLAVE: Icono ámbar/naranja
               title: const Text('Escúchanos en'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.info_outline, color: Colors.red),
+              leading: const Icon(
+                Icons.info_outline,
+                color: Colors.amber,
+              ), // CAMBIO CLAVE: Icono ámbar/naranja
               title: const Text('Versión 1.1.8'),
               onTap: () {
                 Navigator.pop(context);
@@ -268,7 +310,15 @@ class HomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: Stack(
                   children: [
-                    Positioned.fill(child: Container(color: Colors.red)),
+                    Positioned.fill(
+                      // CAMBIO CLAVE: Reemplazamos el Container de color con un Image.asset
+                      child: Image.asset(
+                        'assets/images/header_bg.jpg', // Asume una imagen de fondo para el header
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Container(color: Colors.amber), // Color fallback
+                      ),
+                    ),
                     SafeArea(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -323,7 +373,9 @@ class HomeScreen extends StatelessWidget {
                             TextSpan(text: 'Nuestras '),
                             TextSpan(
                               text: 'Estaciones',
-                              style: TextStyle(color: Colors.amber),
+                              style: TextStyle(
+                                color: Colors.amber,
+                              ), // COLOR ÁMBAR
                             ),
                           ],
                         ),
@@ -368,12 +420,15 @@ class HomeScreen extends StatelessWidget {
                             TextSpan(text: 'Nuestros '),
                             TextSpan(
                               text: 'Programas',
-                              style: TextStyle(color: Colors.amber),
+                              style: TextStyle(
+                                color: Colors.amber,
+                              ), // COLOR ÁMBAR
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(height: 10),
+                      // Carrusel de Programas (Contiene imágenes)
                       ProgramCarousel(programs: demoPrograms),
                       const SizedBox(height: 20),
                     ],
@@ -383,7 +438,7 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
 
-          // --- 2.2 REPRODUCTOR FLOTANTE (Implementación directa) ---
+          // --- 2.2 REPRODUCTOR FLOTANTE ---
           _buildMiniPlayerBar(context, audioProv),
         ],
       ),
