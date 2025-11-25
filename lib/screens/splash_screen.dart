@@ -68,7 +68,7 @@ class SplashScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     // Asegúrate de usar un color que contraste con tu imagen de fondo
-                    color: Colors.white70,
+                    color: Colors.white,
                     // Opcional: añade una sombra al texto para que resalte más
                     shadows: [
                       Shadow(
