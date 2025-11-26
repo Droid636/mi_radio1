@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../helpers/constants.dart';
 import '../helpers/providers/audio_provider.dart';
@@ -7,6 +8,147 @@ import '../widgets/station_card.dart';
 import '../widgets/program_carousel.dart';
 import '../models/program_model.dart';
 import 'player_screen.dart';
+
+// --- FUNCIÓN GLOBAL: LANZADOR DE URLS EXTERNAS ---
+/// Gestiona la apertura de enlaces web, WhatsApp, llamadas, etc.
+Future<void> _launchURL(String url) async {
+  final Uri uri = Uri.parse(url);
+  try {
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      // Usamos debugPrint para manejar errores suavemente en lugar de throw.
+      debugPrint('ERROR: No se pudo lanzar la URL: $url');
+    }
+  } catch (e) {
+    debugPrint('Excepción al lanzar URL $url: $e');
+  }
+}
+
+// --- WIDGET AUXILIAR: BOTONES DE REDES SOCIALES ---
+/// Muestra botones estilizados (como tarjetas) para las redes sociales de la radio,
+/// usando íconos/imágenes de activos locales.
+class SocialMediaButtons extends StatelessWidget {
+  const SocialMediaButtons({super.key});
+
+  // Define los enlaces y las rutas de los iconos de activos locales.
+  // IMPORTANTE: Debes tener estos archivos en tu carpeta 'assets/icons/'
+  final List<Map<String, dynamic>> socialLinks = const [
+    {
+      'name': 'Instagram',
+      'assetPath': 'assets/icons/Instagram.png',
+      'color': Color(0xFFC13584),
+      'url': 'https://www.instagram.com/radioactivatx?igsh=M2piYzc1eGNiY29v',
+    },
+    {
+      'name': 'Facebook',
+      'assetPath': 'assets/icons/Facebook.png',
+      'color': Color(0xFF3B5998),
+      'url':
+          'https://www.facebook.com/radioactivatx89.9?wtsid=rdr_01btUDnQhVaGthwGL&from_intent_redirect=1',
+    },
+    {
+      'name': 'X (Twitter)',
+      'assetPath': 'assets/icons/Twiter.png',
+      'color': Colors.black,
+      'url': 'https://x.com/mi_radio',
+    },
+    {
+      'name': 'YouTube',
+      'assetPath': 'assets/icons/Youtube.png',
+      'color': Color(0xFFFF0000),
+      'url': 'https://youtube.com/@radioactivatx?si=AZwNbDJzsPoLlxDB',
+    },
+    {
+      'name': 'Tik Tok',
+      'assetPath': 'assets/icons/Tiktok.png',
+      'color': Color.fromARGB(255, 10, 10, 10),
+      'url': 'https://www.tiktok.com/@radioactiva.tx?_r=1&_t=ZS-91jAkaMrlyP',
+    },
+    {
+      'name': 'Teléfono',
+      'assetPath': 'assets/icons/Telefono.png',
+      'color': Colors.lightBlue,
+      'url': 'tel:+524141199003',
+    },
+    {
+      'name': 'Web',
+      'assetPath': 'assets/icons/Web.png',
+      'color': Color.fromARGB(255, 11, 11, 11),
+      'url': 'https://www.radioactivatx.org/',
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
+        child: Wrap(
+          spacing: 15.0, // Espacio entre íconos
+          runSpacing: 15.0,
+          alignment: WrapAlignment.center, // Centra los botones si hay pocos
+          children: socialLinks.map((link) {
+            final color = link['color'] as Color;
+            final assetPath = link['assetPath'] as String;
+            final name = link['name'] as String;
+
+            return InkWell(
+              onTap: () => _launchURL(link['url'] as String), // Lanza la URL
+              borderRadius: BorderRadius.circular(15.0),
+              child: Card(
+                // Usamos Card para el efecto de tarjeta
+                elevation: 6, // Elevación para dar profundidad
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                child: Container(
+                  width: 100, // Ancho de la tarjeta
+                  height: 100, // Alto de la tarjeta
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor, // Fondo de la tarjeta
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Ícono/Imagen local de la red social
+                      Image.asset(
+                        assetPath,
+                        width: 40,
+                        height: 40,
+                        // El color se puede usar para tintear la imagen si es monocromática
+                        // color: color,
+                        errorBuilder: (context, error, stackTrace) => Icon(
+                          Icons.link, // Fallback si la imagen no se encuentra
+                          size: 40,
+                          color: color,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      // Nombre de la red social
+                      Text(
+                        name,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------
+// --- WIDGET PRINCIPAL: HOME SCREEN -----------------
+// ---------------------------------------------------
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,11 +170,9 @@ class HomeScreen extends StatelessWidget {
     ),
   ];
 
-  // 🔊 FUNCIÓN CLAVE: Muestra el PlayerScreen como un Modal Full-Screen
+  // 🔊 Muestra el PlayerScreen como un Modal Full-Screen
   void _showPlayerModal(BuildContext context) {
     final audioProv = Provider.of<AudioProvider>(context, listen: false);
-
-    // 1. Ocultamos la barra flotante al abrir el modal completo
     audioProv.hideMiniPlayer();
 
     showModalBottomSheet(
@@ -47,14 +187,12 @@ class HomeScreen extends StatelessWidget {
         );
       },
     ).then((_) {
-      // 2. Cuando el modal se cierra, volvemos a mostrar la barra flotante
       audioProv.showMiniPlayer();
     });
   }
 
   /// 🎵 CONSTRUYE LA BARRA DE REPRODUCCIÓN FLOTANTE (Mini-Player)
   Widget _buildMiniPlayerBar(BuildContext context, AudioProvider audioProv) {
-    // Usamos los colores definidos en tu tema
     final accentRedOrangeColor = Theme.of(context).colorScheme.secondary;
     final onCardColor = Theme.of(context).textTheme.bodyLarge!.color;
 
@@ -68,17 +206,14 @@ class HomeScreen extends StatelessWidget {
       bottom: 0,
       left: 0,
       right: 0,
-      // Al tocar la barra, abrimos el modal full-screen
       child: GestureDetector(
-        onTap: () => _showPlayerModal(context),
+        onTap: () => _showPlayerModal(context), // Abre el modal al tocar
         child: Container(
           height: miniPlayerHeight,
           margin: const EdgeInsets.all(8.0),
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           decoration: BoxDecoration(
-            color: Theme.of(
-              context,
-            ).cardColor, // Asume que la tarjeta es blanca
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(12.0),
             boxShadow: [
               BoxShadow(
@@ -95,7 +230,6 @@ class HomeScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  // Fondo sutil con el color de acento
                   color: accentRedOrangeColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
@@ -173,7 +307,7 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
 
-              // 4. Botón Cerrar
+              // 4. Botón Cerrar/Detener
               IconButton(
                 iconSize: 24,
                 icon: Icon(Icons.close, color: onCardColor.withOpacity(0.5)),
@@ -197,31 +331,25 @@ class HomeScreen extends StatelessWidget {
     final accentRedOrangeColor = Theme.of(context).colorScheme.secondary;
     final secondaryAccentColor = Theme.of(
       context,
-    ).primaryColor; // Tu amarillo (#FFFFCC00)
+    ).primaryColor; // Tu color amarillo
 
     final bool isMiniPlayerActive =
         audioProv.currentStation != null && !audioProv.isMiniPlayerHidden;
+    // Ajusta el padding del contenido para que no se oculte detrás del Mini-Player
     final double bottomPadding = isMiniPlayerActive ? 90.0 : 12.0;
 
     return Scaffold(
+      // --- DRAWER (MENÚ LATERAL) CON ENLACES EXTERNOS ---
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            // CABECERA DEL DRAWER
+            // CABECERA DEL DRAWER (usa el color de acento principal)
             Container(
               height: 150,
-              decoration: BoxDecoration(
-                // Usamos el color de acento para la cabecera
-                color: accentRedOrangeColor,
-              ),
-              // --- INICIO DE CORRECCIÓN ---
-              // Removido el 'const' de SafeArea y Center para que errorBuilder (una función dinámica) funcione
+              decoration: BoxDecoration(color: accentRedOrangeColor),
               child: SafeArea(
-                // YA NO ES CONST
                 child: Center(
-                  // YA NO ES CONST
-                  // Asumimos que esta imagen existe, o usamos un texto si no.
                   child: Image(
                     image: const AssetImage('assets/images/Navbar.png'),
                     width: 100,
@@ -238,50 +366,59 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              // --- FIN DE CORRECCIÓN ---
             ),
 
-            // Items del Drawer usando el color de acento del tema (secondary/Rojo-Naranja)
+            // Items del Drawer que usan `_launchURL`
             ListTile(
-              leading: Icon(Icons.share, color: accentRedOrangeColor),
+              leading: Icon(Icons.share, color: secondaryAccentColor),
               title: const Text('Comparte con un amigo'),
               onTap: () {
                 Navigator.pop(context);
+                // Enlace de ejemplo para compartir
+                _launchURL(
+                  'whatsapp://send?text=¡Escucha nuestra app de radio! [Link a la Store]',
+                );
               },
             ),
             ListTile(
-              leading: Icon(Icons.star, color: accentRedOrangeColor),
+              leading: Icon(Icons.star, color: secondaryAccentColor),
               title: const Text('¡Califica nuestra app!'),
               onTap: () {
                 Navigator.pop(context);
+                // Enlace de ejemplo a la Play Store o App Store
+                _launchURL('market://details?id=your.package.name');
               },
             ),
             ListTile(
-              leading: Icon(Icons.people, color: accentRedOrangeColor),
+              leading: Icon(Icons.people, color: secondaryAccentColor),
               title: const Text('Nuestra Misión'),
               onTap: () {
                 Navigator.pop(context);
+                _launchURL('https://tudominio.com/mision');
               },
             ),
             ListTile(
-              leading: Icon(Icons.description, color: accentRedOrangeColor),
+              leading: Icon(Icons.description, color: secondaryAccentColor),
               title: const Text('Política de Privacidad'),
               onTap: () {
                 Navigator.pop(context);
+                _launchURL('https://tudominio.com/privacidad');
               },
             ),
             ListTile(
-              leading: Icon(Icons.radio, color: accentRedOrangeColor),
+              leading: Icon(Icons.radio, color: secondaryAccentColor),
               title: const Text('Escúchanos en'),
               onTap: () {
                 Navigator.pop(context);
+                _launchURL('https://tudominio.com/plataformas');
               },
             ),
             ListTile(
-              leading: Icon(Icons.info_outline, color: accentRedOrangeColor),
+              leading: Icon(Icons.info_outline, color: secondaryAccentColor),
               title: const Text('Versión 1.1.8'),
               onTap: () {
                 Navigator.pop(context);
+                // No hace nada, solo informativo
               },
             ),
           ],
@@ -293,7 +430,7 @@ class HomeScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ENCABEZADO PERSONALIZADO
+              // ENCABEZADO PERSONALIZADO (Cubre la función de AppBar)
               SizedBox(
                 height: 120,
                 width: double.infinity,
@@ -310,7 +447,7 @@ class HomeScreen extends StatelessWidget {
                         ), // Color de Fallback
                       ),
                     ),
-                    // Opcional: Sombra (para mejorar la visibilidad de los iconos blancos)
+                    // Sombra para mejor contraste del menú
                     Positioned.fill(
                       child: Container(color: Colors.black.withOpacity(0.2)),
                     ),
@@ -326,7 +463,6 @@ class HomeScreen extends StatelessWidget {
                             Builder(
                               builder: (context) {
                                 return IconButton(
-                                  // El color del ícono es blanco sobre la imagen oscura
                                   icon: const Icon(
                                     Icons.menu,
                                     color: Colors.white,
@@ -346,88 +482,129 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              // CONTENIDO SCROLLABLE
+              // CONTENIDO SCROLLABLE PRINCIPAL
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.only(
-                    left: 12.0,
-                    right: 12.0,
-                    top: 12.0,
-                    bottom: bottomPadding,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Títulos Estaciones (Resaltado Amarillo del Tema)
-                      RichText(
-                        text: TextSpan(
-                          style: Theme.of(context).textTheme.headlineMedium!
-                              .copyWith(fontWeight: FontWeight.bold),
-                          children: [
-                            const TextSpan(text: 'Nuestras '),
-                            TextSpan(
-                              text: 'Estaciones',
-                              style: TextStyle(color: secondaryAccentColor),
-                            ), // Usa primaryColor (amarillo)
-                          ],
-                        ),
+                  padding: EdgeInsets.only(bottom: bottomPadding),
+                  child: Center(
+                    // Agregamos Center para centrar el contenido principal
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth:
+                            600, // Limita el ancho en pantallas grandes para el efecto de "tarjeta central"
                       ),
-                      const SizedBox(height: 10),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                        ), // Padding a los lados
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 12),
+                            // Título: Nuestras Estaciones
+                            RichText(
+                              text: TextSpan(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                                children: [
+                                  const TextSpan(text: 'Nuestras '),
+                                  TextSpan(
+                                    text: 'Estaciones',
+                                    style: TextStyle(
+                                      color: secondaryAccentColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
 
-                      // LISTA DE ESTACIONES
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: stations.length,
-                        itemBuilder: (context, index) {
-                          final s = stations[index];
+                            // LISTA DE ESTACIONES
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: stations.length,
+                              itemBuilder: (context, index) {
+                                final s = stations[index];
 
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: StationCard(
-                              station: s,
-                              onTap: () async {
-                                // 1. Establecer la estación
-                                await audioProv.setStation(s);
-                                // 2. Iniciar la reproducción
-                                await audioProv.play();
-                                // 3. Mostrar el Mini-Player flotante
-                                audioProv.showMiniPlayer();
-
-                                // El modal de pantalla completa ahora SOLO se abre tocando el Mini-Player.
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10.0),
+                                  child: StationCard(
+                                    station: s,
+                                    onTap: () async {
+                                      await audioProv.setStation(s);
+                                      await audioProv.play();
+                                      audioProv.showMiniPlayer();
+                                    },
+                                  ),
+                                );
                               },
                             ),
-                          );
-                        },
-                      ),
 
-                      const SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
-                      // Títulos Programas (Resaltado Amarillo del Tema)
-                      RichText(
-                        text: TextSpan(
-                          style: Theme.of(context).textTheme.headlineMedium!
-                              .copyWith(fontWeight: FontWeight.bold),
-                          children: [
-                            const TextSpan(text: 'Nuestros '),
-                            TextSpan(
-                              text: 'Programas',
-                              style: TextStyle(color: secondaryAccentColor),
-                            ), // Usa primaryColor (amarillo)
+                            // Título: Nuestros Programas
+                            RichText(
+                              text: TextSpan(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                                children: [
+                                  const TextSpan(text: 'Nuestros '),
+                                  TextSpan(
+                                    text: 'Programas',
+                                    style: TextStyle(
+                                      color: secondaryAccentColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            ProgramCarousel(programs: demoPrograms),
+                            const SizedBox(height: 20),
+
+                            // Título: Síguenos en Redes
+                            RichText(
+                              text: TextSpan(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    ),
+                                children: [
+                                  const TextSpan(text: 'Síguenos en '),
+                                  TextSpan(
+                                    text: 'Redes',
+                                    style: TextStyle(
+                                      color: accentRedOrangeColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+
+                            // BOTONES DE REDES SOCIALES
+                            const SocialMediaButtons(),
+
+                            const SizedBox(height: 20),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      ProgramCarousel(programs: demoPrograms),
-                      const SizedBox(height: 20),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ],
           ),
 
-          // --- 2.2 REPRODUCTOR FLOTANTE ---
+          // --- REPRODUCTOR FLOTANTE (Mini-Player) ---
           _buildMiniPlayerBar(context, audioProv),
         ],
       ),

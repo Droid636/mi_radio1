@@ -34,10 +34,38 @@
             android:value="2" />
     </application>
 
+    <!-- BLOQUE DE QUERIES CORREGIDO Y AMPLIADO -->
+    <!-- Esto le indica a Android qué aplicaciones externas planea usar (navegador, teléfono, correo) -->
     <queries>
+        <!-- Su intención original para PROCESS_TEXT (la mantenemos) -->
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+
+        <!-- Soporte para abrir enlaces web (HTTPS) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+
+        <!-- Soporte para abrir enlaces web (HTTP - menos común, pero útil) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+        
+        <!-- Soporte para lanzar la aplicación de teléfono (tel:) -->
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+
+        <!-- Soporte para lanzar la aplicación de correo electrónico (mailto:) -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="mailto" />
+        </intent>
+        
     </queries>
 </manifest>
