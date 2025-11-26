@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Este es un archivo placeholder simple. 
+El error de Gradle indica que ic_bg_service_small.xml requiere este drawable,
+pero no lo encuentra. Crear este archivo vacío o con un color sólido resuelve
+el error de vinculación de recursos (AAPT).
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Define un color sólido, por ejemplo, negro, para satisfacer la referencia de recurso -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FF000000" />
+        </shape>
+    </item>
+</layer-list>

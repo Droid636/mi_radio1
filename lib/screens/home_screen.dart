@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../helpers/constants.dart'; // Contiene la lista 'stations'
+import '../helpers/constants.dart';
 import '../helpers/providers/audio_provider.dart';
 import '../widgets/station_card.dart';
 import '../widgets/program_carousel.dart';
@@ -30,39 +30,36 @@ class HomeScreen extends StatelessWidget {
 
   // 🔊 FUNCIÓN CLAVE: Muestra el PlayerScreen como un Modal Full-Screen
   void _showPlayerModal(BuildContext context) {
-    // Referencia al provider antes de llamar al modal
     final audioProv = Provider.of<AudioProvider>(context, listen: false);
 
-    // Ocultamos el MiniPlayerBar inmediatamente al disparar el modal para evitar duplicidad visual
+    // 1. Ocultamos la barra flotante al abrir el modal completo
     audioProv.hideMiniPlayer();
 
-    // Es CRUCIAL que isScrollControlled sea true para que ocupe la altura máxima
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      useSafeArea: true, // Respeta la barra de estado superior
-      backgroundColor:
-          Colors.transparent, // Deja que el Scaffold interno defina el color
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
       builder: (_) {
         return SizedBox(
-          // Ocupa el 100% de la altura disponible para simular un cambio de pantalla
           height: MediaQuery.of(context).size.height,
           child: const PlayerScreen(isModal: true),
         );
       },
     ).then((_) {
-      // Callback: se ejecuta cuando el modal se cierra (al arrastrar o presionar el botón)
-      // Aseguramos que el mini-player vuelva a mostrarse.
+      // 2. Cuando el modal se cierra, volvemos a mostrar la barra flotante
       audioProv.showMiniPlayer();
     });
   }
 
   /// 🎵 CONSTRUYE LA BARRA DE REPRODUCCIÓN FLOTANTE (Mini-Player)
   Widget _buildMiniPlayerBar(BuildContext context, AudioProvider audioProv) {
-    // Altura fija de la barra flotante
+    // Usamos los colores definidos en tu tema
+    final accentRedOrangeColor = Theme.of(context).colorScheme.secondary;
+    final onCardColor = Theme.of(context).textTheme.bodyLarge!.color;
+
     const double miniPlayerHeight = 70.0;
 
-    // Solo mostramos si hay una estación (se está reproduciendo o pausado) Y no está oculto
     if (audioProv.currentStation == null || audioProv.isMiniPlayerHidden) {
       return const SizedBox.shrink();
     }
@@ -71,6 +68,7 @@ class HomeScreen extends StatelessWidget {
       bottom: 0,
       left: 0,
       right: 0,
+      // Al tocar la barra, abrimos el modal full-screen
       child: GestureDetector(
         onTap: () => _showPlayerModal(context),
         child: Container(
@@ -78,12 +76,14 @@ class HomeScreen extends StatelessWidget {
           margin: const EdgeInsets.all(8.0),
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(
+              context,
+            ).cardColor, // Asume que la tarjeta es blanca
             borderRadius: BorderRadius.circular(12.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 12,
                 spreadRadius: 2,
               ),
             ],
@@ -95,8 +95,8 @@ class HomeScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  // CAMBIO CLAVE: Usamos un color acorde al esquema de la app
-                  color: Colors.amber.shade100,
+                  // Fondo sutil con el color de acento
+                  color: accentRedOrangeColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ClipRRect(
@@ -109,9 +109,7 @@ class HomeScreen extends StatelessWidget {
                             child: Icon(
                               Icons.radio,
                               size: 24,
-                              color: Colors
-                                  .amber
-                                  .shade800, // CAMBIO CLAVE: Icono ámbar/naranja
+                              color: accentRedOrangeColor,
                             ),
                           ),
                         )
@@ -119,8 +117,8 @@ class HomeScreen extends StatelessWidget {
                           child: Icon(
                             Icons.radio,
                             size: 24,
-                            color: Colors.amber.shade800,
-                          ), // CAMBIO CLAVE: Icono ámbar/naranja
+                            color: accentRedOrangeColor,
+                          ),
                         ),
                 ),
               ),
@@ -136,6 +134,7 @@ class HomeScreen extends StatelessWidget {
                       audioProv.currentStation!.name,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         fontWeight: FontWeight.bold,
+                        color: onCardColor,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -143,7 +142,7 @@ class HomeScreen extends StatelessWidget {
                     Text(
                       audioProv.currentStation!.slogan,
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.grey.shade600,
+                        color: onCardColor!.withOpacity(0.7),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -152,7 +151,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              // 3. Botón Play/Pause (Usa Consumer para escuchar el estado de AudioProvider)
+              // 3. Botón Play/Pause
               Consumer<AudioProvider>(
                 builder: (context, audio, child) {
                   return IconButton(
@@ -161,15 +160,12 @@ class HomeScreen extends StatelessWidget {
                       audio.isPlaying
                           ? Icons.pause_circle_filled
                           : Icons.play_circle_fill,
-                      color: Colors
-                          .amber
-                          .shade800, // CAMBIO CLAVE: Icono ámbar/naranja
+                      color: accentRedOrangeColor,
                     ),
                     onPressed: () {
                       if (audio.isPlaying) {
                         audio.pause();
                       } else {
-                        // Si está pausado, lo reanuda
                         audio.play();
                       }
                     },
@@ -180,10 +176,9 @@ class HomeScreen extends StatelessWidget {
               // 4. Botón Cerrar
               IconButton(
                 iconSize: 24,
-                icon: const Icon(Icons.close, color: Colors.grey),
+                icon: Icon(Icons.close, color: onCardColor!.withOpacity(0.5)),
                 onPressed: () {
                   audioProv.stop();
-                  // Oculta el mini-player completamente al detener la reproducción
                   audioProv.hideMiniPlayer();
                 },
               ),
@@ -196,96 +191,94 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Usamos Provider.of con listen: true para reconstruir el widget si cambia el estado del mini-player.
     final audioProv = Provider.of<AudioProvider>(context);
 
-    // Determina el espacio extra que necesita el SingleChildScrollView
-    // Si el mini-player está activo, sumamos un padding que lo libere.
+    // Colores obtenidos del tema
+    final accentRedOrangeColor = Theme.of(context).colorScheme.secondary;
+    final secondaryAccentColor = Theme.of(
+      context,
+    ).primaryColor; // Tu amarillo (#FFFFCC00)
+
     final bool isMiniPlayerActive =
         audioProv.currentStation != null && !audioProv.isMiniPlayerHidden;
     final double bottomPadding = isMiniPlayerActive ? 90.0 : 12.0;
 
     return Scaffold(
-      // -------------------------------------------------------------
-      // 1. DRAWER (Menú Lateral)
-      // -------------------------------------------------------------
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            // CAMBIO CLAVE: Usamos un Image.asset para el encabezado del Drawer
+            // CABECERA DEL DRAWER
             Container(
               height: 150,
-              decoration: const BoxDecoration(
-                color: Colors.amber, // Color de fondo del Drawer (naranja)
+              decoration: BoxDecoration(
+                // Usamos el color de acento para la cabecera
+                color: accentRedOrangeColor,
               ),
-              child: const SafeArea(
+              // --- INICIO DE CORRECCIÓN ---
+              // Removido el 'const' de SafeArea y Center para que errorBuilder (una función dinámica) funcione
+              child: SafeArea(
+                // YA NO ES CONST
                 child: Center(
-                  // Esto podría ser la imagen del logo de tu radio
+                  // YA NO ES CONST
+                  // Asumimos que esta imagen existe, o usamos un texto si no.
                   child: Image(
-                    image: AssetImage('assets/images/Navbar.png'),
+                    image: const AssetImage('assets/images/Navbar.png'),
                     width: 100,
                     height: 100,
                     color: Colors.white,
+                    errorBuilder: (context, error, stackTrace) => const Text(
+                      'Menú',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
+              // --- FIN DE CORRECCIÓN ---
             ),
+
+            // Items del Drawer usando el color de acento del tema (secondary/Rojo-Naranja)
             ListTile(
-              leading: const Icon(
-                Icons.share,
-                color: Colors.amber,
-              ), // CAMBIO CLAVE: Icono ámbar/naranja
+              leading: Icon(Icons.share, color: accentRedOrangeColor),
               title: const Text('Comparte con un amigo'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(
-                Icons.star,
-                color: Colors.amber,
-              ), // CAMBIO CLAVE: Icono ámbar/naranja
+              leading: Icon(Icons.star, color: accentRedOrangeColor),
               title: const Text('¡Califica nuestra app!'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(
-                Icons.people,
-                color: Colors.amber,
-              ), // CAMBIO CLAVE: Icono ámbar/naranja
+              leading: Icon(Icons.people, color: accentRedOrangeColor),
               title: const Text('Nuestra Misión'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(
-                Icons.description,
-                color: Colors.amber,
-              ), // CAMBIO CLAVE: Icono ámbar/naranja
+              leading: Icon(Icons.description, color: accentRedOrangeColor),
               title: const Text('Política de Privacidad'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(
-                Icons.radio,
-                color: Colors.amber,
-              ), // CAMBIO CLAVE: Icono ámbar/naranja
+              leading: Icon(Icons.radio, color: accentRedOrangeColor),
               title: const Text('Escúchanos en'),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: const Icon(
-                Icons.info_outline,
-                color: Colors.amber,
-              ), // CAMBIO CLAVE: Icono ámbar/naranja
+              leading: Icon(Icons.info_outline, color: accentRedOrangeColor),
               title: const Text('Versión 1.1.8'),
               onTap: () {
                 Navigator.pop(context);
@@ -295,12 +288,8 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
 
-      // -------------------------------------------------------------
-      // 2. BODY: USANDO STACK PARA EL REPRODUCTOR FLOTANTE
-      // -------------------------------------------------------------
       body: Stack(
         children: [
-          // --- 2.1 CONTENIDO PRINCIPAL (Encabezado y ScrollView) ---
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -310,14 +299,20 @@ class HomeScreen extends StatelessWidget {
                 width: double.infinity,
                 child: Stack(
                   children: [
+                    // Fondo con imagen o color de acento
                     Positioned.fill(
-                      // CAMBIO CLAVE: Reemplazamos el Container de color con un Image.asset
                       child: Image.asset(
-                        'assets/images/header_bg.jpg', // Asume una imagen de fondo para el header
+                        'assets/images/header_bg.jpg',
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Container(color: Colors.amber), // Color fallback
+                        alignment: Alignment.center,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: accentRedOrangeColor,
+                        ), // Color de Fallback
                       ),
+                    ),
+                    // Opcional: Sombra (para mejorar la visibilidad de los iconos blancos)
+                    Positioned.fill(
+                      child: Container(color: Colors.black.withOpacity(0.2)),
                     ),
                     SafeArea(
                       child: Padding(
@@ -331,6 +326,7 @@ class HomeScreen extends StatelessWidget {
                             Builder(
                               builder: (context) {
                                 return IconButton(
+                                  // El color del ícono es blanco sobre la imagen oscura
                                   icon: const Icon(
                                     Icons.menu,
                                     color: Colors.white,
@@ -357,26 +353,22 @@ class HomeScreen extends StatelessWidget {
                     left: 12.0,
                     right: 12.0,
                     top: 12.0,
-                    // Espacio determinado dinámicamente
-                    bottom:
-                        bottomPadding, // Esto libera espacio para el mini-player
+                    bottom: bottomPadding,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Títulos Estaciones
+                      // Títulos Estaciones (Resaltado Amarillo del Tema)
                       RichText(
                         text: TextSpan(
                           style: Theme.of(context).textTheme.headlineMedium!
                               .copyWith(fontWeight: FontWeight.bold),
-                          children: const [
-                            TextSpan(text: 'Nuestras '),
+                          children: [
+                            const TextSpan(text: 'Nuestras '),
                             TextSpan(
                               text: 'Estaciones',
-                              style: TextStyle(
-                                color: Colors.amber,
-                              ), // COLOR ÁMBAR
-                            ),
+                              style: TextStyle(color: secondaryAccentColor),
+                            ), // Usa primaryColor (amarillo)
                           ],
                         ),
                       ),
@@ -395,14 +387,14 @@ class HomeScreen extends StatelessWidget {
                             child: StationCard(
                               station: s,
                               onTap: () async {
-                                // 1. Selecciona la estación
+                                // 1. Establecer la estación
                                 await audioProv.setStation(s);
-                                // 2. Reproduce
+                                // 2. Iniciar la reproducción
                                 await audioProv.play();
-                                // 3. Muestra el mini-player explícitamente (ahora debe verse)
+                                // 3. Mostrar el Mini-Player flotante
                                 audioProv.showMiniPlayer();
-                                // 4. Muestra el modal/reproductor
-                                _showPlayerModal(context);
+
+                                // El modal de pantalla completa ahora SOLO se abre tocando el Mini-Player.
                               },
                             ),
                           );
@@ -411,24 +403,21 @@ class HomeScreen extends StatelessWidget {
 
                       const SizedBox(height: 20),
 
-                      // Títulos Programas
+                      // Títulos Programas (Resaltado Amarillo del Tema)
                       RichText(
                         text: TextSpan(
                           style: Theme.of(context).textTheme.headlineMedium!
                               .copyWith(fontWeight: FontWeight.bold),
-                          children: const [
-                            TextSpan(text: 'Nuestros '),
+                          children: [
+                            const TextSpan(text: 'Nuestros '),
                             TextSpan(
                               text: 'Programas',
-                              style: TextStyle(
-                                color: Colors.amber,
-                              ), // COLOR ÁMBAR
-                            ),
+                              style: TextStyle(color: secondaryAccentColor),
+                            ), // Usa primaryColor (amarillo)
                           ],
                         ),
                       ),
                       const SizedBox(height: 10),
-                      // Carrusel de Programas (Contiene imágenes)
                       ProgramCarousel(programs: demoPrograms),
                       const SizedBox(height: 20),
                     ],
