@@ -176,7 +176,7 @@ class HomeScreen extends StatelessWidget {
               // 4. Botón Cerrar
               IconButton(
                 iconSize: 24,
-                icon: Icon(Icons.close, color: onCardColor!.withOpacity(0.5)),
+                icon: Icon(Icons.close, color: onCardColor.withOpacity(0.5)),
                 onPressed: () {
                   audioProv.stop();
                   audioProv.hideMiniPlayer();
