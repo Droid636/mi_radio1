@@ -283,16 +283,18 @@ class _PlayerScreenState extends State<PlayerScreen>
                 Consumer<AudioProvider>(
                   builder: (context, audioProv, child) {
                     final isPlaying = audioProv.isPlaying;
-
+                    final isLoading = audioProv.isLoading;
                     return IconButton(
                       iconSize: 100,
-                      onPressed: () {
-                        if (isPlaying) {
-                          audioProv.pause();
-                        } else {
-                          audioProv.play();
-                        }
-                      },
+                      onPressed: isLoading
+                          ? null
+                          : () {
+                              if (isPlaying) {
+                                audioProv.pause();
+                              } else {
+                                audioProv.play();
+                              }
+                            },
                       icon: Container(
                         width: 100,
                         height: 100,
@@ -307,11 +309,22 @@ class _PlayerScreenState extends State<PlayerScreen>
                             ),
                           ],
                         ),
-                        child: Icon(
-                          isPlaying ? Icons.pause : Icons.play_arrow,
-                          color: Colors.black,
-                          size: 45,
-                        ),
+                        child: isLoading
+                            ? SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 5,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.black,
+                                  ),
+                                ),
+                              )
+                            : Icon(
+                                isPlaying ? Icons.pause : Icons.play_arrow,
+                                color: Colors.black,
+                                size: 45,
+                              ),
                       ),
                     );
                   },

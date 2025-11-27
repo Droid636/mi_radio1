@@ -213,7 +213,7 @@ class HomeScreen extends StatelessWidget {
           margin: const EdgeInsets.all(8.0),
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
+            color: Theme.of(context).cardColor, // Color original (blanco)
             borderRadius: BorderRadius.circular(12.0),
             boxShadow: [
               BoxShadow(
@@ -229,7 +229,9 @@ class HomeScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: accentColor.withOpacity(0.1), // Fondo con opacidad
+                  color: Color(
+                    0xFFF55940,
+                  ).withOpacity(0.1), // Fondo con opacidad anaranjado
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ClipRRect(
@@ -289,13 +291,23 @@ class HomeScreen extends StatelessWidget {
                       audio.isPlaying
                           ? Icons.pause_circle_filled
                           : Icons.play_circle_fill,
-                      color: accentColor, // Botón de Play/Pause
+                      color: Color(0xFFF55940), // Anaranjado
                     ),
-                    onPressed: () {
-                      if (audio.isPlaying) {
-                        audio.pause();
-                      } else {
-                        audio.play();
+                    onPressed: () async {
+                      try {
+                        if (audio.isPlaying) {
+                          await audio.pause();
+                        } else {
+                          await audio.play();
+                          audio.showMiniPlayer();
+                        }
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Comprueba tu conexión a internet'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       }
                     },
                   );

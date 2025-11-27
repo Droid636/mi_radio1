@@ -14,8 +14,12 @@ class StationCard extends StatelessWidget {
     final audioProv = Provider.of<AudioProvider>(context);
     final isPlaying =
         audioProv.isPlaying && (audioProv.currentStation?.id == station.id);
+    final isLoading =
+        audioProv.isLoading && (audioProv.currentStation?.id == station.id);
     final icon = isPlaying ? Icons.pause_circle_filled : Icons.play_circle_fill;
-    final iconColor = isPlaying ? Colors.red : Colors.black;
+    final iconColor = isPlaying
+        ? Color(0xFFF55940)
+        : Colors.black; // Anaranjado si está reproduciendo
 
     return InkWell(
       onTap: onTap,
@@ -67,8 +71,35 @@ class StationCard extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               IconButton(
-                icon: Icon(icon, size: 32, color: iconColor),
-                onPressed: onTap,
+                icon: isLoading
+                    ? SizedBox(
+                        width: 28,
+                        height: 28,
+                        child: CircularProgressIndicator(strokeWidth: 3),
+                      )
+                    : Icon(icon, size: 32, color: iconColor),
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        if (isPlaying) {
+                          await audioProv.pause();
+                        } else {
+                          try {
+                            await audioProv.setStation(station);
+                            await audioProv.play();
+                            audioProv.showMiniPlayer();
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Comprueba tu conexión a internet',
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        }
+                      },
               ),
             ],
           ),
