@@ -38,12 +38,14 @@ class SocialMediaButtons extends StatelessWidget {
       'name': 'Instagram',
       'assetPath': 'assets/icons/Instagram.png',
       'color': Color(0xFFC13584),
+      'backgroundColor': Color(0xFFC13584),
       'url': 'https://www.instagram.com/radioactivatx?igsh=M2piYzc1eGNiY29v',
     },
     {
       'name': 'Facebook',
       'assetPath': 'assets/icons/Facebook.png',
       'color': Color(0xFF3B5998),
+      'backgroundColor': Color(0xFF3B5998),
       'url':
           'https://www.facebook.com/radioactivatx89.9?wtsid=rdr_01btUDnQhVaGthwGL&from_intent_redirect=1',
     },
@@ -51,30 +53,35 @@ class SocialMediaButtons extends StatelessWidget {
       'name': 'X (Twitter)',
       'assetPath': 'assets/icons/Twiter.png',
       'color': Colors.black,
+      'backgroundColor': Colors.black,
       'url': 'https://x.com/mi_radio',
     },
     {
       'name': 'YouTube',
       'assetPath': 'assets/icons/Youtube.png',
       'color': Color(0xFFFF0000),
+      'backgroundColor': Color(0xFFFF0000),
       'url': 'https://youtube.com/@radioactivatx?si=AZwNbDJzsPoLlxDB',
     },
     {
       'name': 'Tik Tok',
       'assetPath': 'assets/icons/Tiktok.png',
       'color': Color.fromARGB(255, 10, 10, 10),
+      'backgroundColor': Color.fromARGB(255, 10, 10, 10),
       'url': 'https://www.tiktok.com/@radioactiva.tx?_r=1&_t=ZS-91jAkaMrlyP',
     },
     {
       'name': 'Teléfono',
       'assetPath': 'assets/icons/Telefono.png',
       'color': Colors.lightBlue,
+      'backgroundColor': Colors.lightBlue,
       'url': 'tel:+524141199003',
     },
     {
       'name': 'Web',
       'assetPath': 'assets/icons/Web.png',
       'color': Color.fromARGB(255, 11, 11, 11),
+      'backgroundColor': Color.fromARGB(255, 11, 11, 11),
       'url': 'https://www.radioactivatx.org/',
     },
   ];
@@ -376,7 +383,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.pop(context);
                 // Enlace de ejemplo para compartir
                 _launchURL(
-                  'whatsapp://send?text=¡Escucha nuestra app de radio! [Link a la Store]',
+                  'whatsapp://send?text=¡Escucha nuestra app de radio! Descárgala aquí: https://play.google.com/store/apps/details?id=com.radioactivatx.radio',
                 );
               },
             ),
@@ -386,7 +393,7 @@ class HomeScreen extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 // Enlace de ejemplo a la Play Store o App Store
-                _launchURL('market://details?id=your.package.name');
+                _launchURL('market://details?id=com.radioactivatx.radio');
               },
             ),
             ListTile(
@@ -394,7 +401,7 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Nuestra Misión'),
               onTap: () {
                 Navigator.pop(context);
-                _launchURL('https://tudominio.com/mision');
+                _launchURL('https://www.radioactivatx.org/acerca-de/');
               },
             ),
             ListTile(
@@ -402,7 +409,9 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Política de Privacidad'),
               onTap: () {
                 Navigator.pop(context);
-                _launchURL('https://tudominio.com/privacidad');
+                _launchURL(
+                  'https://www.radioactivatx.org/politica-privacidad/',
+                );
               },
             ),
             ListTile(
@@ -410,7 +419,7 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Escúchanos en'),
               onTap: () {
                 Navigator.pop(context);
-                _launchURL('https://tudominio.com/plataformas');
+                _launchURL('https://www.radioactivatx.org/streaming/');
               },
             ),
             ListTile(

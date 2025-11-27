@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../helpers/providers/audio_provider.dart';
 
 // Convertimos PlayerScreen a StatefulWidget para manejar la animación
@@ -14,17 +15,57 @@ class PlayerScreen extends StatefulWidget {
 
 class _PlayerScreenState extends State<PlayerScreen>
     with SingleTickerProviderStateMixin {
-  // Controlador de Animación para la rotación del disco
   late AnimationController _rotationController;
+
+  // Mapa de enlaces ahora usando rutas de assets simuladas.
+  // AJUSTE LAS RUTAS DE LOS ARCHIVOS PNG DE ACUERDO A SU ESTRUCTURA DE ASSETS
+  final List<Map<String, dynamic>> linkItems = const [
+    // La app no debe tener Icons.tiktok o Icons.facebook, sino rutas de assets.
+    {
+      'label': 'Facebook',
+      'asset': 'assets/icons/Facebook.png',
+      'url':
+          'https://www.facebook.com/radioactivatx89.9?wtsid=rdr_01btUDnQhVaGthwGL&from_intent_redirect=1',
+    },
+    {
+      'label': 'Instagram',
+      'asset': 'assets/icons/Instagram_2.png',
+      'url': 'https://www.instagram.com/radioactivatx?igsh=M2piYzc1eGNiY29v',
+    },
+    {
+      'label': 'Twitter (X)',
+      'asset': 'assets/icons/Twiter.png',
+      'url': 'https://x.com/mi_radio',
+    },
+    {
+      'label': 'YouTube',
+      'asset': 'assets/icons/Youtube.png',
+      'url': 'https://youtube.com/@radioactivatx?si=AZwNbDJzsPoLlxDB',
+    },
+    {
+      'label': 'TikTok',
+      'asset': 'assets/icons/Tiktok_2.png',
+      'url': 'https://www.tiktok.com/@radioactivatx',
+    },
+    {
+      'label': 'Llamar',
+      'asset': 'assets/icons/Telefono_2.png',
+      'url': 'tel:+524141199003',
+    },
+    {
+      'label': 'Sitio Web',
+      'asset': 'assets/icons/Web.png',
+      'url': 'https://radioactivatx.com',
+    },
+  ];
 
   @override
   void initState() {
     super.initState();
-    // Inicializa el controlador de animación
     _rotationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 10), // Velocidad de rotación
-    )..repeat(); // Repite la animación indefinidamente
+      duration: const Duration(seconds: 10),
+    )..repeat();
   }
 
   @override
@@ -33,17 +74,84 @@ class _PlayerScreenState extends State<PlayerScreen>
     super.dispose();
   }
 
+  // --- FUNCIÓN DE LANZAMIENTO DE URL SEGURA ---
+  Future<void> _launchUrl(BuildContext context, String urlString) async {
+    final Uri url = Uri.parse(urlString);
+
+    if (!await canLaunchUrl(url)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Error: No se encontró una aplicación para abrir el enlace: $urlString',
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error al intentar abrir el enlace: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  // --- NUEVA FUNCIÓN PARA MOSTRAR LAS OPCIONES DE ENLACE COMO SIDE-MENU ---
+  void _showLinkOptions() {
+    final primaryYellow = Theme.of(context).primaryColor;
+
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true, // Se puede cerrar al tocar fuera
+      barrierLabel: 'Side Menu',
+      // Animación de deslizamiento de derecha a izquierda
+      transitionDuration: const Duration(milliseconds: 300),
+      transitionBuilder: (context, anim, secondAnim, child) {
+        return SlideTransition(
+          position: Tween(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(parent: anim, curve: Curves.easeOut)),
+          child: child,
+        );
+      },
+      pageBuilder: (context, animation, secondaryAnimation) {
+        // Usa el nuevo widget LinkOptionsDrawer que simula el menú lateral
+        return LinkOptionsDrawer(
+          linkItems: linkItems,
+          primaryColor: primaryYellow,
+          onLinkTap: (String urlString) {
+            _launchUrl(context, urlString);
+          },
+          onShareTap: () {
+            // Lógica para compartir (usar paquete share_plus)
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Función de Compartir activada.')),
+            );
+          },
+        );
+      },
+    );
+  }
+  // ----------------------------------------------------------------------
+
   @override
   Widget build(BuildContext context) {
     final audioProv = Provider.of<AudioProvider>(context);
     final station = audioProv.currentStation;
 
-    // Colores del tema para consistencia
     final Color primaryYellow = Theme.of(context).primaryColor;
 
     if (station == null) {
       if (widget.isModal) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
+          // Si es modal y no hay estación, se cierra (no genera warning)
           Navigator.of(context).pop();
         });
         return const SizedBox.shrink();
@@ -51,12 +159,10 @@ class _PlayerScreenState extends State<PlayerScreen>
       return const Center(child: Text("Selecciona una estación."));
     }
 
-    // El disco gira solo si está sonando
-    if (audioProv.isPlaying) {
-      _rotationController.isAnimating ? null : _rotationController.repeat();
-    } else {
-      _rotationController.stop();
-    }
+    // Control de la animación simplificado:
+    audioProv.isPlaying
+        ? _rotationController.repeat()
+        : _rotationController.stop();
 
     return Scaffold(
       body: Container(
@@ -92,16 +198,15 @@ class _PlayerScreenState extends State<PlayerScreen>
                           )
                         : const SizedBox(width: 32),
 
-                    // Botón de Menú/Opciones
+                    // Botón de Menú/Opciones (LOS TRES PUNTOS)
                     IconButton(
                       icon: Icon(
                         Icons.more_vert,
                         color: primaryYellow,
                         size: 32,
                       ),
-                      onPressed: () {
-                        // Lógica para abrir opciones o menú
-                      },
+                      onPressed:
+                          _showLinkOptions, // Llama al menú lateral de íconos
                     ),
                   ],
                 ),
@@ -154,9 +259,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                 const SizedBox(height: 40),
 
                 // --- INFORMACIÓN DE LA ESTACIÓN ---
-                // *** SE ELIMINA LA LÍNEA DE TÍTULO DE CANCIÓN ***
-
-                // Nombre de la Estación (Radioactiva Tx)
                 Text(
                   station.name,
                   style: Theme.of(context).textTheme.headlineMedium!.copyWith(
@@ -175,17 +277,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 4),
-
-                // Descripción o ubicación
-                // Se deja el slogan como body, ahora solo en un lugar.
-                /*Text(
-                  station.slogan, 
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Colors.white70,
-                      ),
-                  textAlign: TextAlign.center,
-                ),*/
                 const Spacer(),
 
                 // --- BOTÓN CENTRAL DE PLAY/PAUSE ---
@@ -194,21 +285,20 @@ class _PlayerScreenState extends State<PlayerScreen>
                     final isPlaying = audioProv.isPlaying;
 
                     return IconButton(
-                      iconSize: 100, // Ícono muy grande
+                      iconSize: 100,
                       onPressed: () {
                         if (isPlaying) {
                           audioProv.pause();
                         } else {
                           audioProv.play();
                         }
-                        // La lógica de rotación se maneja en el build/Consumer
                       },
                       icon: Container(
                         width: 100,
                         height: 100,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: primaryYellow, // Fondo del botón en amarillo
+                          color: primaryYellow,
                           boxShadow: [
                             BoxShadow(
                               color: primaryYellow.withOpacity(0.5),
@@ -219,17 +309,106 @@ class _PlayerScreenState extends State<PlayerScreen>
                         ),
                         child: Icon(
                           isPlaying ? Icons.pause : Icons.play_arrow,
-                          color: Colors.black, // Ícono negro sobre amarillo
+                          color: Colors.black,
                           size: 45,
                         ),
                       ),
                     );
                   },
                 ),
-
                 const Spacer(),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// --- NUEVO WIDGET: LinkOptionsDrawer (Menú Lateral de Iconos) ---
+class LinkOptionsDrawer extends StatelessWidget {
+  final List<Map<String, dynamic>> linkItems;
+  final Color primaryColor;
+  final Function(String urlString) onLinkTap;
+  final VoidCallback onShareTap;
+
+  const LinkOptionsDrawer({
+    super.key,
+    required this.linkItems,
+    required this.primaryColor,
+    required this.onLinkTap,
+    required this.onShareTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Definimos el tamaño del drawer (ajustado para contener los íconos)
+    final double drawerWidth = MediaQuery.of(context).size.width * 0.25;
+
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Material(
+        color: Colors.transparent, // El fondo ya está oscuro en el PlayerScreen
+        child: Container(
+          width: drawerWidth,
+          height:
+              MediaQuery.of(context).size.height *
+              0.8, // Altura que simula la imagen
+          decoration: BoxDecoration(
+            color: Colors.grey[900]!.withOpacity(
+              0.9,
+            ), // Fondo oscuro semitransparente
+            borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(10),
+            ),
+            boxShadow: [
+              BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 10),
+            ],
+          ),
+          child: Column(
+            // El menú de iconos en la imagen parece estar centrado verticalmente
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: linkItems.map((item) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: IconButton(
+                  iconSize: 40,
+                  icon: Container(
+                    width: 45,
+                    height: 45,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: primaryColor, // Círculo amarillo de fondo
+                    ),
+                    child: ClipOval(
+                      // Usamos Image.asset para cargar el ícono de la red social
+                      child: Image.asset(
+                        item['asset'] as String,
+                        width:
+                            30, // Ajuste el tamaño de la imagen dentro del círculo
+                        height: 30,
+                        fit: BoxFit.scaleDown,
+                        errorBuilder: (context, error, stackTrace) => Icon(
+                          Icons.link,
+                          color: Colors.black,
+                          size: 20,
+                        ), // Fallback
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context); // Cierra el drawer
+
+                    if (item.containsKey('url')) {
+                      onLinkTap(item['url'] as String);
+                    } else if (item['type'] == 'share') {
+                      onShareTap();
+                    }
+                  },
+                ),
+              );
+            }).toList(),
           ),
         ),
       ),
