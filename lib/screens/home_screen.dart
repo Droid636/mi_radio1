@@ -190,7 +190,10 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildMiniPlayerBar(BuildContext context, AudioProvider audioProv) {
-    final accentRedOrangeColor = Theme.of(context).colorScheme.secondary;
+    // Usamos el color de acento amarillo en lugar del color del tema
+    const Color yellowAccent = Color(0xFFFFD700);
+    final accentColor = yellowAccent;
+
     final onCardColor = Theme.of(context).textTheme.bodyLarge!.color;
 
     const double miniPlayerHeight = 70.0;
@@ -226,7 +229,7 @@ class HomeScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: accentRedOrangeColor.withOpacity(0.1),
+                  color: accentColor.withOpacity(0.1), // Fondo con opacidad
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ClipRRect(
@@ -239,7 +242,7 @@ class HomeScreen extends StatelessWidget {
                             child: Icon(
                               Icons.radio,
                               size: 24,
-                              color: accentRedOrangeColor,
+                              color: accentColor, // Icono de radio
                             ),
                           ),
                         )
@@ -247,13 +250,12 @@ class HomeScreen extends StatelessWidget {
                           child: Icon(
                             Icons.radio,
                             size: 24,
-                            color: accentRedOrangeColor,
+                            color: accentColor, // Icono de radio
                           ),
                         ),
                 ),
               ),
               const SizedBox(width: 12),
-
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -279,7 +281,6 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
               Consumer<AudioProvider>(
                 builder: (context, audio, child) {
                   return IconButton(
@@ -288,7 +289,7 @@ class HomeScreen extends StatelessWidget {
                       audio.isPlaying
                           ? Icons.pause_circle_filled
                           : Icons.play_circle_fill,
-                      color: accentRedOrangeColor,
+                      color: accentColor, // Botón de Play/Pause
                     ),
                     onPressed: () {
                       if (audio.isPlaying) {
@@ -300,7 +301,6 @@ class HomeScreen extends StatelessWidget {
                   );
                 },
               ),
-
               IconButton(
                 iconSize: 24,
                 icon: Icon(Icons.close, color: onCardColor.withOpacity(0.5)),
@@ -320,8 +320,13 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioProv = Provider.of<AudioProvider>(context);
 
-    final accentRedOrangeColor = Theme.of(context).colorScheme.secondary;
-    final secondaryAccentColor = Theme.of(context).primaryColor;
+    // --- CAMBIO DE COLOR A AMARILLO (Gold Yellow) ---
+    const Color yellowAccent = Color(0xFFFFD700);
+
+    // Reemplazamos la lógica del tema para forzar el amarillo en todos los acentos principales
+    final Color accentRedOrangeColor = yellowAccent;
+    final Color secondaryAccentColor = yellowAccent;
+    // ------------------------------------------------
 
     final bool isMiniPlayerActive =
         audioProv.currentStation != null && !audioProv.isMiniPlayerHidden;
@@ -335,14 +340,15 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             Container(
               height: 150,
-              decoration: BoxDecoration(color: accentRedOrangeColor),
+              decoration: BoxDecoration(
+                color: accentRedOrangeColor,
+              ), // Fondo del Drawer (Ahora Amarillo)
               child: SafeArea(
                 child: Center(
                   child: Image(
-                    image: const AssetImage('assets/images/Program1.png'),
+                    image: const AssetImage('assets/images/Navbar.png'),
                     width: 100,
                     height: 100,
-                    color: Colors.white,
                     errorBuilder: (context, error, stackTrace) => const Text(
                       'Menú',
                       style: TextStyle(
@@ -355,7 +361,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-
+            // ... (Resto de ListTiles del Drawer) ...
             ListTile(
               leading: Icon(Icons.share, color: secondaryAccentColor),
               title: const Text('Comparte con un amigo'),
@@ -412,7 +418,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-
+      // ... (Resto de la estructura del Scaffold) ...
       body: Stack(
         children: [
           Column(
@@ -428,11 +434,11 @@ class HomeScreen extends StatelessWidget {
                         'assets/images/banner.png',
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Container(color: accentRedOrangeColor),
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: accentRedOrangeColor,
+                        ), // Fondo de banner (Ahora Amarillo)
                       ),
                     ),
-
                     Positioned.fill(
                       child: Container(color: Colors.black.withOpacity(0.2)),
                     ),
@@ -498,7 +504,8 @@ class HomeScreen extends StatelessWidget {
                                   TextSpan(
                                     text: 'Estaciones',
                                     style: TextStyle(
-                                      color: secondaryAccentColor,
+                                      color:
+                                          secondaryAccentColor, // Texto acentuado (Ahora Amarillo)
                                     ),
                                   ),
                                 ],
@@ -540,7 +547,8 @@ class HomeScreen extends StatelessWidget {
                                   TextSpan(
                                     text: 'Programas',
                                     style: TextStyle(
-                                      color: secondaryAccentColor,
+                                      color:
+                                          secondaryAccentColor, // Texto acentuado (Ahora Amarillo)
                                     ),
                                   ),
                                 ],
@@ -565,7 +573,8 @@ class HomeScreen extends StatelessWidget {
                                   TextSpan(
                                     text: 'Redes',
                                     style: TextStyle(
-                                      color: accentRedOrangeColor,
+                                      color:
+                                          accentRedOrangeColor, // Texto acentuado (Ahora Amarillo)
                                     ),
                                   ),
                                 ],
@@ -585,7 +594,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-
           _buildMiniPlayerBar(context, audioProv),
         ],
       ),
