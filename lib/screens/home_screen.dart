@@ -194,7 +194,7 @@ class HomeScreen extends StatelessWidget {
       left: 0,
       right: 0,
       child: GestureDetector(
-        onTap: () => _showPlayerModal(context), // Abre el modal al tocar
+        onTap: () => _showPlayerModal(context),
         child: Container(
           height: miniPlayerHeight,
           margin: const EdgeInsets.all(8.0),
@@ -212,7 +212,6 @@ class HomeScreen extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // 1. Imagen de la Estación
               Container(
                 width: 50,
                 height: 50,
@@ -330,7 +329,7 @@ class HomeScreen extends StatelessWidget {
               child: SafeArea(
                 child: Center(
                   child: Image(
-                    image: const AssetImage('assets/images/Navbar.png'),
+                    image: const AssetImage('assets/images/logo.png'),
                     width: 100,
                     height: 100,
                     color: Colors.white,
@@ -352,7 +351,7 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Comparte con un amigo'),
               onTap: () {
                 Navigator.pop(context);
-                // Enlace de ejemplo para compartir
+
                 _launchURL(
                   'whatsapp://send?text=¡Escucha nuestra app de radio! Descárgala aquí: https://play.google.com/store/apps/details?id=com.radioactivatx.radio',
                 );
@@ -416,7 +415,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Positioned.fill(
                       child: Image.asset(
-                        'assets/images/header_bg.jpg',
+                        'assets/images/banner.png',
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
                         errorBuilder: (context, error, stackTrace) =>
