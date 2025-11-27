@@ -7,46 +7,27 @@ class AudioService {
   AudioService._internal();
 
   final AudioPlayer _player = AudioPlayer();
-
   AudioPlayer get player => _player;
 
-  /// Configura la sesión de audio
   Future<void> init() async {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
   }
 
-  /// Cargar una URL
   Future<void> setUrl(String url) async {
-    try {
-      await _player.setUrl(url);
-    } catch (e) {
-      print("❌ Error al cargar URL: $e");
-    }
+    await _player.setUrl(url);
   }
 
   Future<void> play() async {
-    try {
-      await _player.play();
-    } catch (e) {
-      print("❌ Error al reproducir: $e");
-    }
+    await _player.play();
   }
 
   Future<void> pause() async {
-    try {
-      await _player.pause();
-    } catch (e) {
-      print("❌ Error al pausar: $e");
-    }
+    await _player.pause();
   }
 
   Future<void> stop() async {
-    try {
-      await _player.stop();
-    } catch (e) {
-      print("❌ Error al detener: $e");
-    }
+    await _player.stop();
   }
 
   Future<void> dispose() async {

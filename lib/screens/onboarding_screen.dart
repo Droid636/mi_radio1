@@ -1,4 +1,3 @@
-// Archivo placeholder generado automáticamente.
 import 'package:flutter/material.dart';
 
 class OnboardingScreen extends StatelessWidget {

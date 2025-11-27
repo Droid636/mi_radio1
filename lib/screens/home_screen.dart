@@ -9,15 +9,12 @@ import '../widgets/program_carousel.dart';
 import '../models/program_model.dart';
 import 'player_screen.dart';
 
-// --- FUNCIÓN GLOBAL: LANZADOR DE URLS EXTERNAS ---
-/// Gestiona la apertura de enlaces web, WhatsApp, llamadas, etc.
 Future<void> _launchURL(String url) async {
   final Uri uri = Uri.parse(url);
   try {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
-      // Usamos debugPrint para manejar errores suavemente en lugar de throw.
       debugPrint('ERROR: No se pudo lanzar la URL: $url');
     }
   } catch (e) {
@@ -25,14 +22,9 @@ Future<void> _launchURL(String url) async {
   }
 }
 
-// --- WIDGET AUXILIAR: BOTONES DE REDES SOCIALES ---
-/// Muestra botones estilizados (como tarjetas) para las redes sociales de la radio,
-/// usando íconos/imágenes de activos locales.
 class SocialMediaButtons extends StatelessWidget {
   const SocialMediaButtons({super.key});
 
-  // Define los enlaces y las rutas de los iconos de activos locales.
-  // IMPORTANTE: Debes tener estos archivos en tu carpeta 'assets/icons/'
   final List<Map<String, dynamic>> socialLinks = const [
     {
       'name': 'Instagram',
@@ -92,9 +84,9 @@ class SocialMediaButtons extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
         child: Wrap(
-          spacing: 15.0, // Espacio entre íconos
+          spacing: 15.0,
           runSpacing: 15.0,
-          alignment: WrapAlignment.center, // Centra los botones si hay pocos
+          alignment: WrapAlignment.center,
           children: socialLinks.map((link) {
             final color = link['color'] as Color;
             final assetPath = link['assetPath'] as String;
@@ -104,36 +96,30 @@ class SocialMediaButtons extends StatelessWidget {
               onTap: () => _launchURL(link['url'] as String), // Lanza la URL
               borderRadius: BorderRadius.circular(15.0),
               child: Card(
-                // Usamos Card para el efecto de tarjeta
-                elevation: 6, // Elevación para dar profundidad
+                elevation: 6,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
                 child: Container(
-                  width: 100, // Ancho de la tarjeta
-                  height: 100, // Alto de la tarjeta
+                  width: 100,
+                  height: 100,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor, // Fondo de la tarjeta
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Ícono/Imagen local de la red social
                       Image.asset(
                         assetPath,
                         width: 40,
                         height: 40,
-                        // El color se puede usar para tintear la imagen si es monocromática
-                        // color: color,
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                          Icons.link, // Fallback si la imagen no se encuentra
-                          size: 40,
-                          color: color,
-                        ),
+
+                        errorBuilder: (context, error, stackTrace) =>
+                            Icon(Icons.link, size: 40, color: color),
                       ),
                       const SizedBox(height: 5),
-                      // Nombre de la red social
+
                       Text(
                         name,
                         style: TextStyle(
@@ -152,10 +138,6 @@ class SocialMediaButtons extends StatelessWidget {
     );
   }
 }
-
-// ---------------------------------------------------
-// --- WIDGET PRINCIPAL: HOME SCREEN -----------------
-// ---------------------------------------------------
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -177,7 +159,6 @@ class HomeScreen extends StatelessWidget {
     ),
   ];
 
-  // 🔊 Muestra el PlayerScreen como un Modal Full-Screen
   void _showPlayerModal(BuildContext context) {
     final audioProv = Provider.of<AudioProvider>(context, listen: false);
     audioProv.hideMiniPlayer();
@@ -198,7 +179,6 @@ class HomeScreen extends StatelessWidget {
     });
   }
 
-  /// 🎵 CONSTRUYE LA BARRA DE REPRODUCCIÓN FLOTANTE (Mini-Player)
   Widget _buildMiniPlayerBar(BuildContext context, AudioProvider audioProv) {
     final accentRedOrangeColor = Theme.of(context).colorScheme.secondary;
     final onCardColor = Theme.of(context).textTheme.bodyLarge!.color;
@@ -265,7 +245,6 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(width: 12),
 
-              // 2. Textos (Nombre y Slogan)
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -292,7 +271,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              // 3. Botón Play/Pause
               Consumer<AudioProvider>(
                 builder: (context, audio, child) {
                   return IconButton(
@@ -314,7 +292,6 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
 
-              // 4. Botón Cerrar/Detener
               IconButton(
                 iconSize: 24,
                 icon: Icon(Icons.close, color: onCardColor.withOpacity(0.5)),
@@ -334,24 +311,19 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioProv = Provider.of<AudioProvider>(context);
 
-    // Colores obtenidos del tema
     final accentRedOrangeColor = Theme.of(context).colorScheme.secondary;
-    final secondaryAccentColor = Theme.of(
-      context,
-    ).primaryColor; // Tu color amarillo
+    final secondaryAccentColor = Theme.of(context).primaryColor;
 
     final bool isMiniPlayerActive =
         audioProv.currentStation != null && !audioProv.isMiniPlayerHidden;
-    // Ajusta el padding del contenido para que no se oculte detrás del Mini-Player
+
     final double bottomPadding = isMiniPlayerActive ? 90.0 : 12.0;
 
     return Scaffold(
-      // --- DRAWER (MENÚ LATERAL) CON ENLACES EXTERNOS ---
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            // CABECERA DEL DRAWER (usa el color de acento principal)
             Container(
               height: 150,
               decoration: BoxDecoration(color: accentRedOrangeColor),
@@ -375,7 +347,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            // Items del Drawer que usan `_launchURL`
             ListTile(
               leading: Icon(Icons.share, color: secondaryAccentColor),
               title: const Text('Comparte con un amigo'),
@@ -427,7 +398,6 @@ class HomeScreen extends StatelessWidget {
               title: const Text('Versión 1.1.8'),
               onTap: () {
                 Navigator.pop(context);
-                // No hace nada, solo informativo
               },
             ),
           ],
@@ -439,24 +409,21 @@ class HomeScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ENCABEZADO PERSONALIZADO (Cubre la función de AppBar)
               SizedBox(
                 height: 120,
                 width: double.infinity,
                 child: Stack(
                   children: [
-                    // Fondo con imagen o color de acento
                     Positioned.fill(
                       child: Image.asset(
                         'assets/images/header_bg.jpg',
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          color: accentRedOrangeColor,
-                        ), // Color de Fallback
+                        errorBuilder: (context, error, stackTrace) =>
+                            Container(color: accentRedOrangeColor),
                       ),
                     ),
-                    // Sombra para mejor contraste del menú
+
                     Positioned.fill(
                       child: Container(color: Colors.black.withOpacity(0.2)),
                     ),
@@ -530,7 +497,6 @@ class HomeScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
 
-                            // LISTA DE ESTACIONES
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -554,7 +520,6 @@ class HomeScreen extends StatelessWidget {
 
                             const SizedBox(height: 20),
 
-                            // Título: Nuestros Programas
                             RichText(
                               text: TextSpan(
                                 style: Theme.of(context)
@@ -599,7 +564,6 @@ class HomeScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 15),
 
-                            // BOTONES DE REDES SOCIALES
                             const SocialMediaButtons(),
 
                             const SizedBox(height: 20),
@@ -613,7 +577,6 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
 
-          // --- REPRODUCTOR FLOTANTE (Mini-Player) ---
           _buildMiniPlayerBar(context, audioProv),
         ],
       ),

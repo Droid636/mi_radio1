@@ -1,4 +1,3 @@
-// Archivo placeholder generado automáticamente.
 import '../models/station_model.dart';
 
 final List<StationModel> stations = [
