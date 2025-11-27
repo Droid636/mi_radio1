@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/Splash.png'),
+                image: AssetImage('assets/images/Splash.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
