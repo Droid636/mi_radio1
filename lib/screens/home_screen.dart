@@ -199,7 +199,43 @@ class HomeScreen extends StatelessWidget {
 
     const double miniPlayerHeight = 70.0;
 
-    if (audioProv.currentStation == null || audioProv.isMiniPlayerHidden) {
+    // El mini reproductor siempre aparece, aunque no haya estación
+    // Si no hay estación, muestra un contenedor vacío con mensaje o icono
+    if (audioProv.currentStation == null) {
+      return Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Container(
+          height: miniPlayerHeight,
+          margin: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(12.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 12,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.radio, size: 32, color: accentColor),
+              const SizedBox(width: 12),
+              Text(
+                'Selecciona una estación para escuchar',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (audioProv.isMiniPlayerHidden) {
       return const SizedBox.shrink();
     }
 
