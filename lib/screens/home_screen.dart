@@ -374,7 +374,10 @@ class HomeScreen extends StatelessWidget {
 
     // Reemplazamos la lógica del tema para forzar el amarillo en todos los acentos principales
     final Color accentRedOrangeColor = yellowAccent;
-    final Color secondaryAccentColor = yellowAccent;
+    final Color drawerIconColor = Color(
+      0xFFF55940,
+    ); // Naranja solo para íconos del Drawer
+    final Color secondaryAccentColor = yellowAccent; // Amarillo para títulos
     // ------------------------------------------------
 
     final bool isMiniPlayerActive =
@@ -412,7 +415,7 @@ class HomeScreen extends StatelessWidget {
             ),
             // ... (Resto de ListTiles del Drawer) ...
             ListTile(
-              leading: Icon(Icons.share, color: secondaryAccentColor),
+              leading: Icon(Icons.share, color: drawerIconColor),
               title: const Text('Comparte con un amigo'),
               onTap: () async {
                 Navigator.pop(context);
@@ -424,7 +427,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.star, color: secondaryAccentColor),
+              leading: Icon(Icons.star, color: drawerIconColor),
               title: const Text('¡Califica nuestra app!'),
               onTap: () {
                 Navigator.pop(context);
@@ -433,7 +436,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.people, color: secondaryAccentColor),
+              leading: Icon(Icons.people, color: drawerIconColor),
               title: const Text('Nuestra Misión'),
               onTap: () {
                 Navigator.pop(context);
@@ -441,7 +444,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.description, color: secondaryAccentColor),
+              leading: Icon(Icons.description, color: drawerIconColor),
               title: const Text('Política de Privacidad'),
               onTap: () {
                 Navigator.pop(context);
@@ -451,7 +454,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.radio, color: secondaryAccentColor),
+              leading: Icon(Icons.radio, color: drawerIconColor),
               title: const Text('Escúchanos en'),
               onTap: () {
                 Navigator.pop(context);
@@ -459,7 +462,7 @@ class HomeScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.info_outline, color: secondaryAccentColor),
+              leading: Icon(Icons.info_outline, color: drawerIconColor),
               title: const Text('Versión 1.1.8'),
               onTap: () {
                 Navigator.pop(context);
