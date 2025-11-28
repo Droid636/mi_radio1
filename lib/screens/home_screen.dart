@@ -359,7 +359,7 @@ class HomeScreen extends StatelessWidget {
               child: SafeArea(
                 child: Center(
                   child: Image(
-                    image: const AssetImage('assets/images/Navbar.png'),
+                    image: const AssetImage('assets/images/Navbar_logo.png'),
                     width: 100,
                     height: 100,
                     errorBuilder: (context, error, stackTrace) => const Text(
