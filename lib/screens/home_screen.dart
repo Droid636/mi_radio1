@@ -7,6 +7,7 @@ import '../helpers/providers/audio_provider.dart';
 import '../widgets/station_card.dart';
 import '../widgets/program_carousel.dart';
 import '../models/program_model.dart';
+import 'package:share_plus/share_plus.dart';
 import 'player_screen.dart';
 
 Future<void> _launchURL(String url) async {
@@ -377,11 +378,12 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.share, color: secondaryAccentColor),
               title: const Text('Comparte con un amigo'),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
-
-                _launchURL(
-                  'whatsapp://send?text=¡Escucha nuestra app de radio! Descárgala aquí: https://play.google.com/store/apps/details?id=com.radioactivatx.radio',
+                // Usar el diálogo nativo de compartir
+                await Share.share(
+                  '¡Escucha nuestra app de radio! Descárgala aquí: https://play.google.com/store/apps/details?id=com.radioactivatx.radio',
+                  subject: 'Recomendación de app',
                 );
               },
             ),
