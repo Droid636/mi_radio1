@@ -35,7 +35,7 @@ class _PlayerScreenState extends State<PlayerScreen>
     {
       'label': 'Twitter (X)',
       'asset': 'assets/icons/Twiter.png',
-      'url': 'https://x.com/mi_radio',
+      'url': 'https://twitter.com/RadioactivaTx',
     },
     {
       'label': 'YouTube',
@@ -45,7 +45,7 @@ class _PlayerScreenState extends State<PlayerScreen>
     {
       'label': 'TikTok',
       'asset': 'assets/icons/Tiktok_2.png',
-      'url': 'https://www.tiktok.com/@radioactivatx',
+      'url': 'https://www.tiktok.com/@radioactiva.tx?_r=1&_t=ZS-91jAkaMrlyP',
     },
     {
       'label': 'Llamar',
@@ -55,7 +55,7 @@ class _PlayerScreenState extends State<PlayerScreen>
     {
       'label': 'Sitio Web',
       'asset': 'assets/icons/Web.png',
-      'url': 'https://radioactivatx.com',
+      'url': 'https://www.radioactivatx.org/',
     },
   ];
 

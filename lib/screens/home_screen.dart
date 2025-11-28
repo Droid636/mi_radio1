@@ -47,7 +47,7 @@ class SocialMediaButtons extends StatelessWidget {
       'assetPath': 'assets/icons/Twiter.png',
       'color': Colors.black,
       'backgroundColor': Colors.black,
-      'url': 'https://x.com/mi_radio',
+      'url': 'https://twitter.com/RadioactivaTx',
     },
     {
       'name': 'YouTube',
