@@ -13,53 +13,48 @@ class SplashScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/Splash.jpg'),
+                image: AssetImage('assets/images/Splash_fondo.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          Center(
+          Positioned(
+            top:
+                MediaQuery.of(context).size.height *
+                0.25, // Adjust this value to move the image up or down
+            left: 0,
+            right: 0,
+            child: Center(
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/images/logo_splash.jpg',
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: 150,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Radiactiva TX',
+                const Text(
+                  '©2025 Radioactiva TX - Todos los derechos reservados. Desarrollado por Freepi Inc.',
                   style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
                     color: Colors.white,
                     shadows: [
                       Shadow(
                         blurRadius: 5.0,
                         color: Colors.black54,
-                        offset: Offset(2.0, 2.0),
+                        offset: Offset(1.0, 1.0),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Tu estación favorita',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 5.0,
-                        color: Colors.black54,
-                        offset: Offset(2.0, 2.0),
-                      ),
-                    ],
-                  ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
