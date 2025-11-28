@@ -5,12 +5,16 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
+          // 1. Fondo de pantalla
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            width: screenWidth,
+            height: screenHeight,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/Splash_fondo.jpg'),
@@ -18,23 +22,33 @@ class SplashScreen extends StatelessWidget {
               ),
             ),
           ),
+
+          // 2. Overlay de Oscurecimiento (30% de opacidad)
+          Container(
+            width: screenWidth,
+            height: screenHeight,
+            color: Colors.black.withOpacity(0.3),
+          ),
+
+          // 3. Logo (Sin redondeo y ahora más ancho)
           Positioned(
-            top:
-                MediaQuery.of(context).size.height *
-                0.25, // Adjust this value to move the image up or down
+            top: screenHeight * 0.25,
             left: 0,
             right: 0,
             child: Center(
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/logo_splash.jpg',
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.cover,
-                ),
+              child: Image.asset(
+                'assets/images/logo_splash.png',
+                // ****** CAMBIO AQUÍ: La imagen ocupa el 70% del ancho de la pantalla ******
+                width: screenWidth * 0.7,
+                // La altura se ajusta automáticamente, pero definimos un valor fijo para control
+                height: 150,
+                fit: BoxFit
+                    .contain, // Usamos contain para que se vea completa si su aspecto es diferente
               ),
             ),
           ),
+
+          // 4. Derechos reservados (Texto inferior)
           Positioned(
             bottom: 20,
             left: 0,
