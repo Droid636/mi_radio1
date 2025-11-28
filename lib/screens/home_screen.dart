@@ -352,7 +352,7 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: <Widget>[
             Container(
-              height: 150,
+              height: 200,
               decoration: BoxDecoration(
                 color: accentRedOrangeColor,
               ), // Fondo del Drawer (Ahora Amarillo)
@@ -360,8 +360,8 @@ class HomeScreen extends StatelessWidget {
                 child: Center(
                   child: Image(
                     image: const AssetImage('assets/images/Navbar_logo.png'),
-                    width: 100,
-                    height: 100,
+                    width: 300,
+                    height: 300,
                     errorBuilder: (context, error, stackTrace) => const Text(
                       'Menú',
                       style: TextStyle(
