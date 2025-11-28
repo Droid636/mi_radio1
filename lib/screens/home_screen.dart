@@ -445,7 +445,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Positioned.fill(
                       child: Image.asset(
-                        'assets/images/banner.png',
+                        'assets/images/banner.jpg',
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
                         errorBuilder: (context, error, stackTrace) => Container(
