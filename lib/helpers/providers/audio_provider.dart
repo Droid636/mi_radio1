@@ -26,6 +26,17 @@ class AudioProvider with ChangeNotifier {
           state.processingState == AudioProcessingState.buffering;
       notifyListeners();
     });
+    // Sincroniza la estación cuando cambia el MediaItem (por skip desde notificación)
+    _audioHandler.mediaItem.listen((item) {
+      if (item == null) return;
+      final idx = stations.indexWhere((s) => s.streamUrl == item.id);
+      if (idx != -1 &&
+          (_currentStation == null ||
+              _currentStation!.id != stations[idx].id)) {
+        _currentStation = stations[idx];
+        notifyListeners();
+      }
+    });
   }
 
   Future<void> setStation(StationModel station) async {
