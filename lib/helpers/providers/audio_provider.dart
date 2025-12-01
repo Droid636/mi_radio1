@@ -1,43 +1,28 @@
 // ** Nota: Este es un esqueleto de AudioProvider. DEBES copiar solo las adiciones si ya tienes la clase. **
 
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:audio_service/audio_service.dart';
 import '../../models/station_model.dart'; // Asegúrate de que esta ruta sea correcta
 
 class AudioProvider with ChangeNotifier {
-  final AudioPlayer player = AudioPlayer();
+  late final AudioHandler _audioHandler;
   StationModel? _currentStation;
-  bool _isPlaying = false;
-  bool _isLoading = false;
-
-  // *** NUEVA PROPIEDAD: Controla si el mini-player debe mostrarse ***
   bool _isMiniPlayerHidden = false;
+  bool _isLoading = false;
+  bool _isPlaying = false;
 
   StationModel? get currentStation => _currentStation;
   bool get isPlaying => _isPlaying;
-  bool get isMiniPlayerHidden => _isMiniPlayerHidden; // NUEVO GETTER
+  bool get isMiniPlayerHidden => _isMiniPlayerHidden;
   bool get isLoading => _isLoading;
 
-  AudioProvider() {
-    // Escuchar cambios de estado de reproducción
-    player.playerStateStream.listen((state) {
-      final playing = state.playing;
-      final processingState = state.processingState;
-
-      // Loader solo cuando está cargando o bufferizando
-      if (processingState == ProcessingState.loading ||
-          processingState == ProcessingState.buffering) {
-        _isLoading = true;
-      } else {
-        _isLoading = false;
-      }
-
-      // Actualiza _isPlaying
-      if (processingState == ProcessingState.ready) {
-        _isPlaying = playing;
-      } else if (processingState == ProcessingState.completed) {
-        _isPlaying = false;
-      }
+  void setHandler(AudioHandler handler) {
+    _audioHandler = handler;
+    _audioHandler.playbackState.listen((state) {
+      _isPlaying = state.playing;
+      _isLoading =
+          state.processingState == AudioProcessingState.loading ||
+          state.processingState == AudioProcessingState.buffering;
       notifyListeners();
     });
   }
@@ -48,15 +33,13 @@ class AudioProvider with ChangeNotifier {
       notifyListeners();
       _currentStation = station;
       try {
-        await player.setAudioSource(
-          AudioSource.uri(Uri.parse(station.streamUrl)),
-        );
+        await _audioHandler.customAction('setUrl', {'url': station.streamUrl});
       } catch (e) {
         _isLoading = false;
         notifyListeners();
         rethrow;
       }
-      _isMiniPlayerHidden = false; // Muestra el mini-player al seleccionar
+      _isMiniPlayerHidden = false;
       _isLoading = false;
       notifyListeners();
     }
@@ -67,25 +50,25 @@ class AudioProvider with ChangeNotifier {
       _isLoading = true;
       notifyListeners();
       try {
-        await player.play();
+        await _audioHandler.play();
         _isPlaying = true;
       } finally {
         _isLoading = false;
-        _isMiniPlayerHidden = false; // Muestra el mini-player al reproducir
+        _isMiniPlayerHidden = false;
         notifyListeners();
       }
     }
   }
 
   Future<void> pause() async {
-    await player.pause();
+    await _audioHandler.pause();
     _isPlaying = false;
     notifyListeners();
   }
 
   // Detiene la reproducción y oculta el mini-player
   Future<void> stop() async {
-    await player.stop();
+    await _audioHandler.stop();
     _currentStation = null;
     _isPlaying = false;
     _isMiniPlayerHidden = true;
