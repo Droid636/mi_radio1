@@ -279,53 +279,79 @@ class _PlayerScreenState extends State<PlayerScreen>
                 ),
                 const Spacer(),
 
-                // --- BOTÓN CENTRAL DE PLAY/PAUSE ---
+                // --- CONTROLES DE REPRODUCCIÓN: ANTERIOR, PLAY/PAUSE, SIGUIENTE ---
                 Consumer<AudioProvider>(
                   builder: (context, audioProv, child) {
                     final isPlaying = audioProv.isPlaying;
                     final isLoading = audioProv.isLoading;
-                    return IconButton(
-                      iconSize: 100,
-                      onPressed: isLoading
-                          ? null
-                          : () {
-                              if (isPlaying) {
-                                audioProv.pause();
-                              } else {
-                                audioProv.play();
-                              }
-                            },
-                      icon: Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primaryYellow,
-                          boxShadow: [
-                            BoxShadow(
-                              color: primaryYellow.withOpacity(0.5),
-                              blurRadius: 15,
-                              spreadRadius: 2,
-                            ),
-                          ],
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Botón Anterior
+                        IconButton(
+                          iconSize: 60,
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  await audioProv.playPreviousStation();
+                                },
+                          icon: Icon(Icons.skip_previous, color: Colors.white),
                         ),
-                        child: isLoading
-                            ? SizedBox(
-                                width: 40,
-                                height: 40,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 5,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.black,
-                                  ),
+                        // Botón Play/Pause
+                        IconButton(
+                          iconSize: 100,
+                          onPressed: isLoading
+                              ? null
+                              : () {
+                                  if (isPlaying) {
+                                    audioProv.pause();
+                                  } else {
+                                    audioProv.play();
+                                  }
+                                },
+                          icon: Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: primaryYellow,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: primaryYellow.withOpacity(0.5),
+                                  blurRadius: 15,
+                                  spreadRadius: 2,
                                 ),
-                              )
-                            : Icon(
-                                isPlaying ? Icons.pause : Icons.play_arrow,
-                                color: Colors.black,
-                                size: 45,
-                              ),
-                      ),
+                              ],
+                            ),
+                            child: isLoading
+                                ? SizedBox(
+                                    width: 40,
+                                    height: 40,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 5,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.black,
+                                      ),
+                                    ),
+                                  )
+                                : Icon(
+                                    isPlaying ? Icons.pause : Icons.play_arrow,
+                                    color: Colors.black,
+                                    size: 45,
+                                  ),
+                          ),
+                        ),
+                        // Botón Siguiente
+                        IconButton(
+                          iconSize: 60,
+                          onPressed: isLoading
+                              ? null
+                              : () async {
+                                  await audioProv.playNextStation();
+                                },
+                          icon: Icon(Icons.skip_next, color: Colors.white),
+                        ),
+                      ],
                     );
                   },
                 ),

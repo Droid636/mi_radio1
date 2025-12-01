@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:audio_service/audio_service.dart';
-import '../../models/station_model.dart'; // Asegúrate de que esta ruta sea correcta
+import '../../models/station_model.dart';
+import '../../helpers/constants.dart';
 
 class AudioProvider with ChangeNotifier {
   late final AudioHandler _audioHandler;
@@ -33,7 +34,11 @@ class AudioProvider with ChangeNotifier {
       notifyListeners();
       _currentStation = station;
       try {
-        await _audioHandler.customAction('setUrl', {'url': station.streamUrl});
+        int idx = stations.indexWhere((s) => s.id == station.id);
+        await _audioHandler.customAction('setUrl', {
+          'url': station.streamUrl,
+          'index': idx,
+        });
       } catch (e) {
         _isLoading = false;
         notifyListeners();
@@ -43,6 +48,22 @@ class AudioProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> playNextStation() async {
+    if (_currentStation == null) return;
+    int idx = stations.indexWhere((s) => s.id == _currentStation!.id);
+    int nextIdx = (idx + 1) % stations.length;
+    await setStation(stations[nextIdx]);
+    await play();
+  }
+
+  Future<void> playPreviousStation() async {
+    if (_currentStation == null) return;
+    int idx = stations.indexWhere((s) => s.id == _currentStation!.id);
+    int prevIdx = (idx - 1 + stations.length) % stations.length;
+    await setStation(stations[prevIdx]);
+    await play();
   }
 
   Future<void> play() async {
