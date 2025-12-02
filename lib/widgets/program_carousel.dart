@@ -93,26 +93,33 @@ class ProgramCarousel extends StatelessWidget {
                                     child: Image.asset(
                                       p.image,
                                       fit: BoxFit.contain,
-                                      errorBuilder: (context, error, stackTrace) => Container(
-                                        color: Colors.black,
-                                        child: Icon(
-                                          Icons.radio,
-                                          color: Colors.white,
-                                          size: 80,
-                                        ),
-                                      ),
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Container(
+                                                color: Colors.black,
+                                                child: Icon(
+                                                  Icons.radio,
+                                                  color: Colors.white,
+                                                  size: 80,
+                                                ),
+                                              ),
                                     ),
                                   ),
                                   Positioned(
                                     top: 16,
                                     left: 16,
                                     child: IconButton(
-                                      icon: const Icon(Icons.close_rounded, size: 32),
+                                      icon: const Icon(
+                                        Icons.close_rounded,
+                                        size: 32,
+                                      ),
                                       color: Colors.white,
                                       tooltip: 'Cerrar imagen',
-                                      onPressed: () => Navigator.of(context).pop(),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
                                       style: IconButton.styleFrom(
-                                        backgroundColor: Colors.black.withOpacity(0.5),
+                                        backgroundColor: Colors.black
+                                            .withOpacity(0.5),
                                       ),
                                     ),
                                   ),
