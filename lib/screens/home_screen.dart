@@ -166,7 +166,7 @@ class HomeScreen extends StatelessWidget {
       description:
           'Un viaje sonoro por los ritmos globales, desde la música africana hasta el folk europeo. Descubre nuevas culturas a través de sus melodías.',
       time: '19:00 - 20:30',
-      image: 'assets/images/Program3.png',
+      image: 'assets/images/Program3.jpg',
     ),
   ];
 

@@ -21,7 +21,7 @@ class ProgramCarousel extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Imagen superior
+              // Imagen superior con botón de ampliar
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(20.0),
@@ -67,6 +67,60 @@ class ProgramCarousel extends StatelessWidget {
                         icon: const Icon(Icons.close_rounded, size: 28),
                         color: Colors.white,
                         onPressed: () => Navigator.pop(context),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.black.withOpacity(0.4),
+                        ),
+                      ),
+                    ),
+                    // Botón de ampliar imagen
+                    Positioned(
+                      bottom: 8,
+                      right: 8,
+                      child: IconButton(
+                        icon: const Icon(Icons.zoom_out_map, size: 28),
+                        color: Colors.white,
+                        tooltip: 'Ampliar imagen',
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showDialog(
+                            context: context,
+                            builder: (_) => Dialog(
+                              backgroundColor: Colors.black,
+                              insetPadding: const EdgeInsets.all(0),
+                              child: Stack(
+                                children: [
+                                  InteractiveViewer(
+                                    child: Image.asset(
+                                      p.image,
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (context, error, stackTrace) => Container(
+                                        color: Colors.black,
+                                        child: Icon(
+                                          Icons.radio,
+                                          color: Colors.white,
+                                          size: 80,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 16,
+                                    left: 16,
+                                    child: IconButton(
+                                      icon: const Icon(Icons.close_rounded, size: 32),
+                                      color: Colors.white,
+                                      tooltip: 'Cerrar imagen',
+                                      onPressed: () => Navigator.of(context).pop(),
+                                      style: IconButton.styleFrom(
+                                        backgroundColor: Colors.black.withOpacity(0.5),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                         style: IconButton.styleFrom(
                           backgroundColor: Colors.black.withOpacity(0.4),
                         ),
