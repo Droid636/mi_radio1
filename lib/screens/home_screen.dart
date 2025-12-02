@@ -366,14 +366,7 @@ class HomeScreen extends StatelessWidget {
                         );
                 },
               ),
-              IconButton(
-                iconSize: 24,
-                icon: Icon(Icons.close, color: onCardColor.withOpacity(0.5)),
-                onPressed: () {
-                  audioProv.stop();
-                  audioProv.hideMiniPlayer();
-                },
-              ),
+              // Botón X eliminado: el mini reproductor siempre muestra una estación
             ],
           ),
         ),
