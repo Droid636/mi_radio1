@@ -83,7 +83,7 @@ class SocialMediaButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
         child: Wrap(
           spacing: 15.0,
           runSpacing: 15.0,
@@ -119,7 +119,7 @@ class SocialMediaButtons extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) =>
                             Icon(Icons.link, size: 40, color: color),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 2),
 
                       Text(
                         name,
@@ -544,7 +544,7 @@ class HomeScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 12),
+                            const SizedBox(height: 6),
                             // Título: Nuestras Estaciones
                             RichText(
                               text: TextSpan(
@@ -564,7 +564,7 @@ class HomeScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 4),
 
                             ListView.builder(
                               shrinkWrap: true,
@@ -587,7 +587,7 @@ class HomeScreen extends StatelessWidget {
                               },
                             ),
 
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 8),
 
                             RichText(
                               text: TextSpan(
@@ -607,9 +607,9 @@ class HomeScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 8),
                             ProgramCarousel(programs: demoPrograms),
-                            const SizedBox(height: 30),
+                            const SizedBox(height: 10),
 
                             // Título: Síguenos en Redes
                             RichText(
@@ -633,11 +633,11 @@ class HomeScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 15),
+                            const SizedBox(height: 6),
 
                             const SocialMediaButtons(),
 
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 8),
                           ],
                         ),
                       ),
