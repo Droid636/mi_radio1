@@ -167,7 +167,6 @@ class _PlayerScreenState extends State<PlayerScreen>
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          // Crea un fondo negro con un ligero degradado
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -183,7 +182,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Botón de Cerrar (Icono de deslizar hacia abajo)
                     widget.isModal
                         ? IconButton(
                             icon: Icon(
@@ -197,22 +195,17 @@ class _PlayerScreenState extends State<PlayerScreen>
                             },
                           )
                         : const SizedBox(width: 32),
-
-                    // Botón de Menú/Opciones (LOS TRES PUNTOS)
                     IconButton(
                       icon: Icon(
                         Icons.more_vert,
                         color: primaryYellow,
                         size: 32,
                       ),
-                      onPressed:
-                          _showLinkOptions, // Llama al menú lateral de íconos
+                      onPressed: _showLinkOptions,
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 30),
-
                 // --- IMAGEN DE LA ESTACIÓN (ROTATORIA) ---
                 RotationTransition(
                   turns: _rotationController,
@@ -231,19 +224,35 @@ class _PlayerScreenState extends State<PlayerScreen>
                     ),
                     child: ClipOval(
                       child: station.image.isNotEmpty
-                          ? Image.asset(
-                              station.image,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  Container(
-                                    color: Colors.black,
-                                    child: Icon(
-                                      Icons.radio,
-                                      size: 100,
-                                      color: primaryYellow,
-                                    ),
-                                  ),
-                            )
+                          ? (station.image.startsWith('http')
+                                ? Image.network(
+                                    station.image,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Container(
+                                              color: Colors.black,
+                                              child: Icon(
+                                                Icons.radio,
+                                                size: 100,
+                                                color: primaryYellow,
+                                              ),
+                                            ),
+                                  )
+                                : Image.asset(
+                                    station.image,
+                                    fit: BoxFit.cover,
+                                    errorBuilder:
+                                        (context, error, stackTrace) =>
+                                            Container(
+                                              color: Colors.black,
+                                              child: Icon(
+                                                Icons.radio,
+                                                size: 100,
+                                                color: primaryYellow,
+                                              ),
+                                            ),
+                                  ))
                           : Container(
                               color: Colors.black,
                               child: Icon(

@@ -36,10 +36,42 @@ class StationCard extends StatelessWidget {
                 height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: AssetImage(station.image),
-                    fit: BoxFit.cover,
-                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: station.image.isNotEmpty
+                      ? (station.image.startsWith('http')
+                            ? Image.network(
+                                station.image,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Center(
+                                      child: Icon(
+                                        Icons.radio,
+                                        size: 24,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                              )
+                            : Image.asset(
+                                station.image,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Center(
+                                      child: Icon(
+                                        Icons.radio,
+                                        size: 24,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                              ))
+                      : Center(
+                          child: Icon(
+                            Icons.radio,
+                            size: 24,
+                            color: Colors.grey,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(width: 10),

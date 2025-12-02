@@ -272,17 +272,31 @@ class HomeScreen extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: audioProv.currentStation!.image.isNotEmpty
-                      ? Image.asset(
-                          audioProv.currentStation!.image,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) => Center(
-                            child: Icon(
-                              Icons.radio,
-                              size: 24,
-                              color: accentColor,
-                            ),
-                          ),
-                        )
+                      ? (audioProv.currentStation!.image.startsWith('http')
+                            ? Image.network(
+                                audioProv.currentStation!.image,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Center(
+                                      child: Icon(
+                                        Icons.radio,
+                                        size: 24,
+                                        color: accentColor,
+                                      ),
+                                    ),
+                              )
+                            : Image.asset(
+                                audioProv.currentStation!.image,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Center(
+                                      child: Icon(
+                                        Icons.radio,
+                                        size: 24,
+                                        color: accentColor,
+                                      ),
+                                    ),
+                              ))
                       : Center(
                           child: Icon(
                             Icons.radio,
