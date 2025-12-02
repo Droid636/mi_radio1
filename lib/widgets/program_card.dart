@@ -8,7 +8,7 @@ class ProgramCard extends StatelessWidget {
   const ProgramCard({super.key, required this.program, required this.onTap});
 
   // Estilo de sombra y bordes para la tarjeta
-  static const double _cardRadius = 12.0;
+  static const double _cardRadius = 18.0;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,8 @@ class ProgramCard extends StatelessWidget {
       onTap: onTap,
       // Define un tamaño fijo para hacerla "más grande" y consistente
       child: SizedBox(
-        width:
-            280, // Ancho consistente para un layout de grid o scroll horizontal
-        height: 350, // Alto de la tarjeta
+        width: 340, // Más ancho
+        height: 400, // Más alto
         child: Card(
           // Eliminamos la elevación por defecto de Card si vamos a usar BoxShadow
           elevation: 0,

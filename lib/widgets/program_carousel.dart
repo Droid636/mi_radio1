@@ -159,19 +159,17 @@ class ProgramCarousel extends StatelessWidget {
           .map(
             (p) => ProgramCard(
               program: p,
-              // Usamos la función del modal estilizado aquí
               onTap: () => _showProgramDetailsModal(context, p),
             ),
           )
           .toList(),
       options: CarouselOptions(
-        // Ajustamos la altura para la ProgramCard estilizada
-        height: 370,
+        height: 420, // Más alto para cards grandes
         enlargeCenterPage: true,
         autoPlay: false,
         aspectRatio: 1.0,
         enableInfiniteScroll: false,
-        viewportFraction: 0.75,
+        viewportFraction: 0.95, // Solo se ve un card a la vez
       ),
     );
   }
