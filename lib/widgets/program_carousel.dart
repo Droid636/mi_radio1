@@ -13,7 +13,6 @@ class ProgramCarousel extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) => Dialog(
-        // Diálogo con esquinas redondeadas y padding ajustado
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
@@ -22,14 +21,13 @@ class ProgramCarousel extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // 1. Cabecera con Imagen, Título y Botón 'X'
+              // Imagen superior
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(20.0),
                 ),
                 child: Stack(
                   children: [
-                    // Imagen del Programa (Ocupa la parte superior del modal)
                     Image.asset(
                       p.image,
                       height: 200,
@@ -61,37 +59,15 @@ class ProgramCarousel extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Título del programa superpuesto
-                    Positioned(
-                      top: 16,
-                      left: 16,
-                      child: Text(
-                        p.title,
-                        style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              shadows: [
-                                const Shadow(
-                                  blurRadius: 5,
-                                  color: Colors.black,
-                                ),
-                              ],
-                            ),
-                      ),
-                    ),
-
-                    // *** Botón 'X' de Cierre en la Esquina Superior Derecha ***
+                    // Botón 'X' de cierre
                     Positioned(
                       top: 5,
                       right: 5,
                       child: IconButton(
                         icon: const Icon(Icons.close_rounded, size: 28),
-                        color: Colors
-                            .white, // Color blanco para destacar sobre la imagen
+                        color: Colors.white,
                         onPressed: () => Navigator.pop(context),
                         style: IconButton.styleFrom(
-                          // Pequeño fondo para asegurar la visibilidad del 'X'
                           backgroundColor: Colors.black.withOpacity(0.4),
                         ),
                       ),
@@ -99,37 +75,32 @@ class ProgramCarousel extends StatelessWidget {
                   ],
                 ),
               ),
-
-              // 2. Contenido y Descripción
+              // Título debajo de la imagen
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(
+                  top: 16.0,
+                  left: 20.0,
+                  right: 20.0,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    p.title,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              // Descripción
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Hora del programa con estilo de acento
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.access_time,
-                          size: 20,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          p.time,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                        ),
-                      ],
-                    ),
-                    const Divider(height: 30),
-
-                    // Descripción del programa
                     Text(
-                      'Acerca de este programa:',
+                      'Descripción',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -139,10 +110,41 @@ class ProgramCarousel extends StatelessWidget {
                       p.description,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
-
-                    // Eliminamos el SizedBox de 30 y el botón de cierre inferior
-                    const SizedBox(height: 10), // Pequeño espacio al final
+                    const SizedBox(height: 10),
                   ],
+                ),
+              ),
+              // Horario en caja con borde negro (ahora al final)
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12.0,
+                  horizontal: 20.0,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 2),
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 12,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.access_time, size: 20, color: Colors.black),
+                      const SizedBox(width: 8),
+                      Text(
+                        p.time,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
