@@ -82,6 +82,12 @@ class AudioProvider with ChangeNotifier {
       _isLoading = true;
       notifyListeners();
       try {
+        // Siempre forzar setUrl antes de play para asegurar que el stream esté cargado
+        int idx = stations.indexWhere((s) => s.id == _currentStation!.id);
+        await _audioHandler.customAction('setUrl', {
+          'url': _currentStation!.streamUrl,
+          'index': idx,
+        });
         await _audioHandler.play();
         _isPlaying = true;
       } finally {

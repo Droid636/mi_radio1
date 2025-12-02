@@ -250,7 +250,7 @@ class HomeScreen extends StatelessWidget {
           margin: const EdgeInsets.all(8.0),
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           decoration: BoxDecoration(
-            color: Theme.of(context).cardColor, // Color original (blanco)
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(12.0),
             boxShadow: [
               BoxShadow(
@@ -266,9 +266,7 @@ class HomeScreen extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Color(
-                    0xFFF55940,
-                  ).withOpacity(0.1), // Fondo con opacidad anaranjado
+                  color: Color(0xFFF55940).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ClipRRect(
@@ -281,7 +279,7 @@ class HomeScreen extends StatelessWidget {
                             child: Icon(
                               Icons.radio,
                               size: 24,
-                              color: accentColor, // Icono de radio
+                              color: accentColor,
                             ),
                           ),
                         )
@@ -289,7 +287,7 @@ class HomeScreen extends StatelessWidget {
                           child: Icon(
                             Icons.radio,
                             size: 24,
-                            color: accentColor, // Icono de radio
+                            color: accentColor,
                           ),
                         ),
                 ),
@@ -322,32 +320,50 @@ class HomeScreen extends StatelessWidget {
               ),
               Consumer<AudioProvider>(
                 builder: (context, audio, child) {
-                  return IconButton(
-                    iconSize: 32,
-                    icon: Icon(
-                      audio.isPlaying
-                          ? Icons.pause_circle_filled
-                          : Icons.play_circle_fill,
-                      color: Color(0xFFF55940), // Anaranjado
-                    ),
-                    onPressed: () async {
-                      try {
-                        if (audio.isPlaying) {
-                          await audio.pause();
-                        } else {
-                          await audio.play();
-                          audio.showMiniPlayer();
-                        }
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Comprueba tu conexión a internet'),
-                            backgroundColor: Colors.red,
+                  return audio.isLoading
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: 28,
+                            height: 28,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(
+                                Color(0xFFF55940),
+                              ),
+                              strokeWidth: 3,
+                            ),
                           ),
+                        )
+                      : IconButton(
+                          iconSize: 32,
+                          icon: Icon(
+                            audio.isPlaying
+                                ? Icons.pause_circle_filled
+                                : Icons.play_circle_fill,
+                            color: Color(0xFFF55940),
+                          ),
+                          onPressed: () async {
+                            try {
+                              if (audio.isPlaying) {
+                                await audio.pause();
+                              } else {
+                                // Siempre recarga la estación actual antes de reproducir
+                                await audio.setStation(audio.currentStation!);
+                                await audio.play();
+                                audio.showMiniPlayer();
+                              }
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Comprueba tu conexión a internet',
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          },
                         );
-                      }
-                    },
-                  );
                 },
               ),
               IconButton(
