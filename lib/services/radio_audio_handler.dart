@@ -41,9 +41,11 @@ class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
 
   void _updateMediaItem() {
     final station = _currentStation;
-    // Si la imagen es un asset, usa asset://, si es url, usa la url directa
+    // Usa imageUrl (remota) si existe, si no, usa asset local o url de image
     Uri? artUri;
-    if (station.image.startsWith('http')) {
+    if (station.imageUrl != null && station.imageUrl!.isNotEmpty) {
+      artUri = Uri.parse(station.imageUrl!);
+    } else if (station.image.startsWith('http')) {
       artUri = Uri.parse(station.image);
     } else {
       artUri = Uri.parse('asset:///${station.image}');
