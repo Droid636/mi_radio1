@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../helpers/providers/audio_provider.dart';
-import '../widgets/program_card.dart';
+// import '../widgets/program_card.dart';
 import '../models/program_model.dart';
 
 // Convertimos PlayerScreen a StatefulWidget para manejar la animación
@@ -26,116 +26,80 @@ class _PlayerScreenState extends State<PlayerScreen>
       'Lunes': [
         ProgramModel(
           id: 'p1',
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.grey[900],
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                          ),
-                          builder: (ctx) {
-                            return StatefulBuilder(
-                              builder: (context, setModalState) {
-                                final days = stationPrograms[station.id]!.keys.toList();
-                                int currentDayIdx = 0;
-                                return DraggableScrollableSheet(
-                                  initialChildSize: 0.5,
-                                  minChildSize: 0.2,
-                                  maxChildSize: 0.95,
-                                  expand: false,
-                                  builder: (context, scrollController) {
-                                    return Column(
-                                      children: [
-                                        Container(
-                                          width: 60,
-                                          height: 6,
-                                          margin: const EdgeInsets.only(top: 12, bottom: 8),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white24,
-                                            borderRadius: BorderRadius.circular(3),
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(Icons.arrow_left, color: primaryYellow, size: 32),
-                                              onPressed: () {
-                                                if (currentDayIdx > 0) {
-                                                  setModalState(() {
-                                                    currentDayIdx--;
-                                                  });
-                                                }
-                                              },
-                                            ),
-                                            Text(
-                                              days[currentDayIdx],
-                                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                                    color: primaryYellow,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                            ),
-                                            IconButton(
-                                              icon: Icon(Icons.arrow_right, color: primaryYellow, size: 32),
-                                              onPressed: () {
-                                                if (currentDayIdx < days.length - 1) {
-                                                  setModalState(() {
-                                                    currentDayIdx++;
-                                                  });
-                                                }
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Expanded(
-                                          child: ListView.builder(
-                                            controller: scrollController,
-                                            itemCount: stationPrograms[station.id]![days[currentDayIdx]]!.length,
-                                            itemBuilder: (context, idx) {
-                                              final p = stationPrograms[station.id]![days[currentDayIdx]]![idx];
-                                              return Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      p.title,
-                                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.bold,
-                                                          ),
-                                                    ),
-                                                    const SizedBox(height: 4),
-                                                    Text(
-                                                      p.time,
-                                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                                            color: primaryYellow,
-                                                            fontWeight: FontWeight.w600,
-                                                          ),
-                                                    ),
-                                                    const SizedBox(height: 4),
-                                                    Text(
-                                                      p.description,
-                                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                                            color: Colors.white70,
-                                                          ),
-                                                    ),
-                                                    const Divider(color: Colors.white24, height: 24),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        );
+          title: 'Mañana Alternativa',
+          description: 'Rock alternativo y entrevistas exclusivas.',
+          time: '08:00 - 10:00',
+          image: '',
+        ),
+        ProgramModel(
+          id: 'p2',
+          title: 'Tarde Indie',
+          description: 'Indie, electrónica y tendencias underground.',
+          time: '16:00 - 18:00',
+          image: '',
+        ),
+      ],
+      'Martes': [
+        ProgramModel(
+          id: 'p3',
+          title: 'Jazz Fusion',
+          description: 'Jazz experimental y fusiones modernas.',
+          time: '10:00 - 12:00',
+          image: '',
+        ),
+        ProgramModel(
+          id: 'p4',
+          title: 'Noches Urbanas',
+          description: 'Hip-hop, rap y cultura urbana.',
+          time: '20:00 - 22:00',
+          image: '',
+        ),
+      ],
+      'Miércoles': [
+        ProgramModel(
+          id: 'p5',
+          title: 'Electro Vibes',
+          description: 'Electrónica y dance para mitad de semana.',
+          time: '18:00 - 20:00',
+          image: '',
+        ),
+      ],
+      'Jueves': [
+        ProgramModel(
+          id: 'p6',
+          title: 'Retro Hits',
+          description: 'Clásicos de los 80s y 90s.',
+          time: '14:00 - 16:00',
+          image: '',
+        ),
+      ],
+      'Viernes': [
+        ProgramModel(
+          id: 'p7',
+          title: 'Fiesta Latina',
+          description: 'Reggaetón, salsa y ritmos latinos.',
+          time: '20:00 - 23:00',
+          image: '',
+        ),
+      ],
+    },
+    'ljr': {
+      'Lunes': [
+        ProgramModel(
+          id: 'p8',
+          title: 'Jazz Matutino',
+          description: 'Clásicos y nuevos sonidos del jazz para tu mañana.',
+          time: '08:00 - 10:00',
+          image: '',
+        ),
+        ProgramModel(
+          id: 'p9',
+          title: 'Smooth Jazz',
+          description: 'Jazz suave para relajarse.',
+          time: '16:00 - 18:00',
+          image: '',
+        ),
+      ],
       'Martes': [
         ProgramModel(
           id: 'p10',
@@ -540,6 +504,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
                       onTap: () {
+                        int currentDayIdx = 0;
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -550,93 +515,146 @@ class _PlayerScreenState extends State<PlayerScreen>
                             ),
                           ),
                           builder: (ctx) {
-                            return DraggableScrollableSheet(
-                              initialChildSize: 0.5,
-                              minChildSize: 0.2,
-                              maxChildSize: 0.95,
-                              expand: false,
-                              builder: (context, scrollController) {
-                                final days = stationPrograms[station.id]!.keys
+                            return StatefulBuilder(
+                              builder: (context, setModalState) {
+                                final Color modalYellow = Theme.of(
+                                  context,
+                                ).primaryColor;
+                                final stationId = station.id;
+                                final days = stationPrograms[stationId]!.keys
                                     .toList();
-                                return ListView.builder(
-                                  controller: scrollController,
-                                  itemCount: days.length,
-                                  itemBuilder: (context, dayIdx) {
-                                    final day = days[dayIdx];
-                                    final programs =
-                                        stationPrograms[station.id]![day]!;
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0,
-                                        horizontal: 24.0,
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            day,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge
-                                                ?.copyWith(
-                                                  color: primaryYellow,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                return DraggableScrollableSheet(
+                                  initialChildSize: 0.5,
+                                  minChildSize: 0.2,
+                                  maxChildSize: 0.95,
+                                  expand: false,
+                                  builder: (context, scrollController) {
+                                    return Column(
+                                      children: [
+                                        Container(
+                                          width: 60,
+                                          height: 6,
+                                          margin: const EdgeInsets.only(
+                                            top: 12,
+                                            bottom: 8,
                                           ),
-                                          const SizedBox(height: 8),
-                                          ...programs.map(
-                                            (p) => Padding(
-                                              padding: const EdgeInsets.only(
-                                                bottom: 12.0,
-                                              ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    p.title,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .titleMedium
-                                                        ?.copyWith(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
-                                                  ),
-                                                  const SizedBox(height: 4),
-                                                  Text(
-                                                    p.time,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyMedium
-                                                        ?.copyWith(
-                                                          color: primaryYellow,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                  ),
-                                                  const SizedBox(height: 4),
-                                                  Text(
-                                                    p.description,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyMedium
-                                                        ?.copyWith(
-                                                          color: Colors.white70,
-                                                        ),
-                                                  ),
-                                                  const Divider(
-                                                    color: Colors.white24,
-                                                    height: 24,
-                                                  ),
-                                                ],
-                                              ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white24,
+                                            borderRadius: BorderRadius.circular(
+                                              3,
                                             ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(
+                                                Icons.arrow_left,
+                                                color: modalYellow,
+                                                size: 32,
+                                              ),
+                                              onPressed: () {
+                                                if (currentDayIdx > 0) {
+                                                  setModalState(() {
+                                                    currentDayIdx--;
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                            Text(
+                                              days[currentDayIdx],
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge
+                                                  ?.copyWith(
+                                                    color: modalYellow,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(
+                                                Icons.arrow_right,
+                                                color: modalYellow,
+                                                size: 32,
+                                              ),
+                                              onPressed: () {
+                                                if (currentDayIdx <
+                                                    days.length - 1) {
+                                                  setModalState(() {
+                                                    currentDayIdx++;
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Expanded(
+                                          child: ListView.builder(
+                                            controller: scrollController,
+                                            itemCount:
+                                                stationPrograms[stationId]![days[currentDayIdx]]!
+                                                    .length,
+                                            itemBuilder: (context, idx) {
+                                              final p =
+                                                  stationPrograms[stationId]![days[currentDayIdx]]![idx];
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 24.0,
+                                                    ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      p.title,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleMedium
+                                                          ?.copyWith(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      p.time,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium
+                                                          ?.copyWith(
+                                                            color: modalYellow,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      p.description,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyMedium
+                                                          ?.copyWith(
+                                                            color:
+                                                                Colors.white70,
+                                                          ),
+                                                    ),
+                                                    const Divider(
+                                                      color: Colors.white24,
+                                                      height: 24,
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     );
                                   },
                                 );
@@ -647,42 +665,33 @@ class _PlayerScreenState extends State<PlayerScreen>
                       },
                       child: Container(
                         width: double.infinity,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 80,
+                          vertical: 18,
+                        ),
                         decoration: BoxDecoration(
-                          color: Colors.grey[900],
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(24),
-                          ),
+                          color: primaryYellow,
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(color: Colors.white24, width: 2),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: primaryYellow.withOpacity(0.3),
                               blurRadius: 12,
                               spreadRadius: 2,
+                              offset: const Offset(0, 4),
                             ),
                           ],
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 18),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 6,
-                              margin: const EdgeInsets.only(bottom: 8),
-                              decoration: BoxDecoration(
-                                color: Colors.white24,
-                                borderRadius: BorderRadius.circular(3),
-                              ),
-                            ),
-                            Text(
-                              'Programación',
-                              style: Theme.of(context).textTheme.titleLarge
-                                  ?.copyWith(
-                                    color: primaryYellow,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                            // const SizedBox(height: 4),
-                          ],
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Center(
+                          child: Text(
+                            'Programación',
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
                         ),
                       ),
                     ),
