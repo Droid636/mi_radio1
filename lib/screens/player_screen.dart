@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../helpers/providers/audio_provider.dart';
+import '../widgets/program_card.dart';
+import '../models/program_model.dart';
 
 // Convertimos PlayerScreen a StatefulWidget para manejar la animación
 class PlayerScreen extends StatefulWidget {
@@ -16,6 +18,162 @@ class PlayerScreen extends StatefulWidget {
 class _PlayerScreenState extends State<PlayerScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _rotationController;
+
+  // Demo: Programas por estación (puedes adaptar esto a tu lógica real)
+  // Programas agrupados por días de la semana para cada estación
+  final Map<String, Map<String, List<ProgramModel>>> stationPrograms = {
+    'rtx': {
+      'Lunes': [
+        ProgramModel(
+          id: 'p1',
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.grey[900],
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                          ),
+                          builder: (ctx) {
+                            return StatefulBuilder(
+                              builder: (context, setModalState) {
+                                final days = stationPrograms[station.id]!.keys.toList();
+                                int currentDayIdx = 0;
+                                return DraggableScrollableSheet(
+                                  initialChildSize: 0.5,
+                                  minChildSize: 0.2,
+                                  maxChildSize: 0.95,
+                                  expand: false,
+                                  builder: (context, scrollController) {
+                                    return Column(
+                                      children: [
+                                        Container(
+                                          width: 60,
+                                          height: 6,
+                                          margin: const EdgeInsets.only(top: 12, bottom: 8),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white24,
+                                            borderRadius: BorderRadius.circular(3),
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(Icons.arrow_left, color: primaryYellow, size: 32),
+                                              onPressed: () {
+                                                if (currentDayIdx > 0) {
+                                                  setModalState(() {
+                                                    currentDayIdx--;
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                            Text(
+                                              days[currentDayIdx],
+                                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                                    color: primaryYellow,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                            ),
+                                            IconButton(
+                                              icon: Icon(Icons.arrow_right, color: primaryYellow, size: 32),
+                                              onPressed: () {
+                                                if (currentDayIdx < days.length - 1) {
+                                                  setModalState(() {
+                                                    currentDayIdx++;
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Expanded(
+                                          child: ListView.builder(
+                                            controller: scrollController,
+                                            itemCount: stationPrograms[station.id]![days[currentDayIdx]]!.length,
+                                            itemBuilder: (context, idx) {
+                                              final p = stationPrograms[station.id]![days[currentDayIdx]]![idx];
+                                              return Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      p.title,
+                                                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                                            color: Colors.white,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      p.time,
+                                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                                            color: primaryYellow,
+                                                            fontWeight: FontWeight.w600,
+                                                          ),
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      p.description,
+                                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                                            color: Colors.white70,
+                                                          ),
+                                                    ),
+                                                    const Divider(color: Colors.white24, height: 24),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        );
+      'Martes': [
+        ProgramModel(
+          id: 'p10',
+          title: 'Jazz Latino',
+          description: 'Fusión de jazz con ritmos latinos.',
+          time: '10:00 - 12:00',
+          image: '',
+        ),
+      ],
+      'Miércoles': [
+        ProgramModel(
+          id: 'p11',
+          title: 'Jazz Instrumental',
+          description: 'Instrumentistas destacados y solos.',
+          time: '18:00 - 20:00',
+          image: '',
+        ),
+      ],
+      'Jueves': [
+        ProgramModel(
+          id: 'p12',
+          title: 'Jazz Fusion',
+          description: 'Fusión de géneros y experimentación.',
+          time: '14:00 - 16:00',
+          image: '',
+        ),
+      ],
+      'Viernes': [
+        ProgramModel(
+          id: 'p13',
+          title: 'Jazz en Vivo',
+          description: 'Conciertos y sesiones en vivo.',
+          time: '20:00 - 23:00',
+          image: '',
+        ),
+      ],
+    },
+  };
 
   // Mapa de enlaces ahora usando rutas de assets simuladas.
   // AJUSTE LAS RUTAS DE LOS ARCHIVOS PNG DE ACUERDO A SU ESTRUCTURA DE ASSETS
@@ -176,195 +334,359 @@ class _PlayerScreenState extends State<PlayerScreen>
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
+            child: Stack(
               children: [
-                // --- BARRA DE NAVEGACIÓN PERSONALIZADA ---
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
                   children: [
-                    widget.isModal
-                        ? IconButton(
-                            icon: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: primaryYellow,
-                              size: 32,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              audioProv.showMiniPlayer();
-                            },
-                          )
-                        : const SizedBox(width: 32),
-                    IconButton(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: primaryYellow,
-                        size: 32,
-                      ),
-                      onPressed: _showLinkOptions,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                // --- IMAGEN DE LA ESTACIÓN (ROTATORIA) ---
-                RotationTransition(
-                  turns: _rotationController,
-                  child: Container(
-                    width: 280,
-                    height: 280,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: primaryYellow.withOpacity(0.4),
-                          blurRadius: 30,
-                          spreadRadius: 5,
+                    // --- BARRA DE NAVEGACIÓN PERSONALIZADA ---
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        widget.isModal
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: primaryYellow,
+                                  size: 32,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  audioProv.showMiniPlayer();
+                                },
+                              )
+                            : const SizedBox(width: 32),
+                        IconButton(
+                          icon: Icon(
+                            Icons.more_vert,
+                            color: primaryYellow,
+                            size: 32,
+                          ),
+                          onPressed: _showLinkOptions,
                         ),
                       ],
                     ),
-                    child: ClipOval(
-                      child: station.image.isNotEmpty
-                          ? (station.image.startsWith('http')
-                                ? Image.network(
-                                    station.image,
-                                    fit: BoxFit.cover,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Container(
-                                              color: Colors.black,
-                                              child: Icon(
-                                                Icons.radio,
-                                                size: 100,
-                                                color: primaryYellow,
-                                              ),
-                                            ),
-                                  )
-                                : Image.asset(
-                                    station.image,
-                                    fit: BoxFit.cover,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Container(
-                                              color: Colors.black,
-                                              child: Icon(
-                                                Icons.radio,
-                                                size: 100,
-                                                color: primaryYellow,
-                                              ),
-                                            ),
-                                  ))
-                          : Container(
-                              color: Colors.black,
-                              child: Icon(
-                                Icons.radio,
-                                size: 100,
-                                color: primaryYellow,
+                    const SizedBox(height: 30),
+                    // --- IMAGEN DE LA ESTACIÓN (ROTATORIA) ---
+                    RotationTransition(
+                      turns: _rotationController,
+                      child: Container(
+                        width: 280,
+                        height: 280,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: primaryYellow.withOpacity(0.4),
+                              blurRadius: 30,
+                              spreadRadius: 5,
+                            ),
+                          ],
+                        ),
+                        child: ClipOval(
+                          child: station.image.isNotEmpty
+                              ? (station.image.startsWith('http')
+                                    ? Image.network(
+                                        station.image,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Container(
+                                                  color: Colors.black,
+                                                  child: Icon(
+                                                    Icons.radio,
+                                                    size: 100,
+                                                    color: primaryYellow,
+                                                  ),
+                                                ),
+                                      )
+                                    : Image.asset(
+                                        station.image,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Container(
+                                                  color: Colors.black,
+                                                  child: Icon(
+                                                    Icons.radio,
+                                                    size: 100,
+                                                    color: primaryYellow,
+                                                  ),
+                                                ),
+                                      ))
+                              : Container(
+                                  color: Colors.black,
+                                  child: Icon(
+                                    Icons.radio,
+                                    size: 100,
+                                    color: primaryYellow,
+                                  ),
+                                ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 40),
+
+                    // --- INFORMACIÓN DE LA ESTACIÓN ---
+                    Text(
+                      station.name,
+                      style: Theme.of(context).textTheme.headlineMedium!
+                          .copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 8),
+
+                    // Slogan/Ciudad
+                    Text(
+                      station.slogan,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: primaryYellow, // Amarillo brillante
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const Spacer(),
+
+                    // --- CONTROLES DE REPRODUCCIÓN: ANTERIOR, PLAY/PAUSE, SIGUIENTE ---
+                    Consumer<AudioProvider>(
+                      builder: (context, audioProv, child) {
+                        final isPlaying = audioProv.isPlaying;
+                        final isLoading = audioProv.isLoading;
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Botón Anterior
+                            IconButton(
+                              iconSize: 60,
+                              onPressed: isLoading
+                                  ? null
+                                  : () async {
+                                      await audioProv.playPreviousStation();
+                                    },
+                              icon: Icon(
+                                Icons.skip_previous,
+                                color: Colors.white,
                               ),
                             ),
+                            // Botón Play/Pause
+                            IconButton(
+                              iconSize: 100,
+                              onPressed: isLoading
+                                  ? null
+                                  : () {
+                                      if (isPlaying) {
+                                        audioProv.pause();
+                                      } else {
+                                        audioProv.play();
+                                      }
+                                    },
+                              icon: Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: primaryYellow,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: primaryYellow.withOpacity(0.5),
+                                      blurRadius: 15,
+                                      spreadRadius: 2,
+                                    ),
+                                  ],
+                                ),
+                                child: isLoading
+                                    ? SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 5,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                Colors.black,
+                                              ),
+                                        ),
+                                      )
+                                    : Icon(
+                                        isPlaying
+                                            ? Icons.pause
+                                            : Icons.play_arrow,
+                                        color: Colors.black,
+                                        size: 45,
+                                      ),
+                              ),
+                            ),
+                            // Botón Siguiente
+                            IconButton(
+                              iconSize: 60,
+                              onPressed: isLoading
+                                  ? null
+                                  : () async {
+                                      await audioProv.playNextStation();
+                                    },
+                              icon: Icon(Icons.skip_next, color: Colors.white),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+                // --- BOTÓN PARA DESPLEGAR PROGRAMACIÓN ---
+                if (stationPrograms[station.id] != null)
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.grey[900],
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(24),
+                            ),
+                          ),
+                          builder: (ctx) {
+                            return DraggableScrollableSheet(
+                              initialChildSize: 0.5,
+                              minChildSize: 0.2,
+                              maxChildSize: 0.95,
+                              expand: false,
+                              builder: (context, scrollController) {
+                                final days = stationPrograms[station.id]!.keys
+                                    .toList();
+                                return ListView.builder(
+                                  controller: scrollController,
+                                  itemCount: days.length,
+                                  itemBuilder: (context, dayIdx) {
+                                    final day = days[dayIdx];
+                                    final programs =
+                                        stationPrograms[station.id]![day]!;
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 10.0,
+                                        horizontal: 24.0,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            day,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge
+                                                ?.copyWith(
+                                                  color: primaryYellow,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          ...programs.map(
+                                            (p) => Padding(
+                                              padding: const EdgeInsets.only(
+                                                bottom: 12.0,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    p.title,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleMedium
+                                                        ?.copyWith(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    p.time,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          color: primaryYellow,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                  ),
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    p.description,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          color: Colors.white70,
+                                                        ),
+                                                  ),
+                                                  const Divider(
+                                                    color: Colors.white24,
+                                                    height: 24,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[900],
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(24),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 12,
+                              spreadRadius: 2,
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 6,
+                              margin: const EdgeInsets.only(bottom: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.white24,
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                            ),
+                            Text(
+                              'Programación',
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(
+                                    color: primaryYellow,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            // const SizedBox(height: 4),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-
-                const SizedBox(height: 40),
-
-                // --- INFORMACIÓN DE LA ESTACIÓN ---
-                Text(
-                  station.name,
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-
-                // Slogan/Ciudad
-                Text(
-                  station.slogan,
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: primaryYellow, // Amarillo brillante
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const Spacer(),
-
-                // --- CONTROLES DE REPRODUCCIÓN: ANTERIOR, PLAY/PAUSE, SIGUIENTE ---
-                Consumer<AudioProvider>(
-                  builder: (context, audioProv, child) {
-                    final isPlaying = audioProv.isPlaying;
-                    final isLoading = audioProv.isLoading;
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Botón Anterior
-                        IconButton(
-                          iconSize: 60,
-                          onPressed: isLoading
-                              ? null
-                              : () async {
-                                  await audioProv.playPreviousStation();
-                                },
-                          icon: Icon(Icons.skip_previous, color: Colors.white),
-                        ),
-                        // Botón Play/Pause
-                        IconButton(
-                          iconSize: 100,
-                          onPressed: isLoading
-                              ? null
-                              : () {
-                                  if (isPlaying) {
-                                    audioProv.pause();
-                                  } else {
-                                    audioProv.play();
-                                  }
-                                },
-                          icon: Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: primaryYellow,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: primaryYellow.withOpacity(0.5),
-                                  blurRadius: 15,
-                                  spreadRadius: 2,
-                                ),
-                              ],
-                            ),
-                            child: isLoading
-                                ? SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 5,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.black,
-                                      ),
-                                    ),
-                                  )
-                                : Icon(
-                                    isPlaying ? Icons.pause : Icons.play_arrow,
-                                    color: Colors.black,
-                                    size: 45,
-                                  ),
-                          ),
-                        ),
-                        // Botón Siguiente
-                        IconButton(
-                          iconSize: 60,
-                          onPressed: isLoading
-                              ? null
-                              : () async {
-                                  await audioProv.playNextStation();
-                                },
-                          icon: Icon(Icons.skip_next, color: Colors.white),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                const Spacer(),
               ],
             ),
           ),
