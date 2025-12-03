@@ -89,7 +89,6 @@ class AudioProvider with ChangeNotifier {
           'index': idx,
         });
         await _audioHandler.play();
-        _isPlaying = true;
       } finally {
         _isLoading = false;
         _isMiniPlayerHidden = false;
@@ -100,8 +99,7 @@ class AudioProvider with ChangeNotifier {
 
   Future<void> pause() async {
     await _audioHandler.pause();
-    _isPlaying = false;
-    notifyListeners();
+    // No actualizar _isPlaying ni notifyListeners aquí, el listener de playbackState lo hará automáticamente
   }
 
   // Detiene la reproducción y oculta el mini-player
