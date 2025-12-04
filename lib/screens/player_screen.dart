@@ -665,33 +665,41 @@ class _PlayerScreenState extends State<PlayerScreen>
                       },
                       child: Container(
                         width: double.infinity,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 80,
-                          vertical: 18,
-                        ),
                         decoration: BoxDecoration(
-                          color: primaryYellow,
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: Colors.white24, width: 2),
+                          color: Colors.grey[900],
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(24),
+                          ),
                           boxShadow: [
                             BoxShadow(
-                              color: primaryYellow.withOpacity(0.3),
+                              color: Colors.black.withOpacity(0.2),
                               blurRadius: 12,
                               spreadRadius: 2,
-                              offset: const Offset(0, 4),
                             ),
                           ],
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Center(
-                          child: Text(
-                            'Programación',
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 6,
+                              margin: const EdgeInsets.only(bottom: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.white24,
+                                borderRadius: BorderRadius.circular(3),
+                              ),
+                            ),
+                            Text(
+                              'Programación',
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(
+                                    color: primaryYellow,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
