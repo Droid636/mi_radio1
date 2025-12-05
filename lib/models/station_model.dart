@@ -4,9 +4,9 @@ class StationModel {
   final String acronym;
   final String streamUrl;
   final String slogan;
-  final String image; // asset path local
-  final String? imageUrl; // url remota para audio handler
-  final Map<String, String> socials; // name -> url
+  final String image;
+  final String? imageUrl;
+  final Map<String, String> socials;
 
   StationModel({
     required this.id,

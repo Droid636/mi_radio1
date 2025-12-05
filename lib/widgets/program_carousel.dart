@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../models/program_model.dart';
-import 'program_card.dart'; // Importa la tarjeta estilizada
+import 'program_card.dart';
 
 class ProgramCarousel extends StatelessWidget {
   final List<ProgramModel> programs;
 
   const ProgramCarousel({super.key, required this.programs});
 
-  // Función para mostrar el modal estilizado (Diseño del Pop-up)
+
   void _showProgramDetailsModal(BuildContext context, ProgramModel p) {
     showDialog(
       context: context,
@@ -21,7 +21,7 @@ class ProgramCarousel extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Imagen superior con botón de ampliar
+
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(20.0),
@@ -45,7 +45,7 @@ class ProgramCarousel extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Gradiente sutil
+
                     Container(
                       height: 200,
                       decoration: BoxDecoration(
@@ -59,7 +59,7 @@ class ProgramCarousel extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Botón 'X' de cierre
+
                     Positioned(
                       top: 5,
                       right: 5,
@@ -72,7 +72,7 @@ class ProgramCarousel extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Botón de ampliar imagen
+
                     Positioned(
                       bottom: 8,
                       right: 8,
@@ -136,7 +136,7 @@ class ProgramCarousel extends StatelessWidget {
                   ],
                 ),
               ),
-              // Título debajo de la imagen
+
               Padding(
                 padding: const EdgeInsets.only(
                   top: 16.0,
@@ -154,7 +154,7 @@ class ProgramCarousel extends StatelessWidget {
                   ),
                 ),
               ),
-              // Descripción
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
@@ -175,7 +175,7 @@ class ProgramCarousel extends StatelessWidget {
                   ],
                 ),
               ),
-              // Horario en caja con borde negro (ahora al final)
+
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 12.0,
@@ -227,12 +227,12 @@ class ProgramCarousel extends StatelessWidget {
           )
           .toList(),
       options: CarouselOptions(
-        height: 420, // Más alto para cards grandes
+        height: 420,
         enlargeCenterPage: true,
         autoPlay: false,
         aspectRatio: 1.0,
         enableInfiniteScroll: false,
-        viewportFraction: 0.95, // Solo se ve un card a la vez
+        viewportFraction: 0.95,
       ),
     );
   }

@@ -8,7 +8,7 @@ class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
   int _currentIndex = 0;
 
   RadioAudioHandler() {
-    // Inicializa el MediaItem y PlaybackState
+
     _updateMediaItem();
     _player.playerStateStream.listen((state) {
       playbackState.add(
@@ -41,7 +41,7 @@ class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
 
   void _updateMediaItem() {
     final station = _currentStation;
-    // Usa imageUrl (remota) si existe, si no, usa asset local o url de image
+
     Uri? artUri;
     if (station.imageUrl != null && station.imageUrl!.isNotEmpty) {
       artUri = Uri.parse(station.imageUrl!);

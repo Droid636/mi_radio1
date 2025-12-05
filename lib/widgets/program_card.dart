@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/program_model.dart'; // Asume que este archivo existe
+import '../models/program_model.dart';
 
 class ProgramCard extends StatelessWidget {
   final ProgramModel program;
@@ -7,7 +7,7 @@ class ProgramCard extends StatelessWidget {
 
   const ProgramCard({super.key, required this.program, required this.onTap});
 
-  // Estilo de sombra y bordes para la tarjeta
+
   static const double _cardRadius = 18.0;
 
   @override
@@ -29,7 +29,7 @@ class ProgramCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(_cardRadius),
             child: Stack(
               children: [
-                // Imagen del Programa con sombreado abajo
+
                 Positioned.fill(
                   child: Image.asset(
                     program.image,
@@ -40,7 +40,7 @@ class ProgramCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Sombreado abajo
+
                 Positioned(
                   left: 0,
                   right: 0,

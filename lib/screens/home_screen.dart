@@ -191,7 +191,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildMiniPlayerBar(BuildContext context, AudioProvider audioProv) {
-    // Usamos el color de acento amarillo en lugar del color del tema
     const Color yellowAccent = Color(0xFFFFD700);
     final accentColor = yellowAccent;
 
@@ -199,8 +198,6 @@ class HomeScreen extends StatelessWidget {
 
     const double miniPlayerHeight = 70.0;
 
-    // El mini reproductor siempre aparece, aunque no haya estación
-    // Si no hay estación, muestra un contenedor vacío con mensaje o icono
     if (audioProv.currentStation == null) {
       return Positioned(
         bottom: 0,
@@ -361,7 +358,6 @@ class HomeScreen extends StatelessWidget {
                               if (audio.isPlaying) {
                                 await audio.pause();
                               } else {
-                                // Siempre recarga la estación actual antes de reproducir
                                 await audio.setStation(audio.currentStation!);
                                 await audio.play();
                                 audio.showMiniPlayer();
@@ -380,7 +376,6 @@ class HomeScreen extends StatelessWidget {
                         );
                 },
               ),
-              // Botón X eliminado: el mini reproductor siempre muestra una estación
             ],
           ),
         ),
@@ -392,16 +387,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final audioProv = Provider.of<AudioProvider>(context);
 
-    // --- CAMBIO DE COLOR A AMARILLO (Gold Yellow) ---
     const Color yellowAccent = Color(0xFFFFD700);
 
-    // Reemplazamos la lógica del tema para forzar el amarillo en todos los acentos principales
     final Color accentRedOrangeColor = yellowAccent;
-    final Color drawerIconColor = Color(
-      0xFFF55940,
-    ); // Naranja solo para íconos del Drawer
+    final Color drawerIconColor = Color(0xFFF55940);
     final Color secondaryAccentColor = yellowAccent; // Amarillo para títulos
-    // ------------------------------------------------
 
     final bool isMiniPlayerActive =
         audioProv.currentStation != null && !audioProv.isMiniPlayerHidden;
@@ -415,9 +405,7 @@ class HomeScreen extends StatelessWidget {
           children: <Widget>[
             Container(
               height: 200,
-              decoration: BoxDecoration(
-                color: accentRedOrangeColor,
-              ), // Fondo del Drawer (Ahora Amarillo)
+              decoration: BoxDecoration(color: accentRedOrangeColor),
               child: SafeArea(
                 child: Center(
                   child: Image(
@@ -436,13 +424,13 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // ... (Resto de ListTiles del Drawer) ...
+
             ListTile(
               leading: Icon(Icons.share, color: drawerIconColor),
               title: const Text('Comparte con un amigo'),
               onTap: () async {
                 Navigator.pop(context);
-                // Usar el diálogo nativo de compartir
+
                 await Share.share(
                   '¡Escucha nuestra app de radio! Descárgala aquí: https://play.google.com/store/apps/details?id=com.radioactivatx.radio',
                   subject: 'Recomendación de app',
@@ -454,7 +442,7 @@ class HomeScreen extends StatelessWidget {
               title: const Text('¡Califica nuestra app!'),
               onTap: () {
                 Navigator.pop(context);
-                // Enlace de ejemplo a la Play Store o App Store
+
                 _launchURL('market://details?id=com.radioactivatx.radio');
               },
             ),
@@ -494,7 +482,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      // ... (Resto de la estructura del Scaffold) ...
+
       body: Stack(
         children: [
           Column(
@@ -510,9 +498,8 @@ class HomeScreen extends StatelessWidget {
                         'assets/images/banner.jpg',
                         fit: BoxFit.cover,
                         alignment: Alignment.center,
-                        errorBuilder: (context, error, stackTrace) => Container(
-                          color: accentRedOrangeColor,
-                        ), // Fondo de banner (Ahora Amarillo)
+                        errorBuilder: (context, error, stackTrace) =>
+                            Container(color: accentRedOrangeColor),
                       ),
                     ),
                     Positioned.fill(
@@ -549,26 +536,19 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              // CONTENIDO SCROLLABLE PRINCIPAL
               Expanded(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.only(bottom: bottomPadding),
                   child: Center(
-                    // Agregamos Center para centrar el contenido principal
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth:
-                            600, // Limita el ancho en pantallas grandes para el efecto de "tarjeta central"
-                      ),
+                      constraints: BoxConstraints(maxWidth: 600),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                        ), // Padding a los lados
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 6),
-                            // Título: Nuestras Estaciones
+
                             RichText(
                               text: TextSpan(
                                 style: Theme.of(context)
@@ -580,8 +560,7 @@ class HomeScreen extends StatelessWidget {
                                   TextSpan(
                                     text: 'Estaciones',
                                     style: TextStyle(
-                                      color:
-                                          secondaryAccentColor, // Texto acentuado (Ahora Amarillo)
+                                      color: secondaryAccentColor,
                                     ),
                                   ),
                                 ],
@@ -623,8 +602,7 @@ class HomeScreen extends StatelessWidget {
                                   TextSpan(
                                     text: 'Programas',
                                     style: TextStyle(
-                                      color:
-                                          secondaryAccentColor, // Texto acentuado (Ahora Amarillo)
+                                      color: secondaryAccentColor,
                                     ),
                                   ),
                                 ],
@@ -634,7 +612,6 @@ class HomeScreen extends StatelessWidget {
                             ProgramCarousel(programs: demoPrograms),
                             const SizedBox(height: 10),
 
-                            // Título: Síguenos en Redes
                             RichText(
                               text: TextSpan(
                                 style: Theme.of(context)
@@ -649,8 +626,7 @@ class HomeScreen extends StatelessWidget {
                                   TextSpan(
                                     text: 'Redes',
                                     style: TextStyle(
-                                      color:
-                                          accentRedOrangeColor, // Texto acentuado (Ahora Amarillo)
+                                      color: accentRedOrangeColor,
                                     ),
                                   ),
                                 ],

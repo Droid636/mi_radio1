@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../helpers/providers/audio_provider.dart';
-// import '../widgets/program_card.dart';
 import '../models/program_model.dart';
 
-// Convertimos PlayerScreen a StatefulWidget para manejar la animación
+
 class PlayerScreen extends StatefulWidget {
   final bool isModal;
 
@@ -19,8 +18,7 @@ class _PlayerScreenState extends State<PlayerScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _rotationController;
 
-  // Demo: Programas por estación (puedes adaptar esto a tu lógica real)
-  // Programas agrupados por días de la semana para cada estación
+
   final Map<String, Map<String, List<ProgramModel>>> stationPrograms = {
     'rtx': {
       'Lunes': [
@@ -139,10 +137,8 @@ class _PlayerScreenState extends State<PlayerScreen>
     },
   };
 
-  // Mapa de enlaces ahora usando rutas de assets simuladas.
-  // AJUSTE LAS RUTAS DE LOS ARCHIVOS PNG DE ACUERDO A SU ESTRUCTURA DE ASSETS
   final List<Map<String, dynamic>> linkItems = const [
-    // La app no debe tener Icons.tiktok o Icons.facebook, sino rutas de assets.
+    
     {
       'label': 'Facebook',
       'asset': 'assets/icons/Facebook.png',
@@ -196,7 +192,6 @@ class _PlayerScreenState extends State<PlayerScreen>
     super.dispose();
   }
 
-  // --- FUNCIÓN DE LANZAMIENTO DE URL SEGURA ---
   Future<void> _launchUrl(BuildContext context, String urlString) async {
     final Uri url = Uri.parse(urlString);
 
@@ -224,15 +219,14 @@ class _PlayerScreenState extends State<PlayerScreen>
     }
   }
 
-  // --- NUEVA FUNCIÓN PARA MOSTRAR LAS OPCIONES DE ENLACE COMO SIDE-MENU ---
+  
   void _showLinkOptions() {
     final primaryYellow = Theme.of(context).primaryColor;
 
     showGeneralDialog(
       context: context,
-      barrierDismissible: true, // Se puede cerrar al tocar fuera
+      barrierDismissible: true, 
       barrierLabel: 'Side Menu',
-      // Animación de deslizamiento de derecha a izquierda
       transitionDuration: const Duration(milliseconds: 300),
       transitionBuilder: (context, anim, secondAnim, child) {
         return SlideTransition(
@@ -244,7 +238,7 @@ class _PlayerScreenState extends State<PlayerScreen>
         );
       },
       pageBuilder: (context, animation, secondaryAnimation) {
-        // Usa el nuevo widget LinkOptionsDrawer que simula el menú lateral
+       
         return LinkOptionsDrawer(
           linkItems: linkItems,
           primaryColor: primaryYellow,
@@ -252,7 +246,7 @@ class _PlayerScreenState extends State<PlayerScreen>
             _launchUrl(context, urlString);
           },
           onShareTap: () {
-            // Lógica para compartir (usar paquete share_plus)
+            
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Función de Compartir activada.')),
             );
@@ -261,7 +255,7 @@ class _PlayerScreenState extends State<PlayerScreen>
       },
     );
   }
-  // ----------------------------------------------------------------------
+
 
   @override
   Widget build(BuildContext context) {
@@ -273,7 +267,7 @@ class _PlayerScreenState extends State<PlayerScreen>
     if (station == null) {
       if (widget.isModal) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          // Si es modal y no hay estación, se cierra (no genera warning)
+         
           Navigator.of(context).pop();
         });
         return const SizedBox.shrink();
@@ -281,7 +275,7 @@ class _PlayerScreenState extends State<PlayerScreen>
       return const Center(child: Text("Selecciona una estación."));
     }
 
-    // Control de la animación simplificado:
+    
     audioProv.isPlaying
         ? _rotationController.repeat()
         : _rotationController.stop();
@@ -302,7 +296,7 @@ class _PlayerScreenState extends State<PlayerScreen>
               children: [
                 Column(
                   children: [
-                    // --- BARRA DE NAVEGACIÓN PERSONALIZADA ---
+                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -330,7 +324,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                       ],
                     ),
                     const SizedBox(height: 30),
-                    // --- IMAGEN DE LA ESTACIÓN (ROTATORIA) ---
+                    
                     RotationTransition(
                       turns: _rotationController,
                       child: Container(
@@ -391,7 +385,7 @@ class _PlayerScreenState extends State<PlayerScreen>
 
                     const SizedBox(height: 40),
 
-                    // --- INFORMACIÓN DE LA ESTACIÓN ---
+                    
                     Text(
                       station.name,
                       style: Theme.of(context).textTheme.headlineMedium!
@@ -403,17 +397,17 @@ class _PlayerScreenState extends State<PlayerScreen>
                     ),
                     const SizedBox(height: 8),
 
-                    // Slogan/Ciudad
+                    
                     Text(
                       station.slogan,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: primaryYellow, // Amarillo brillante
+                        color: primaryYellow, 
                       ),
                       textAlign: TextAlign.center,
                     ),
                     const Spacer(),
 
-                    // --- CONTROLES DE REPRODUCCIÓN: ANTERIOR, PLAY/PAUSE, SIGUIENTE ---
+                   
                     Consumer<AudioProvider>(
                       builder: (context, audioProv, child) {
                         final isPlaying = audioProv.isPlaying;
@@ -421,7 +415,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Botón Anterior
+                            
                             IconButton(
                               iconSize: 60,
                               onPressed: isLoading
@@ -434,7 +428,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                 color: Colors.white,
                               ),
                             ),
-                            // Botón Play/Pause
+                            
                             IconButton(
                               iconSize: 100,
                               onPressed: isLoading
@@ -481,7 +475,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                       ),
                               ),
                             ),
-                            // Botón Siguiente
+                            
                             IconButton(
                               iconSize: 60,
                               onPressed: isLoading
@@ -498,7 +492,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                     const Spacer(),
                   ],
                 ),
-                // --- BOTÓN PARA DESPLEGAR PROGRAMACIÓN ---
+               
                 if (stationPrograms[station.id] != null)
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -713,7 +707,7 @@ class _PlayerScreenState extends State<PlayerScreen>
   }
 }
 
-// --- NUEVO WIDGET: LinkOptionsDrawer (Menú Lateral de Iconos) ---
+
 class LinkOptionsDrawer extends StatelessWidget {
   final List<Map<String, dynamic>> linkItems;
   final Color primaryColor;
@@ -730,22 +724,22 @@ class LinkOptionsDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Definimos el tamaño del drawer (ajustado para contener los íconos)
+    
     final double drawerWidth = MediaQuery.of(context).size.width * 0.25;
 
     return Align(
       alignment: Alignment.centerRight,
       child: Material(
-        color: Colors.transparent, // El fondo ya está oscuro en el PlayerScreen
+        color: Colors.transparent, 
         child: Container(
           width: drawerWidth,
           height:
               MediaQuery.of(context).size.height *
-              0.8, // Altura que simula la imagen
+              0.8, 
           decoration: BoxDecoration(
             color: Colors.grey[900]!.withOpacity(
               0.9,
-            ), // Fondo oscuro semitransparente
+            ), 
             borderRadius: const BorderRadius.horizontal(
               left: Radius.circular(10),
             ),
@@ -754,7 +748,7 @@ class LinkOptionsDrawer extends StatelessWidget {
             ],
           ),
           child: Column(
-            // El menú de iconos en la imagen parece estar centrado verticalmente
+            
             mainAxisAlignment: MainAxisAlignment.center,
             children: linkItems.map((item) {
               return Padding(
@@ -766,26 +760,26 @@ class LinkOptionsDrawer extends StatelessWidget {
                     height: 45,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: primaryColor, // Círculo amarillo de fondo
+                      color: primaryColor, 
                     ),
                     child: ClipOval(
-                      // Usamos Image.asset para cargar el ícono de la red social
+                     
                       child: Image.asset(
                         item['asset'] as String,
                         width:
-                            30, // Ajuste el tamaño de la imagen dentro del círculo
+                            30, 
                         height: 30,
                         fit: BoxFit.scaleDown,
                         errorBuilder: (context, error, stackTrace) => Icon(
                           Icons.link,
                           color: Colors.black,
                           size: 20,
-                        ), // Fallback
+                        ),
                       ),
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pop(context); // Cierra el drawer
+                    Navigator.pop(context);
 
                     if (item.containsKey('url')) {
                       onLinkTap(item['url'] as String);

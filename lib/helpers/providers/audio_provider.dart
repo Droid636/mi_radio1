@@ -1,5 +1,3 @@
-// ** Nota: Este es un esqueleto de AudioProvider. DEBES copiar solo las adiciones si ya tienes la clase. **
-
 import 'package:flutter/material.dart';
 import 'package:audio_service/audio_service.dart';
 import '../../models/station_model.dart';
@@ -26,7 +24,7 @@ class AudioProvider with ChangeNotifier {
           state.processingState == AudioProcessingState.buffering;
       notifyListeners();
     });
-    // Sincroniza la estación cuando cambia el MediaItem (por skip desde notificación)
+
     _audioHandler.mediaItem.listen((item) {
       if (item == null) return;
       final idx = stations.indexWhere((s) => s.streamUrl == item.id);
@@ -82,7 +80,6 @@ class AudioProvider with ChangeNotifier {
       _isLoading = true;
       notifyListeners();
       try {
-        // Siempre forzar setUrl antes de play para asegurar que el stream esté cargado
         int idx = stations.indexWhere((s) => s.id == _currentStation!.id);
         await _audioHandler.customAction('setUrl', {
           'url': _currentStation!.streamUrl,
@@ -99,10 +96,8 @@ class AudioProvider with ChangeNotifier {
 
   Future<void> pause() async {
     await _audioHandler.pause();
-    // No actualizar _isPlaying ni notifyListeners aquí, el listener de playbackState lo hará automáticamente
   }
 
-  // Detiene la reproducción y oculta el mini-player
   Future<void> stop() async {
     await _audioHandler.stop();
     _currentStation = null;
@@ -111,7 +106,6 @@ class AudioProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // *** NUEVAS FUNCIONES PARA CONTROLAR LA VISIBILIDAD ***
   void showMiniPlayer() {
     if (_isMiniPlayerHidden) {
       _isMiniPlayerHidden = false;

@@ -11,7 +11,7 @@ import 'screens/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inicializar el handler de audio correctamente
+  
   final audioHandler = await AudioService.init(
     builder: () => RadioAudioHandler(),
     config: const AudioServiceConfig(
@@ -21,7 +21,7 @@ void main() async {
     ),
   );
 
-  // Iniciar la app envuelta en providers para evitar errores
+  
   runApp(
     MultiProvider(
       providers: [
@@ -35,7 +35,7 @@ void main() async {
   );
 }
 
-// ✅ Nuevo root que ya puede leer providers sin error
+
 class MyAppRoot extends StatelessWidget {
   const MyAppRoot({super.key});
 
@@ -54,7 +54,7 @@ class MyAppRoot extends StatelessWidget {
   }
 }
 
-// Wrapper del splash para navegar a Home
+
 class SplashScreenWrapper extends StatefulWidget {
   const SplashScreenWrapper({super.key});
 
@@ -73,7 +73,7 @@ class _SplashScreenWrapperState extends State<SplashScreenWrapper> {
     const Duration minDuration = Duration(milliseconds: 2000);
     final startTime = DateTime.now();
 
-    // Simulas cargando recursos (puedes usar aquí inicialización extra)
+    
     await Future.delayed(const Duration(milliseconds: 500));
 
     final timeSpent = DateTime.now().difference(startTime);
