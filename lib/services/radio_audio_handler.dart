@@ -8,7 +8,6 @@ class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
   int _currentIndex = 0;
 
   RadioAudioHandler() {
-
     _updateMediaItem();
     _player.playerStateStream.listen((state) {
       playbackState.add(

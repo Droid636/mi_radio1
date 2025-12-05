@@ -8,7 +8,6 @@ class ProgramCarousel extends StatelessWidget {
 
   const ProgramCarousel({super.key, required this.programs});
 
-
   void _showProgramDetailsModal(BuildContext context, ProgramModel p) {
     showDialog(
       context: context,
@@ -21,7 +20,6 @@ class ProgramCarousel extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(20.0),

@@ -11,7 +11,6 @@ import 'screens/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  
   final audioHandler = await AudioService.init(
     builder: () => RadioAudioHandler(),
     config: const AudioServiceConfig(
@@ -21,7 +20,6 @@ void main() async {
     ),
   );
 
-  
   runApp(
     MultiProvider(
       providers: [
@@ -34,7 +32,6 @@ void main() async {
     ),
   );
 }
-
 
 class MyAppRoot extends StatelessWidget {
   const MyAppRoot({super.key});
@@ -54,7 +51,6 @@ class MyAppRoot extends StatelessWidget {
   }
 }
 
-
 class SplashScreenWrapper extends StatefulWidget {
   const SplashScreenWrapper({super.key});
 
@@ -73,7 +69,6 @@ class _SplashScreenWrapperState extends State<SplashScreenWrapper> {
     const Duration minDuration = Duration(milliseconds: 2000);
     final startTime = DateTime.now();
 
-    
     await Future.delayed(const Duration(milliseconds: 500));
 
     final timeSpent = DateTime.now().difference(startTime);

@@ -17,9 +17,7 @@ class StationCard extends StatelessWidget {
     final isLoading =
         audioProv.isLoading && (audioProv.currentStation?.id == station.id);
     final icon = isPlaying ? Icons.pause_circle_filled : Icons.play_circle_fill;
-    final iconColor = isPlaying
-        ? Color(0xFFF55940)
-        : Colors.black;
+    final iconColor = isPlaying ? Color(0xFFF55940) : Colors.black;
 
     return InkWell(
       onTap: onTap,

@@ -4,7 +4,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../helpers/providers/audio_provider.dart';
 import '../models/program_model.dart';
 
-
 class PlayerScreen extends StatefulWidget {
   final bool isModal;
 
@@ -17,7 +16,6 @@ class PlayerScreen extends StatefulWidget {
 class _PlayerScreenState extends State<PlayerScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _rotationController;
-
 
   final Map<String, Map<String, List<ProgramModel>>> stationPrograms = {
     'rtx': {
@@ -138,7 +136,6 @@ class _PlayerScreenState extends State<PlayerScreen>
   };
 
   final List<Map<String, dynamic>> linkItems = const [
-    
     {
       'label': 'Facebook',
       'asset': 'assets/icons/Facebook.png',
@@ -219,13 +216,12 @@ class _PlayerScreenState extends State<PlayerScreen>
     }
   }
 
-  
   void _showLinkOptions() {
     final primaryYellow = Theme.of(context).primaryColor;
 
     showGeneralDialog(
       context: context,
-      barrierDismissible: true, 
+      barrierDismissible: true,
       barrierLabel: 'Side Menu',
       transitionDuration: const Duration(milliseconds: 300),
       transitionBuilder: (context, anim, secondAnim, child) {
@@ -238,7 +234,6 @@ class _PlayerScreenState extends State<PlayerScreen>
         );
       },
       pageBuilder: (context, animation, secondaryAnimation) {
-       
         return LinkOptionsDrawer(
           linkItems: linkItems,
           primaryColor: primaryYellow,
@@ -246,7 +241,6 @@ class _PlayerScreenState extends State<PlayerScreen>
             _launchUrl(context, urlString);
           },
           onShareTap: () {
-            
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Función de Compartir activada.')),
             );
@@ -255,7 +249,6 @@ class _PlayerScreenState extends State<PlayerScreen>
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -267,7 +260,6 @@ class _PlayerScreenState extends State<PlayerScreen>
     if (station == null) {
       if (widget.isModal) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-         
           Navigator.of(context).pop();
         });
         return const SizedBox.shrink();
@@ -275,7 +267,6 @@ class _PlayerScreenState extends State<PlayerScreen>
       return const Center(child: Text("Selecciona una estación."));
     }
 
-    
     audioProv.isPlaying
         ? _rotationController.repeat()
         : _rotationController.stop();
@@ -296,7 +287,6 @@ class _PlayerScreenState extends State<PlayerScreen>
               children: [
                 Column(
                   children: [
-                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -324,7 +314,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                       ],
                     ),
                     const SizedBox(height: 30),
-                    
+
                     RotationTransition(
                       turns: _rotationController,
                       child: Container(
@@ -385,7 +375,6 @@ class _PlayerScreenState extends State<PlayerScreen>
 
                     const SizedBox(height: 40),
 
-                    
                     Text(
                       station.name,
                       style: Theme.of(context).textTheme.headlineMedium!
@@ -397,17 +386,15 @@ class _PlayerScreenState extends State<PlayerScreen>
                     ),
                     const SizedBox(height: 8),
 
-                    
                     Text(
                       station.slogan,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: primaryYellow, 
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleLarge!.copyWith(color: primaryYellow),
                       textAlign: TextAlign.center,
                     ),
                     const Spacer(),
 
-                   
                     Consumer<AudioProvider>(
                       builder: (context, audioProv, child) {
                         final isPlaying = audioProv.isPlaying;
@@ -415,7 +402,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            
                             IconButton(
                               iconSize: 60,
                               onPressed: isLoading
@@ -428,7 +414,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                 color: Colors.white,
                               ),
                             ),
-                            
+
                             IconButton(
                               iconSize: 100,
                               onPressed: isLoading
@@ -475,7 +461,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                       ),
                               ),
                             ),
-                            
+
                             IconButton(
                               iconSize: 60,
                               onPressed: isLoading
@@ -492,7 +478,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                     const Spacer(),
                   ],
                 ),
-               
+
                 if (stationPrograms[station.id] != null)
                   Align(
                     alignment: Alignment.bottomCenter,
@@ -707,7 +693,6 @@ class _PlayerScreenState extends State<PlayerScreen>
   }
 }
 
-
 class LinkOptionsDrawer extends StatelessWidget {
   final List<Map<String, dynamic>> linkItems;
   final Color primaryColor;
@@ -724,22 +709,17 @@ class LinkOptionsDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final double drawerWidth = MediaQuery.of(context).size.width * 0.25;
 
     return Align(
       alignment: Alignment.centerRight,
       child: Material(
-        color: Colors.transparent, 
+        color: Colors.transparent,
         child: Container(
           width: drawerWidth,
-          height:
-              MediaQuery.of(context).size.height *
-              0.8, 
+          height: MediaQuery.of(context).size.height * 0.8,
           decoration: BoxDecoration(
-            color: Colors.grey[900]!.withOpacity(
-              0.9,
-            ), 
+            color: Colors.grey[900]!.withOpacity(0.9),
             borderRadius: const BorderRadius.horizontal(
               left: Radius.circular(10),
             ),
@@ -748,7 +728,6 @@ class LinkOptionsDrawer extends StatelessWidget {
             ],
           ),
           child: Column(
-            
             mainAxisAlignment: MainAxisAlignment.center,
             children: linkItems.map((item) {
               return Padding(
@@ -760,21 +739,16 @@ class LinkOptionsDrawer extends StatelessWidget {
                     height: 45,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: primaryColor, 
+                      color: primaryColor,
                     ),
                     child: ClipOval(
-                     
                       child: Image.asset(
                         item['asset'] as String,
-                        width:
-                            30, 
+                        width: 30,
                         height: 30,
                         fit: BoxFit.scaleDown,
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                          Icons.link,
-                          color: Colors.black,
-                          size: 20,
-                        ),
+                        errorBuilder: (context, error, stackTrace) =>
+                            Icon(Icons.link, color: Colors.black, size: 20),
                       ),
                     ),
                   ),

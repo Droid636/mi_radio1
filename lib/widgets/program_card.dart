@@ -7,7 +7,6 @@ class ProgramCard extends StatelessWidget {
 
   const ProgramCard({super.key, required this.program, required this.onTap});
 
-
   static const double _cardRadius = 18.0;
 
   @override
@@ -29,7 +28,6 @@ class ProgramCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(_cardRadius),
             child: Stack(
               children: [
-
                 Positioned.fill(
                   child: Image.asset(
                     program.image,
