@@ -194,13 +194,20 @@ class ProgramCarousel extends StatelessWidget {
                     children: [
                       Icon(Icons.access_time, size: 20, color: Colors.black),
                       const SizedBox(width: 8),
-                      Text(
-                        p.time,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: p.schedule.entries
+                            .map(
+                              (entry) => Text(
+                                '${entry.key}: ${entry.value}',
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            )
+                            .toList(),
                       ),
                     ],
                   ),

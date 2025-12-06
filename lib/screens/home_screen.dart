@@ -150,7 +150,7 @@ class HomeScreen extends StatelessWidget {
       title: 'Mañana Jazz',
       description:
           'Lo mejor del jazz matutino y el smooth jazz para empezar el día con calma y sofisticación. Una selección curada de clásicos atemporales, desde Miles Davis hasta Ella Fitzgerald, mezclados con las propuestas más frescas del jazz contemporáneo. Perfecta para el café, el trayecto al trabajo, o simplemente para disfrutar de un despertar melódico.',
-      time: '08:00 - 10:00',
+      schedule: {'Lunes': '08:00 - 10:00', 'Miércoles': '08:00 - 10:00'},
       image: 'assets/images/Program1.jpg',
     ),
     ProgramModel(
@@ -158,7 +158,7 @@ class HomeScreen extends StatelessWidget {
       title: 'Tarde Alterna',
       description:
           'Tu dosis diaria de música que desafía lo convencional. En este programa exploramos las fronteras del rock alternativo, el indie más vanguardista, la electrónica experimental y los géneros que están marcando tendencia en la escena underground. Prepárate para descubrir nuevas bandas, escuchar entrevistas exclusivas y sumergirte en sonidos que no escucharás en ninguna otra parte.',
-      time: '16:00 - 18:00',
+      schedule: {'Sábado': '16:00 - 18:00', 'Martes': '16:00 - 18:00'},
       image: 'assets/images/Program2.jpg',
     ),
     ProgramModel(
@@ -166,7 +166,7 @@ class HomeScreen extends StatelessWidget {
       title: 'Al Compás del Mundo',
       description:
           'Un viaje sonoro por los ritmos globales, desde la música africana hasta el folk europeo. Descubre nuevas culturas a través de sus melodías.',
-      time: '19:00 - 20:30',
+      schedule: {'Domingo': '19:00 - 20:30'},
       image: 'assets/images/Program3.jpg',
     ),
   ];

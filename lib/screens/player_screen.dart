@@ -24,14 +24,14 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p1',
           title: 'Mañana Alternativa',
           description: 'Rock alternativo y entrevistas exclusivas.',
-          time: '08:00 - 10:00',
+          schedule: {'Lunes': '08:00 - 10:00'},
           image: '',
         ),
         ProgramModel(
           id: 'p2',
           title: 'Tarde Indie',
           description: 'Indie, electrónica y tendencias underground.',
-          time: '16:00 - 18:00',
+          schedule: {'Lunes': '16:00 - 18:00'},
           image: '',
         ),
       ],
@@ -40,14 +40,14 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p3',
           title: 'Jazz Fusion',
           description: 'Jazz experimental y fusiones modernas.',
-          time: '10:00 - 12:00',
+          schedule: {'Martes': '10:00 - 12:00'},
           image: '',
         ),
         ProgramModel(
           id: 'p4',
           title: 'Noches Urbanas',
           description: 'Hip-hop, rap y cultura urbana.',
-          time: '20:00 - 22:00',
+          schedule: {'Martes': '20:00 - 22:00'},
           image: '',
         ),
       ],
@@ -56,7 +56,7 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p5',
           title: 'Electro Vibes',
           description: 'Electrónica y dance para mitad de semana.',
-          time: '18:00 - 20:00',
+          schedule: {'Miércoles': '18:00 - 20:00'},
           image: '',
         ),
       ],
@@ -65,7 +65,7 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p6',
           title: 'Retro Hits',
           description: 'Clásicos de los 80s y 90s.',
-          time: '14:00 - 16:00',
+          schedule: {'Jueves': '14:00 - 16:00'},
           image: '',
         ),
       ],
@@ -74,7 +74,7 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p7',
           title: 'Fiesta Latina',
           description: 'Reggaetón, salsa y ritmos latinos.',
-          time: '20:00 - 23:00',
+          schedule: {'Viernes': '20:00 - 23:00'},
           image: '',
         ),
       ],
@@ -85,14 +85,14 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p8',
           title: 'Jazz Matutino',
           description: 'Clásicos y nuevos sonidos del jazz para tu mañana.',
-          time: '08:00 - 10:00',
+          schedule: {'Lunes': '08:00 - 10:00'},
           image: '',
         ),
         ProgramModel(
           id: 'p9',
           title: 'Smooth Jazz',
           description: 'Jazz suave para relajarse.',
-          time: '16:00 - 18:00',
+          schedule: {'Lunes': '16:00 - 18:00'},
           image: '',
         ),
       ],
@@ -101,7 +101,7 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p10',
           title: 'Jazz Latino',
           description: 'Fusión de jazz con ritmos latinos.',
-          time: '10:00 - 12:00',
+          schedule: {'Martes': '10:00 - 12:00'},
           image: '',
         ),
       ],
@@ -110,7 +110,7 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p11',
           title: 'Jazz Instrumental',
           description: 'Instrumentistas destacados y solos.',
-          time: '18:00 - 20:00',
+          schedule: {'Miércoles': '18:00 - 20:00'},
           image: '',
         ),
       ],
@@ -119,7 +119,7 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p12',
           title: 'Jazz Fusion',
           description: 'Fusión de géneros y experimentación.',
-          time: '14:00 - 16:00',
+          schedule: {'Jueves': '14:00 - 16:00'},
           image: '',
         ),
       ],
@@ -128,7 +128,7 @@ class _PlayerScreenState extends State<PlayerScreen>
           id: 'p13',
           title: 'Jazz en Vivo',
           description: 'Conciertos y sesiones en vivo.',
-          time: '20:00 - 23:00',
+          schedule: {'Viernes': '20:00 - 23:00'},
           image: '',
         ),
       ],
@@ -660,16 +660,29 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                           ),
                                                     ),
                                                     const SizedBox(height: 4),
-                                                    Text(
-                                                      p.time,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyMedium
-                                                          ?.copyWith(
-                                                            color: modalYellow,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                          ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: p
+                                                          .schedule
+                                                          .entries
+                                                          .map(
+                                                            (entry) => Text(
+                                                              '${entry.key}: ${entry.value}',
+                                                              style: Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyMedium
+                                                                  ?.copyWith(
+                                                                    color:
+                                                                        modalYellow,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                  ),
+                                                            ),
+                                                          )
+                                                          .toList(),
                                                     ),
                                                     const SizedBox(height: 4),
                                                     Text(
