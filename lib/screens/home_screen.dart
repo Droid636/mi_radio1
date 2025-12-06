@@ -547,7 +547,7 @@ class HomeScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 2),
+                            const SizedBox(height: 24),
 
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -571,7 +571,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            const SizedBox(height: 0),
 
                             ListView.builder(
                               shrinkWrap: true,
