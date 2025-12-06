@@ -627,24 +627,29 @@ class HomeScreen extends StatelessWidget {
                             ProgramCarousel(programs: demoPrograms),
                             const SizedBox(height: 10),
 
-                            RichText(
-                              text: TextSpan(
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium!
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18.0,
+                              ),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium!
+                                      .copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24,
+                                      ),
+                                  children: [
+                                    const TextSpan(text: 'Síguenos en '),
+                                    TextSpan(
+                                      text: 'Redes',
+                                      style: TextStyle(
+                                        color: accentRedOrangeColor,
+                                      ),
                                     ),
-                                children: [
-                                  const TextSpan(text: 'Síguenos en '),
-                                  TextSpan(
-                                    text: 'Redes',
-                                    style: TextStyle(
-                                      color: accentRedOrangeColor,
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 6),
