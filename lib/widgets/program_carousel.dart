@@ -215,6 +215,7 @@ class ProgramCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
     return CarouselSlider(
       items: programs
           .map(
@@ -225,12 +226,12 @@ class ProgramCarousel extends StatelessWidget {
           )
           .toList(),
       options: CarouselOptions(
-        height: 420,
+        height: screenHeight * 0.48,
         enlargeCenterPage: true,
         autoPlay: false,
         aspectRatio: 1.0,
         enableInfiniteScroll: false,
-        viewportFraction: 0.95,
+        viewportFraction: 1.0,
       ),
     );
   }
