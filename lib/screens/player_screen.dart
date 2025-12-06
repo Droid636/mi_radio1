@@ -375,23 +375,38 @@ class _PlayerScreenState extends State<PlayerScreen>
 
                     const SizedBox(height: 40),
 
-                    Text(
-                      station.name,
-                      style: Theme.of(context).textTheme.headlineMedium!
-                          .copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-
-                    Text(
-                      station.slogan,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleLarge!.copyWith(color: primaryYellow),
-                      textAlign: TextAlign.center,
+                    Consumer<AudioProvider>(
+                      builder: (context, audioProv, _) {
+                        final meta = audioProv.currentMetadataTitle;
+                        return Column(
+                          children: [
+                            Text(
+                              meta ?? station.name,
+                              style: Theme.of(context).textTheme.headlineMedium!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                  ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            if (meta != null)
+                              Text(
+                                station.name,
+                                style: Theme.of(context).textTheme.titleLarge!
+                                    .copyWith(color: primaryYellow),
+                                textAlign: TextAlign.center,
+                              )
+                            else
+                              Text(
+                                station.slogan,
+                                style: Theme.of(context).textTheme.titleLarge!
+                                    .copyWith(color: primaryYellow),
+                                textAlign: TextAlign.center,
+                              ),
+                          ],
+                        );
+                      },
                     ),
                     const Spacer(),
 

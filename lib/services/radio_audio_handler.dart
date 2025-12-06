@@ -4,7 +4,8 @@ import '../models/station_model.dart';
 import '../helpers/constants.dart';
 
 class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
-  final _player = AudioPlayer();
+  final AudioPlayer _player = AudioPlayer();
+  AudioPlayer get player => _player;
   int _currentIndex = 0;
 
   RadioAudioHandler() {

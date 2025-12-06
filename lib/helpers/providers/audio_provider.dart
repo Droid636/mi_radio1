@@ -3,17 +3,21 @@ import 'package:audio_service/audio_service.dart';
 import '../../models/station_model.dart';
 import '../../helpers/constants.dart';
 
+import 'package:just_audio/just_audio.dart';
+
 class AudioProvider with ChangeNotifier {
   late final AudioHandler _audioHandler;
   StationModel? _currentStation;
   bool _isMiniPlayerHidden = false;
   bool _isLoading = false;
   bool _isPlaying = false;
+  String? _currentMetadataTitle;
 
   StationModel? get currentStation => _currentStation;
   bool get isPlaying => _isPlaying;
   bool get isMiniPlayerHidden => _isMiniPlayerHidden;
   bool get isLoading => _isLoading;
+  String? get currentMetadataTitle => _currentMetadataTitle;
 
   void setHandler(AudioHandler handler) {
     _audioHandler = handler;
@@ -35,6 +39,24 @@ class AudioProvider with ChangeNotifier {
         notifyListeners();
       }
     });
+
+    // Escuchar metadatos ICY si el handler expone el player (just_audio)
+    try {
+      // Solo si el handler tiene un campo 'player' (de tipo AudioPlayer)
+      final player = (handler as dynamic).player as AudioPlayer?;
+      player?.icyMetadataStream.listen((IcyMetadata? icy) {
+        final title = icy?.info?.title;
+        print('[ICY Metadata] Título recibido: $title');
+        if (title != null && title.isNotEmpty) {
+          _currentMetadataTitle = title;
+        } else {
+          _currentMetadataTitle = null;
+        }
+        notifyListeners();
+      });
+    } catch (_) {
+      // Si no hay player, ignorar
+    }
   }
 
   Future<void> setStation(StationModel station) async {
@@ -103,6 +125,7 @@ class AudioProvider with ChangeNotifier {
     _currentStation = null;
     _isPlaying = false;
     _isMiniPlayerHidden = true;
+    _currentMetadataTitle = null;
     notifyListeners();
   }
 
