@@ -547,7 +547,7 @@ class HomeScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 50),
 
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -571,8 +571,8 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 0),
 
+                            // Eliminado para pegar más el título y las estaciones
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -582,7 +582,7 @@ class HomeScreen extends StatelessWidget {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 4.0,
-                                    vertical: 2.0,
+                                    vertical: 0.0,
                                   ),
                                   child: SizedBox(
                                     height: 90,
@@ -598,8 +598,6 @@ class HomeScreen extends StatelessWidget {
                                 );
                               },
                             ),
-
-                            const SizedBox(height: 4),
 
                             Padding(
                               padding: const EdgeInsets.symmetric(
