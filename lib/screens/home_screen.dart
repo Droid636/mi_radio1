@@ -549,21 +549,26 @@ class HomeScreen extends StatelessWidget {
                           children: [
                             const SizedBox(height: 6),
 
-                            RichText(
-                              text: TextSpan(
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium!
-                                    .copyWith(fontWeight: FontWeight.bold),
-                                children: [
-                                  const TextSpan(text: 'Nuestras '),
-                                  TextSpan(
-                                    text: 'Estaciones',
-                                    style: TextStyle(
-                                      color: secondaryAccentColor,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18.0,
+                              ),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium!
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                  children: [
+                                    const TextSpan(text: 'Nuestras '),
+                                    TextSpan(
+                                      text: 'Estaciones',
+                                      style: TextStyle(
+                                        color: secondaryAccentColor,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -596,21 +601,26 @@ class HomeScreen extends StatelessWidget {
 
                             const SizedBox(height: 8),
 
-                            RichText(
-                              text: TextSpan(
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium!
-                                    .copyWith(fontWeight: FontWeight.bold),
-                                children: [
-                                  const TextSpan(text: 'Nuestros '),
-                                  TextSpan(
-                                    text: 'Programas',
-                                    style: TextStyle(
-                                      color: secondaryAccentColor,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18.0,
+                              ),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium!
+                                      .copyWith(fontWeight: FontWeight.bold),
+                                  children: [
+                                    const TextSpan(text: 'Nuestros '),
+                                    TextSpan(
+                                      text: 'Programas',
+                                      style: TextStyle(
+                                        color: secondaryAccentColor,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 8),
