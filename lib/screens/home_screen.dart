@@ -543,7 +543,7 @@ class HomeScreen extends StatelessWidget {
                     child: ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 600),
                       child: Padding(
-                        padding: EdgeInsets.zero,
+                        padding: EdgeInsets.only(left: 2.0, right: 2.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -574,16 +574,21 @@ class HomeScreen extends StatelessWidget {
                               itemCount: stations.length,
                               itemBuilder: (context, index) {
                                 final s = stations[index];
-
                                 return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10.0),
-                                  child: StationCard(
-                                    station: s,
-                                    onTap: () async {
-                                      await audioProv.setStation(s);
-                                      await audioProv.play();
-                                      audioProv.showMiniPlayer();
-                                    },
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 4.0,
+                                    vertical: 8.0,
+                                  ),
+                                  child: SizedBox(
+                                    height: 90,
+                                    child: StationCard(
+                                      station: s,
+                                      onTap: () async {
+                                        await audioProv.setStation(s);
+                                        await audioProv.play();
+                                        audioProv.showMiniPlayer();
+                                      },
+                                    ),
                                   ),
                                 );
                               },

@@ -219,9 +219,12 @@ class ProgramCarousel extends StatelessWidget {
     return CarouselSlider(
       items: programs
           .map(
-            (p) => ProgramCard(
-              program: p,
-              onTap: () => _showProgramDetailsModal(context, p),
+            (p) => Container(
+              width: MediaQuery.of(context).size.width,
+              child: ProgramCard(
+                program: p,
+                onTap: () => _showProgramDetailsModal(context, p),
+              ),
             ),
           )
           .toList(),
