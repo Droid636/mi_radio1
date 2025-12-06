@@ -379,30 +379,73 @@ class _PlayerScreenState extends State<PlayerScreen>
                       builder: (context, audioProv, _) {
                         final meta = audioProv.currentMetadataTitle;
                         return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
                               meta ?? station.name,
-                              style: Theme.of(context).textTheme.headlineMedium!
-                                  .copyWith(
-                                    fontWeight: FontWeight.w700,
+                              style:
+                                  Theme.of(
+                                    context,
+                                  ).textTheme.headlineLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
                                     color: Colors.white,
+                                    fontSize: 28,
+                                    letterSpacing: 0.5,
+                                  ) ??
+                                  const TextStyle(
+                                    fontSize: 28,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
                                   ),
                               textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 10),
+                            Text(
+                              meta != null ? station.name : station.slogan,
+                              style:
+                                  Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium?.copyWith(
+                                    color: meta != null
+                                        ? primaryYellow
+                                        : Colors.white70,
+                                    fontWeight: meta != null
+                                        ? FontWeight.w600
+                                        : FontWeight.w400,
+                                    fontSize: meta != null ? 18 : 16,
+                                  ) ??
+                                  const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white70,
+                                  ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            // Siempre mostrar el slogan debajo
                             if (meta != null)
-                              Text(
-                                station.name,
-                                style: Theme.of(context).textTheme.titleLarge!
-                                    .copyWith(color: primaryYellow),
-                                textAlign: TextAlign.center,
-                              )
-                            else
-                              Text(
-                                station.slogan,
-                                style: Theme.of(context).textTheme.titleLarge!
-                                    .copyWith(color: primaryYellow),
-                                textAlign: TextAlign.center,
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Text(
+                                  station.slogan,
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium?.copyWith(
+                                        color: Colors.white70,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15,
+                                      ) ??
+                                      const TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white70,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                           ],
                         );
