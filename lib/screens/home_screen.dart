@@ -547,7 +547,7 @@ class HomeScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 6),
+                            const SizedBox(height: 2),
 
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -571,7 +571,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 2),
 
                             ListView.builder(
                               shrinkWrap: true,
@@ -582,7 +582,7 @@ class HomeScreen extends StatelessWidget {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 4.0,
-                                    vertical: 8.0,
+                                    vertical: 2.0,
                                   ),
                                   child: SizedBox(
                                     height: 90,
@@ -599,7 +599,7 @@ class HomeScreen extends StatelessWidget {
                               },
                             ),
 
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 4),
 
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -623,7 +623,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 4),
                             ProgramCarousel(programs: demoPrograms),
                             const SizedBox(height: 10),
 
