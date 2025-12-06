@@ -9,6 +9,7 @@ import '../widgets/program_carousel.dart';
 import '../models/program_model.dart';
 import 'package:share_plus/share_plus.dart';
 import 'player_screen.dart';
+import 'onboarding_screen.dart';
 
 Future<void> _launchURL(String url) async {
   final Uri uri = Uri.parse(url);
@@ -603,22 +604,49 @@ class HomeScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 18.0,
                               ),
-                              child: RichText(
-                                text: TextSpan(
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                  children: [
-                                    const TextSpan(text: 'Nuestros '),
-                                    TextSpan(
-                                      text: 'Programas',
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium!
+                                          .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                      children: [
+                                        const TextSpan(text: 'Nuestros '),
+                                        TextSpan(
+                                          text: 'Programas',
+                                          style: TextStyle(
+                                            color: secondaryAccentColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const OnboardingScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Ver Todos',
                                       style: TextStyle(
-                                        color: secondaryAccentColor,
+                                        fontWeight: FontWeight.bold,
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.black,
+                                        fontSize: 16,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(height: 4),
