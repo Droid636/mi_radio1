@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 import '../models/program_model.dart';
 
 class OnboardingScreen extends StatelessWidget {
+    String _diaSemanaActual() {
+      final dias = [
+        'Lunes',
+        'Martes',
+        'Miércoles',
+        'Jueves',
+        'Viernes',
+        'Sábado',
+        'Domingo',
+      ];
+      final hoy = DateTime.now().weekday; // 1 = lunes, 7 = domingo
+      return dias[hoy - 1];
+    }
   const OnboardingScreen({super.key});
 
   @override
@@ -79,6 +92,7 @@ class OnboardingScreen extends StatelessWidget {
       ),
     ];
 
+    final String diaActual = _diaSemanaActual();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nuestros Programas'),
@@ -264,25 +278,22 @@ class OnboardingScreen extends StatelessWidget {
                                       children: program.schedule.entries.map((
                                         entry,
                                       ) {
+                                        final bool esHoy = entry.key == diaActual;
                                         return Container(
                                           padding: const EdgeInsets.symmetric(
                                             vertical: 10,
                                             horizontal: 16,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(
-                                              22,
-                                            ),
+                                            color: esHoy ? Colors.yellow[700] : Colors.white,
+                                            borderRadius: BorderRadius.circular(22),
                                             border: Border.all(
                                               color: Colors.black,
                                               width: 2,
                                             ),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.black.withOpacity(
-                                                  0.1,
-                                                ),
+                                                color: Colors.black.withOpacity(0.1),
                                                 blurRadius: 6,
                                                 offset: const Offset(0, 3),
                                               ),
@@ -292,7 +303,7 @@ class OnboardingScreen extends StatelessWidget {
                                             children: [
                                               Text(
                                                 entry.key,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 17,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black,
@@ -302,7 +313,7 @@ class OnboardingScreen extends StatelessWidget {
                                               Text(
                                                 entry.value,
                                                 textAlign: TextAlign.center,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 15,
                                                   color: Colors.black,
                                                 ),
