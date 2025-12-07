@@ -17,6 +17,9 @@ class _PlayerScreenState extends State<PlayerScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _rotationController;
 
+  // -------------------------
+  // Programación por estación
+  // -------------------------
   final Map<String, Map<String, List<ProgramModel>>> stationPrograms = {
     'rtx': {
       'Lunes': [
@@ -78,6 +81,32 @@ class _PlayerScreenState extends State<PlayerScreen>
           image: '',
         ),
       ],
+      // Sábado y Domingo añadidos
+      'Sábado': [
+        ProgramModel(
+          id: 'p14',
+          title: 'Sábado Retro',
+          description: 'Lo mejor de los clásicos para el fin de semana.',
+          schedule: {'Sábado': '12:00 - 15:00'},
+          image: '',
+        ),
+        ProgramModel(
+          id: 'p15',
+          title: 'Noches de DJ',
+          description: 'Sets de DJ y remixes para la noche sabatina.',
+          schedule: {'Sábado': '22:00 - 02:00'},
+          image: '',
+        ),
+      ],
+      'Domingo': [
+        ProgramModel(
+          id: 'p16',
+          title: 'Domingo Chill',
+          description: 'Música relajada para cerrar la semana.',
+          schedule: {'Domingo': '10:00 - 13:00'},
+          image: '',
+        ),
+      ],
     },
     'ljr': {
       'Lunes': [
@@ -129,6 +158,25 @@ class _PlayerScreenState extends State<PlayerScreen>
           title: 'Jazz en Vivo',
           description: 'Conciertos y sesiones en vivo.',
           schedule: {'Viernes': '20:00 - 23:00'},
+          image: '',
+        ),
+      ],
+      // Sábado y Domingo añadidos
+      'Sábado': [
+        ProgramModel(
+          id: 'p17',
+          title: 'Sábado de Standards',
+          description: 'Standards de jazz y covers en vivo.',
+          schedule: {'Sábado': '11:00 - 14:00'},
+          image: '',
+        ),
+      ],
+      'Domingo': [
+        ProgramModel(
+          id: 'p18',
+          title: 'Noche de Big Band',
+          description: 'Selección de grandes arreglos y orquestaciones.',
+          schedule: {'Domingo': '19:00 - 22:00'},
           image: '',
         ),
       ],
@@ -187,6 +235,21 @@ class _PlayerScreenState extends State<PlayerScreen>
   void dispose() {
     _rotationController.dispose();
     super.dispose();
+  }
+
+  // Devuelve el nombre del día actual en español (Lunes..Domingo)
+  String _getTodayName() {
+    final now = DateTime.now();
+    const days = [
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+      'Domingo',
+    ];
+    return days[now.weekday - 1];
   }
 
   Future<void> _launchUrl(BuildContext context, String urlString) async {
@@ -537,12 +600,22 @@ class _PlayerScreenState extends State<PlayerScreen>
                   ],
                 ),
 
+                // -------------------------------
+                // Programación: card-style + día actual
+                // -------------------------------
                 if (stationPrograms[station.id] != null)
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
                       onTap: () {
-                        int currentDayIdx = 0;
+                        // Determinar día actual y elegir índice si existe
+                        final stationId = station.id;
+                        final days = stationPrograms[stationId]!.keys.toList();
+
+                        // índice por defecto: día actual si existe, sino 0
+                        int currentDayIdx = days.indexOf(_getTodayName());
+                        if (currentDayIdx < 0) currentDayIdx = 0;
+
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -561,151 +634,386 @@ class _PlayerScreenState extends State<PlayerScreen>
                                 final stationId = station.id;
                                 final days = stationPrograms[stationId]!.keys
                                     .toList();
+
                                 return DraggableScrollableSheet(
-                                  initialChildSize: 0.5,
-                                  minChildSize: 0.2,
+                                  initialChildSize: 0.6,
+                                  minChildSize: 0.25,
                                   maxChildSize: 0.95,
                                   expand: false,
                                   builder: (context, scrollController) {
-                                    return Column(
-                                      children: [
-                                        Container(
-                                          width: 60,
-                                          height: 6,
-                                          margin: const EdgeInsets.only(
-                                            top: 12,
-                                            bottom: 8,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white24,
-                                            borderRadius: BorderRadius.circular(
-                                              3,
+                                    return Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.transparent,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: 60,
+                                            height: 6,
+                                            margin: const EdgeInsets.only(
+                                              top: 12,
+                                              bottom: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: Colors.white24,
+                                              borderRadius:
+                                                  BorderRadius.circular(3),
                                             ),
                                           ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.arrow_left,
-                                                color: modalYellow,
-                                                size: 32,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(
+                                                  Icons.arrow_left,
+                                                  color: modalYellow,
+                                                  size: 32,
+                                                ),
+                                                onPressed: () {
+                                                  if (currentDayIdx > 0) {
+                                                    setModalState(() {
+                                                      currentDayIdx--;
+                                                    });
+                                                  }
+                                                },
                                               ),
-                                              onPressed: () {
-                                                if (currentDayIdx > 0) {
-                                                  setModalState(() {
-                                                    currentDayIdx--;
-                                                  });
-                                                }
-                                              },
-                                            ),
-                                            Text(
-                                              days[currentDayIdx],
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge
-                                                  ?.copyWith(
-                                                    color: modalYellow,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                            ),
-                                            IconButton(
-                                              icon: Icon(
-                                                Icons.arrow_right,
-                                                color: modalYellow,
-                                                size: 32,
-                                              ),
-                                              onPressed: () {
-                                                if (currentDayIdx <
-                                                    days.length - 1) {
-                                                  setModalState(() {
-                                                    currentDayIdx++;
-                                                  });
-                                                }
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Expanded(
-                                          child: ListView.builder(
-                                            controller: scrollController,
-                                            itemCount:
-                                                stationPrograms[stationId]![days[currentDayIdx]]!
-                                                    .length,
-                                            itemBuilder: (context, idx) {
-                                              final p =
-                                                  stationPrograms[stationId]![days[currentDayIdx]]![idx];
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      vertical: 10.0,
-                                                      horizontal: 24.0,
+                                              Text(
+                                                days[currentDayIdx],
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleLarge
+                                                    ?.copyWith(
+                                                      color: modalYellow,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      p.title,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleMedium
-                                                          ?.copyWith(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                              ),
+                                              IconButton(
+                                                icon: Icon(
+                                                  Icons.arrow_right,
+                                                  color: modalYellow,
+                                                  size: 32,
+                                                ),
+                                                onPressed: () {
+                                                  if (currentDayIdx <
+                                                      days.length - 1) {
+                                                    setModalState(() {
+                                                      currentDayIdx++;
+                                                    });
+                                                  }
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Expanded(
+                                            child: ListView.builder(
+                                              controller: scrollController,
+                                              itemCount:
+                                                  stationPrograms[stationId]![days[currentDayIdx]]!
+                                                      .length,
+                                              itemBuilder: (context, idx) {
+                                                final p =
+                                                    stationPrograms[stationId]![days[currentDayIdx]]![idx];
+
+                                                // Card estilo -- Imagen + contenido a la derecha
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        vertical: 8.0,
+                                                        horizontal: 18.0,
+                                                      ),
+                                                  child: Card(
+                                                    color: Colors.grey[850],
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            14,
                                                           ),
                                                     ),
-                                                    const SizedBox(height: 4),
-                                                    Column(
+                                                    child: Row(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                      children: p
-                                                          .schedule
-                                                          .entries
-                                                          .map(
-                                                            (entry) => Text(
-                                                              '${entry.key}: ${entry.value}',
-                                                              style: Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodyMedium
-                                                                  ?.copyWith(
-                                                                    color:
-                                                                        modalYellow,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                  ),
-                                                            ),
-                                                          )
-                                                          .toList(),
-                                                    ),
-                                                    const SizedBox(height: 4),
-                                                    Text(
-                                                      p.description,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyMedium
-                                                          ?.copyWith(
+                                                      children: [
+                                                        // Imagen (si existe) o icono
+                                                        Container(
+                                                          width: 110,
+                                                          height: 110,
+                                                          decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                const BorderRadius.only(
+                                                                  topLeft:
+                                                                      Radius.circular(
+                                                                        14,
+                                                                      ),
+                                                                  bottomLeft:
+                                                                      Radius.circular(
+                                                                        14,
+                                                                      ),
+                                                                ),
                                                             color:
-                                                                Colors.white70,
+                                                                Colors.black26,
+                                                            image:
+                                                                p
+                                                                    .image
+                                                                    .isNotEmpty
+                                                                ? DecorationImage(
+                                                                    image:
+                                                                        p.image.startsWith(
+                                                                          'http',
+                                                                        )
+                                                                        ? NetworkImage(
+                                                                            p.image,
+                                                                          )
+                                                                        : AssetImage(p.image)
+                                                                              as ImageProvider,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                  )
+                                                                : null,
                                                           ),
+                                                          child: p.image.isEmpty
+                                                              ? Icon(
+                                                                  Icons
+                                                                      .radio_outlined,
+                                                                  size: 44,
+                                                                  color:
+                                                                      modalYellow,
+                                                                )
+                                                              : null,
+                                                        ),
+
+                                                        // Contenido
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets.all(
+                                                                  12.0,
+                                                                ),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                // Título + Ver más en la misma línea
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child: Text(
+                                                                        p.title,
+                                                                        style:
+                                                                            Theme.of(
+                                                                              context,
+                                                                            ).textTheme.titleMedium?.copyWith(
+                                                                              color: Colors.white,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ) ??
+                                                                            const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontWeight: FontWeight.bold,
+                                                                            ),
+                                                                        maxLines:
+                                                                            1,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                      ),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 8,
+                                                                    ),
+                                                                    // "Ver más" inline
+                                                                    TextButton(
+                                                                      style: TextButton.styleFrom(
+                                                                        padding:
+                                                                            EdgeInsets.zero,
+                                                                        minimumSize:
+                                                                            const Size(
+                                                                              40,
+                                                                              20,
+                                                                            ),
+                                                                        tapTargetSize:
+                                                                            MaterialTapTargetSize.shrinkWrap,
+                                                                      ),
+                                                                      onPressed: () {
+                                                                        // Mostrar diálogo con más info
+                                                                        showDialog(
+                                                                          context:
+                                                                              context,
+                                                                          builder: (_) {
+                                                                            return AlertDialog(
+                                                                              backgroundColor: Colors.grey[900],
+                                                                              title: Text(
+                                                                                p.title,
+                                                                                style: const TextStyle(
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                              ),
+                                                                              content: SingleChildScrollView(
+                                                                                child: Column(
+                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                  children: [
+                                                                                    if (p.image.isNotEmpty)
+                                                                                      ClipRRect(
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          8,
+                                                                                        ),
+                                                                                        child:
+                                                                                            p.image.startsWith(
+                                                                                              'http',
+                                                                                            )
+                                                                                            ? Image.network(
+                                                                                                p.image,
+                                                                                                height: 150,
+                                                                                                fit: BoxFit.cover,
+                                                                                                errorBuilder:
+                                                                                                    (
+                                                                                                      c,
+                                                                                                      e,
+                                                                                                      s,
+                                                                                                    ) => const SizedBox.shrink(),
+                                                                                              )
+                                                                                            : Image.asset(
+                                                                                                p.image,
+                                                                                                height: 150,
+                                                                                                fit: BoxFit.cover,
+                                                                                                errorBuilder:
+                                                                                                    (
+                                                                                                      c,
+                                                                                                      e,
+                                                                                                      s,
+                                                                                                    ) => const SizedBox.shrink(),
+                                                                                              ),
+                                                                                      ),
+                                                                                    const SizedBox(
+                                                                                      height: 12,
+                                                                                    ),
+                                                                                    Text(
+                                                                                      p.description,
+                                                                                      style: const TextStyle(
+                                                                                        color: Colors.white70,
+                                                                                      ),
+                                                                                    ),
+                                                                                    const SizedBox(
+                                                                                      height: 12,
+                                                                                    ),
+                                                                                    Column(
+                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                      children: p.schedule.entries.map(
+                                                                                        (
+                                                                                          entry,
+                                                                                        ) {
+                                                                                          return Text(
+                                                                                            '${entry.key}: ${entry.value}',
+                                                                                            style: TextStyle(
+                                                                                              color: modalYellow,
+                                                                                              fontWeight: FontWeight.w600,
+                                                                                            ),
+                                                                                          );
+                                                                                        },
+                                                                                      ).toList(),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                              actions: [
+                                                                                TextButton(
+                                                                                  onPressed: () => Navigator.pop(
+                                                                                    context,
+                                                                                  ),
+                                                                                  child: const Text(
+                                                                                    'Cerrar',
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            );
+                                                                          },
+                                                                        );
+                                                                      },
+                                                                      child: Text(
+                                                                        'Ver más',
+                                                                        style: TextStyle(
+                                                                          color:
+                                                                              modalYellow,
+                                                                          fontSize:
+                                                                              14,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+
+                                                                const SizedBox(
+                                                                  height: 6,
+                                                                ),
+
+                                                                // Horarios (puede haber varios)
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: p
+                                                                      .schedule
+                                                                      .entries
+                                                                      .map(
+                                                                        (
+                                                                          entry,
+                                                                        ) => Text(
+                                                                          '${entry.key}: ${entry.value}',
+                                                                          style:
+                                                                              Theme.of(
+                                                                                context,
+                                                                              ).textTheme.bodyMedium?.copyWith(
+                                                                                color: modalYellow,
+                                                                                fontWeight: FontWeight.w600,
+                                                                              ) ??
+                                                                              TextStyle(
+                                                                                color: modalYellow,
+                                                                                fontWeight: FontWeight.w600,
+                                                                              ),
+                                                                        ),
+                                                                      )
+                                                                      .toList(),
+                                                                ),
+
+                                                                const SizedBox(
+                                                                  height: 8,
+                                                                ),
+
+                                                                // Descripción corta
+                                                                Text(
+                                                                  p.description,
+                                                                  maxLines: 2,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: Theme.of(context)
+                                                                      .textTheme
+                                                                      .bodyMedium
+                                                                      ?.copyWith(
+                                                                        color: Colors
+                                                                            .white70,
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    const Divider(
-                                                      color: Colors.white24,
-                                                      height: 24,
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
+                                                  ),
+                                                );
+                                              },
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     );
                                   },
                                 );
