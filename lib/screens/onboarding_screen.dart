@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import '../models/program_model.dart';
 
 class OnboardingScreen extends StatelessWidget {
-    String _diaSemanaActual() {
-      final dias = [
-        'Lunes',
-        'Martes',
-        'Miércoles',
-        'Jueves',
-        'Viernes',
-        'Sábado',
-        'Domingo',
-      ];
-      final hoy = DateTime.now().weekday; // 1 = lunes, 7 = domingo
-      return dias[hoy - 1];
-    }
+  String _diaSemanaActual() {
+    final dias = [
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+      'Domingo',
+    ];
+    final hoy = DateTime.now().weekday; // 1 = lunes, 7 = domingo
+    return dias[hoy - 1];
+  }
+
   const OnboardingScreen({super.key});
 
   @override
@@ -278,22 +279,29 @@ class OnboardingScreen extends StatelessWidget {
                                       children: program.schedule.entries.map((
                                         entry,
                                       ) {
-                                        final bool esHoy = entry.key == diaActual;
+                                        final bool esHoy =
+                                            entry.key == diaActual;
                                         return Container(
                                           padding: const EdgeInsets.symmetric(
                                             vertical: 10,
                                             horizontal: 16,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: esHoy ? Colors.yellow[700] : Colors.white,
-                                            borderRadius: BorderRadius.circular(22),
+                                            color: esHoy
+                                                ? Colors.yellow[700]
+                                                : Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              22,
+                                            ),
                                             border: Border.all(
                                               color: Colors.black,
                                               width: 2,
                                             ),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.black.withOpacity(0.1),
+                                                color: Colors.black.withOpacity(
+                                                  0.1,
+                                                ),
                                                 blurRadius: 6,
                                                 offset: const Offset(0, 3),
                                               ),
