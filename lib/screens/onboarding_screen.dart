@@ -61,6 +61,48 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         schedule: {'Jueves': '20:00 - 22:00', 'Sábado': '18:00 - 20:00'},
         image: 'assets/images/Program4.jpg',
       ),
+      ProgramModel(
+        id: 'p5',
+        title: 'Rock Clásico',
+        description: 'Los mejores éxitos del rock clásico.',
+        schedule: {'Miércoles': '14:00 - 16:00', 'Domingo': '15:00 - 17:00'},
+        image: 'assets/images/Program5.jpg',
+      ),
+      ProgramModel(
+        id: 'p6',
+        title: 'Electrónica Nocturna',
+        description: 'Lo mejor de la música electrónica para la noche.',
+        schedule: {'Viernes': '22:00 - 00:00', 'Sábado': '23:00 - 01:00'},
+        image: 'assets/images/Program6.jpg',
+      ),
+      ProgramModel(
+        id: 'p7',
+        title: 'Pop Hits',
+        description: 'Los éxitos más populares del momento.',
+        schedule: {'Martes': '12:00 - 14:00', 'Jueves': '13:00 - 15:00'},
+        image: 'assets/images/Program7.jpg',
+      ),
+      ProgramModel(
+        id: 'p8',
+        title: 'Música Latina',
+        description: 'Ritmos latinos y éxitos internacionales.',
+        schedule: {'Lunes': '18:00 - 20:00', 'Viernes': '19:00 - 21:00'},
+        image: 'assets/images/Program8.jpg',
+      ),
+      ProgramModel(
+        id: 'p9',
+        title: 'Hip Hop Urbano',
+        description: 'Lo mejor del hip hop y rap contemporáneo.',
+        schedule: {'Miércoles': '20:00 - 22:00', 'Sábado': '21:00 - 23:00'},
+        image: 'assets/images/Program9.jpg',
+      ),
+      ProgramModel(
+        id: 'p10',
+        title: 'Acústicos en Vivo',
+        description: 'Sesiones acústicas y en vivo de artistas emergentes.',
+        schedule: {'Domingo': '10:00 - 12:00', 'Martes': '09:00 - 11:00'},
+        image: 'assets/images/Program10.jpg',
+      ),
     ];
 
     // 2. Comienzo del retorno del Scaffold con la estructura de la interfaz de usuario
