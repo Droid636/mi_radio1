@@ -196,18 +196,50 @@ class ProgramCarousel extends StatelessWidget {
                       const SizedBox(width: 8),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: p.schedule.entries
-                            .map(
-                              (entry) => Text(
-                                '${entry.key}: ${entry.value}',
-                                style: Theme.of(context).textTheme.titleMedium
-                                    ?.copyWith(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                            )
-                            .toList(),
+                        children: p.schedule.entries.map((entry) {
+                          final today = DateTime.now();
+                          final diasSemana = {
+                            'Lunes': 1,
+                            'Martes': 2,
+                            'Miércoles': 3,
+                            'Jueves': 4,
+                            'Viernes': 5,
+                            'Sábado': 6,
+                            'Domingo': 7,
+                          };
+                          final isToday =
+                              diasSemana[entry.key] == today.weekday;
+                          return Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8.0,
+                              horizontal: 12.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isToday ? Color(0xFFFFD700) : Colors.white,
+                              border: Border.all(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.access_time,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '${entry.key}: ${entry.value}',
+                                  style: Theme.of(context).textTheme.titleMedium
+                                      ?.copyWith(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ],
                   ),
