@@ -732,44 +732,61 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                 final p =
                                                     stationPrograms[stationId]![days[currentDayIdx]]![idx];
 
-                                                // Card estilo -- Imagen + contenido a la derecha
+                                                // Modern card design
                                                 return Padding(
                                                   padding:
                                                       const EdgeInsets.symmetric(
-                                                        vertical: 8.0,
+                                                        vertical: 10.0,
                                                         horizontal: 18.0,
                                                       ),
                                                   child: Card(
-                                                    color: Colors.grey[850],
+                                                    color: Colors.grey[900],
+                                                    elevation: 6,
+                                                    shadowColor: Colors.black54,
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                            14,
+                                                            18,
                                                           ),
                                                     ),
                                                     child: Row(
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
-                                                              .start,
+                                                              .center,
                                                       children: [
-                                                        // Imagen (si existe) o icono
+                                                        // Imagen con borde y sombra
                                                         Container(
-                                                          width: 110,
-                                                          height: 110,
+                                                          width: 100,
+                                                          height: 100,
+                                                          margin:
+                                                              const EdgeInsets.all(
+                                                                12,
+                                                              ),
                                                           decoration: BoxDecoration(
                                                             borderRadius:
-                                                                const BorderRadius.only(
-                                                                  topLeft:
-                                                                      Radius.circular(
-                                                                        14,
-                                                                      ),
-                                                                  bottomLeft:
-                                                                      Radius.circular(
-                                                                        14,
-                                                                      ),
+                                                                BorderRadius.circular(
+                                                                  16,
                                                                 ),
-                                                            color:
-                                                                Colors.black26,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                      0.18,
+                                                                    ),
+                                                                blurRadius: 8,
+                                                                offset:
+                                                                    const Offset(
+                                                                      0,
+                                                                      4,
+                                                                    ),
+                                                              ),
+                                                            ],
+                                                            border: Border.all(
+                                                              color:
+                                                                  modalYellow,
+                                                              width: 2,
+                                                            ),
                                                             image:
                                                                 p
                                                                     .image
@@ -799,24 +816,22 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                 )
                                                               : null,
                                                         ),
-
                                                         // Contenido
                                                         Expanded(
                                                           child: Padding(
                                                             padding:
-                                                                const EdgeInsets.all(
-                                                                  12.0,
+                                                                const EdgeInsets.symmetric(
+                                                                  vertical:
+                                                                      16.0,
+                                                                  horizontal:
+                                                                      8.0,
                                                                 ),
                                                             child: Column(
                                                               crossAxisAlignment:
                                                                   CrossAxisAlignment
                                                                       .start,
                                                               children: [
-                                                                // Título + Ver más en la misma línea
                                                                 Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
                                                                   children: [
                                                                     Expanded(
                                                                       child: Text(
@@ -824,13 +839,15 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                         style:
                                                                             Theme.of(
                                                                               context,
-                                                                            ).textTheme.titleMedium?.copyWith(
+                                                                            ).textTheme.titleLarge?.copyWith(
                                                                               color: Colors.white,
                                                                               fontWeight: FontWeight.bold,
+                                                                              fontSize: 20,
                                                                             ) ??
                                                                             const TextStyle(
                                                                               color: Colors.white,
                                                                               fontWeight: FontWeight.bold,
+                                                                              fontSize: 20,
                                                                             ),
                                                                         maxLines:
                                                                             1,
@@ -838,10 +855,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                             TextOverflow.ellipsis,
                                                                       ),
                                                                     ),
-                                                                    const SizedBox(
-                                                                      width: 8,
-                                                                    ),
-                                                                    // "Ver más" inline
                                                                     TextButton(
                                                                       style: TextButton.styleFrom(
                                                                         padding:
@@ -855,13 +868,17 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                             MaterialTapTargetSize.shrinkWrap,
                                                                       ),
                                                                       onPressed: () {
-                                                                        // Mostrar diálogo con más info
                                                                         showDialog(
                                                                           context:
                                                                               context,
                                                                           builder: (_) {
                                                                             return AlertDialog(
                                                                               backgroundColor: Colors.grey[900],
+                                                                              shape: RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                  16,
+                                                                                ),
+                                                                              ),
                                                                               title: Text(
                                                                                 p.title,
                                                                                 style: const TextStyle(
@@ -875,7 +892,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                                     if (p.image.isNotEmpty)
                                                                                       ClipRRect(
                                                                                         borderRadius: BorderRadius.circular(
-                                                                                          8,
+                                                                                          12,
                                                                                         ),
                                                                                         child:
                                                                                             p.image.startsWith(
@@ -883,7 +900,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                                             )
                                                                                             ? Image.network(
                                                                                                 p.image,
-                                                                                                height: 150,
+                                                                                                height: 160,
                                                                                                 fit: BoxFit.cover,
                                                                                                 errorBuilder:
                                                                                                     (
@@ -894,7 +911,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                                               )
                                                                                             : Image.asset(
                                                                                                 p.image,
-                                                                                                height: 150,
+                                                                                                height: 160,
                                                                                                 fit: BoxFit.cover,
                                                                                                 errorBuilder:
                                                                                                     (
@@ -905,29 +922,33 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                                               ),
                                                                                       ),
                                                                                     const SizedBox(
-                                                                                      height: 12,
+                                                                                      height: 14,
                                                                                     ),
                                                                                     Text(
                                                                                       p.description,
                                                                                       style: const TextStyle(
                                                                                         color: Colors.white70,
+                                                                                        fontSize: 16,
                                                                                       ),
                                                                                     ),
                                                                                     const SizedBox(
-                                                                                      height: 12,
+                                                                                      height: 14,
                                                                                     ),
-                                                                                    Column(
-                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    Wrap(
+                                                                                      spacing: 8,
                                                                                       children: p.schedule.entries.map(
                                                                                         (
                                                                                           entry,
                                                                                         ) {
-                                                                                          return Text(
-                                                                                            '${entry.key}: ${entry.value}',
-                                                                                            style: TextStyle(
-                                                                                              color: modalYellow,
-                                                                                              fontWeight: FontWeight.w600,
+                                                                                          return Chip(
+                                                                                            label: Text(
+                                                                                              '${entry.key}: ${entry.value}',
+                                                                                              style: TextStyle(
+                                                                                                color: Colors.black,
+                                                                                                fontWeight: FontWeight.w600,
+                                                                                              ),
                                                                                             ),
+                                                                                            backgroundColor: modalYellow,
                                                                                           );
                                                                                         },
                                                                                       ).toList(),
@@ -955,7 +976,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                           color:
                                                                               modalYellow,
                                                                           fontSize:
-                                                                              14,
+                                                                              15,
                                                                           fontWeight:
                                                                               FontWeight.w600,
                                                                         ),
@@ -963,57 +984,53 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                     ),
                                                                   ],
                                                                 ),
-
-                                                                const SizedBox(
-                                                                  height: 6,
-                                                                ),
-
-                                                                // Horarios (puede haber varios)
-                                                                Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: p
-                                                                      .schedule
-                                                                      .entries
-                                                                      .map(
-                                                                        (
-                                                                          entry,
-                                                                        ) => Text(
-                                                                          '${entry.key}: ${entry.value}',
-                                                                          style:
-                                                                              Theme.of(
-                                                                                context,
-                                                                              ).textTheme.bodyMedium?.copyWith(
-                                                                                color: modalYellow,
-                                                                                fontWeight: FontWeight.w600,
-                                                                              ) ??
-                                                                              TextStyle(
-                                                                                color: modalYellow,
-                                                                                fontWeight: FontWeight.w600,
-                                                                              ),
-                                                                        ),
-                                                                      )
-                                                                      .toList(),
-                                                                ),
-
                                                                 const SizedBox(
                                                                   height: 8,
                                                                 ),
-
-                                                                // Descripción corta
+                                                                // Horarios como chips
+                                                                Wrap(
+                                                                  spacing: 6,
+                                                                  children: p.schedule.entries.map((
+                                                                    entry,
+                                                                  ) {
+                                                                    return Chip(
+                                                                      label: Text(
+                                                                        '${entry.key}: ${entry.value}',
+                                                                        style: TextStyle(
+                                                                          color:
+                                                                              Colors.black,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor:
+                                                                          modalYellow,
+                                                                    );
+                                                                  }).toList(),
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 8,
+                                                                ),
                                                                 Text(
                                                                   p.description,
                                                                   maxLines: 2,
                                                                   overflow:
                                                                       TextOverflow
                                                                           .ellipsis,
-                                                                  style: Theme.of(context)
-                                                                      .textTheme
-                                                                      .bodyMedium
-                                                                      ?.copyWith(
+                                                                  style:
+                                                                      Theme.of(
+                                                                        context,
+                                                                      ).textTheme.bodyLarge?.copyWith(
                                                                         color: Colors
                                                                             .white70,
+                                                                        fontSize:
+                                                                            15,
+                                                                      ) ??
+                                                                      const TextStyle(
+                                                                        color: Colors
+                                                                            .white70,
+                                                                        fontSize:
+                                                                            15,
                                                                       ),
                                                                 ),
                                                               ],
