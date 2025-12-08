@@ -872,100 +872,115 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                           context:
                                                                               context,
                                                                           builder: (_) {
-                                                                            return AlertDialog(
+                                                                            return Dialog(
                                                                               backgroundColor: Colors.grey[900],
                                                                               shape: RoundedRectangleBorder(
                                                                                 borderRadius: BorderRadius.circular(
-                                                                                  16,
+                                                                                  18,
                                                                                 ),
                                                                               ),
-                                                                              title: Text(
-                                                                                p.title,
-                                                                                style: const TextStyle(
-                                                                                  color: Colors.white,
-                                                                                ),
+                                                                              insetPadding: const EdgeInsets.symmetric(
+                                                                                horizontal: 18,
+                                                                                vertical: 32,
                                                                               ),
-                                                                              content: SingleChildScrollView(
-                                                                                child: Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  children: [
-                                                                                    if (p.image.isNotEmpty)
-                                                                                      ClipRRect(
-                                                                                        borderRadius: BorderRadius.circular(
-                                                                                          12,
-                                                                                        ),
-                                                                                        child:
-                                                                                            p.image.startsWith(
-                                                                                              'http',
-                                                                                            )
-                                                                                            ? Image.network(
-                                                                                                p.image,
-                                                                                                height: 160,
-                                                                                                fit: BoxFit.cover,
-                                                                                                errorBuilder:
-                                                                                                    (
-                                                                                                      c,
-                                                                                                      e,
-                                                                                                      s,
-                                                                                                    ) => const SizedBox.shrink(),
-                                                                                              )
-                                                                                            : Image.asset(
-                                                                                                p.image,
-                                                                                                height: 160,
-                                                                                                fit: BoxFit.cover,
-                                                                                                errorBuilder:
-                                                                                                    (
-                                                                                                      c,
-                                                                                                      e,
-                                                                                                      s,
-                                                                                                    ) => const SizedBox.shrink(),
+                                                                              child: Stack(
+                                                                                children: [
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(
+                                                                                      0,
+                                                                                    ),
+                                                                                    child: Column(
+                                                                                      mainAxisSize: MainAxisSize.min,
+                                                                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                                                      children: [
+                                                                                        // Imagen completa arriba
+                                                                                        if (p.image.isNotEmpty)
+                                                                                          ClipRRect(
+                                                                                            borderRadius: const BorderRadius.only(
+                                                                                              topLeft: Radius.circular(
+                                                                                                18,
                                                                                               ),
-                                                                                      ),
-                                                                                    const SizedBox(
-                                                                                      height: 14,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      p.description,
-                                                                                      style: const TextStyle(
-                                                                                        color: Colors.white70,
-                                                                                        fontSize: 16,
-                                                                                      ),
-                                                                                    ),
-                                                                                    const SizedBox(
-                                                                                      height: 14,
-                                                                                    ),
-                                                                                    Wrap(
-                                                                                      spacing: 8,
-                                                                                      children: p.schedule.entries.map(
-                                                                                        (
-                                                                                          entry,
-                                                                                        ) {
-                                                                                          return Chip(
-                                                                                            label: Text(
-                                                                                              '${entry.key}: ${entry.value}',
-                                                                                              style: TextStyle(
-                                                                                                color: Colors.black,
-                                                                                                fontWeight: FontWeight.w600,
+                                                                                              topRight: Radius.circular(
+                                                                                                18,
                                                                                               ),
                                                                                             ),
-                                                                                            backgroundColor: modalYellow,
-                                                                                          );
-                                                                                        },
-                                                                                      ).toList(),
+                                                                                            child:
+                                                                                                p.image.startsWith(
+                                                                                                  'http',
+                                                                                                )
+                                                                                                ? Image.network(
+                                                                                                    p.image,
+                                                                                                    width: double.infinity,
+                                                                                                    height: 220,
+                                                                                                    fit: BoxFit.cover,
+                                                                                                    errorBuilder:
+                                                                                                        (
+                                                                                                          c,
+                                                                                                          e,
+                                                                                                          s,
+                                                                                                        ) => const SizedBox.shrink(),
+                                                                                                  )
+                                                                                                : Image.asset(
+                                                                                                    p.image,
+                                                                                                    width: double.infinity,
+                                                                                                    height: 220,
+                                                                                                    fit: BoxFit.cover,
+                                                                                                    errorBuilder:
+                                                                                                        (
+                                                                                                          c,
+                                                                                                          e,
+                                                                                                          s,
+                                                                                                        ) => const SizedBox.shrink(),
+                                                                                                  ),
+                                                                                          ),
+                                                                                        Padding(
+                                                                                          padding: const EdgeInsets.all(
+                                                                                            20.0,
+                                                                                          ),
+                                                                                          child: Column(
+                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                            children: [
+                                                                                              Text(
+                                                                                                p.title,
+                                                                                                style: const TextStyle(
+                                                                                                  color: Colors.white,
+                                                                                                  fontWeight: FontWeight.bold,
+                                                                                                  fontSize: 22,
+                                                                                                ),
+                                                                                              ),
+                                                                                              const SizedBox(
+                                                                                                height: 16,
+                                                                                              ),
+                                                                                              Text(
+                                                                                                p.description,
+                                                                                                style: const TextStyle(
+                                                                                                  color: Colors.white70,
+                                                                                                  fontSize: 17,
+                                                                                                ),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
                                                                                     ),
-                                                                                  ],
-                                                                                ),
+                                                                                  ),
+                                                                                  // Botón X para cerrar
+                                                                                  Positioned(
+                                                                                    top: 10,
+                                                                                    right: 10,
+                                                                                    child: IconButton(
+                                                                                      icon: const Icon(
+                                                                                        Icons.close,
+                                                                                        color: Colors.white,
+                                                                                        size: 28,
+                                                                                      ),
+                                                                                      onPressed: () => Navigator.pop(
+                                                                                        context,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
                                                                               ),
-                                                                              actions: [
-                                                                                TextButton(
-                                                                                  onPressed: () => Navigator.pop(
-                                                                                    context,
-                                                                                  ),
-                                                                                  child: const Text(
-                                                                                    'Cerrar',
-                                                                                  ),
-                                                                                ),
-                                                                              ],
                                                                             );
                                                                           },
                                                                         );
