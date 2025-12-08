@@ -732,7 +732,6 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                 final p =
                                                     stationPrograms[stationId]![days[currentDayIdx]]![idx];
 
-                                                // Modern card design
                                                 return Padding(
                                                   padding:
                                                       const EdgeInsets.symmetric(
@@ -740,13 +739,13 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                         horizontal: 18.0,
                                                       ),
                                                   child: Card(
-                                                    color: Colors.grey[900],
+                                                    color: Colors.white,
                                                     elevation: 6,
                                                     shadowColor: Colors.black54,
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                            18,
+                                                            0,
                                                           ),
                                                     ),
                                                     child: Row(
@@ -840,12 +839,12 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                             Theme.of(
                                                                               context,
                                                                             ).textTheme.titleLarge?.copyWith(
-                                                                              color: Colors.white,
+                                                                              color: Colors.black,
                                                                               fontWeight: FontWeight.bold,
                                                                               fontSize: 20,
                                                                             ) ??
                                                                             const TextStyle(
-                                                                              color: Colors.white,
+                                                                              color: Colors.black,
                                                                               fontWeight: FontWeight.bold,
                                                                               fontSize: 20,
                                                                             ),
@@ -873,7 +872,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                               context,
                                                                           builder: (_) {
                                                                             return Dialog(
-                                                                              backgroundColor: Colors.grey[900],
+                                                                              backgroundColor: Colors.white,
                                                                               shape: RoundedRectangleBorder(
                                                                                 borderRadius: BorderRadius.circular(
                                                                                   18,
@@ -943,7 +942,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                                               Text(
                                                                                                 p.title,
                                                                                                 style: const TextStyle(
-                                                                                                  color: Colors.white,
+                                                                                                  color: Colors.black,
                                                                                                   fontWeight: FontWeight.bold,
                                                                                                   fontSize: 22,
                                                                                                 ),
@@ -954,7 +953,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                                               Text(
                                                                                                 p.description,
                                                                                                 style: const TextStyle(
-                                                                                                  color: Colors.white70,
+                                                                                                  color: Colors.black,
                                                                                                   fontSize: 17,
                                                                                                 ),
                                                                                               ),
@@ -971,7 +970,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                                     child: IconButton(
                                                                                       icon: const Icon(
                                                                                         Icons.close,
-                                                                                        color: Colors.white,
+                                                                                        color: Colors.black,
                                                                                         size: 28,
                                                                                       ),
                                                                                       onPressed: () => Navigator.pop(
