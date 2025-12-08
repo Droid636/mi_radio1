@@ -1007,18 +1007,22 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                   children: p.schedule.entries.map((
                                                                     entry,
                                                                   ) {
-                                                                    return Chip(
-                                                                      label: Text(
+                                                                    return Padding(
+                                                                      padding: const EdgeInsets.only(
+                                                                        right:
+                                                                            8.0,
+                                                                        bottom:
+                                                                            4.0,
+                                                                      ),
+                                                                      child: Text(
                                                                         '${entry.key}: ${entry.value}',
-                                                                        style: TextStyle(
+                                                                        style: const TextStyle(
                                                                           color:
                                                                               Colors.black,
                                                                           fontWeight:
                                                                               FontWeight.w600,
                                                                         ),
                                                                       ),
-                                                                      backgroundColor:
-                                                                          modalYellow,
                                                                     );
                                                                   }).toList(),
                                                                 ),
@@ -1036,13 +1040,13 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                         context,
                                                                       ).textTheme.bodyLarge?.copyWith(
                                                                         color: Colors
-                                                                            .white70,
+                                                                            .black,
                                                                         fontSize:
                                                                             15,
                                                                       ) ??
                                                                       const TextStyle(
                                                                         color: Colors
-                                                                            .white70,
+                                                                            .black,
                                                                         fontSize:
                                                                             15,
                                                                       ),
