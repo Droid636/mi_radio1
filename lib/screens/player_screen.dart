@@ -357,7 +357,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                             ? IconButton(
                                 icon: Icon(
                                   Icons.keyboard_arrow_down,
-                                  color: primaryYellow,
+                                  color: Colors.black,
                                   size: 32,
                                 ),
                                 onPressed: () {
@@ -369,7 +369,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                         IconButton(
                           icon: Icon(
                             Icons.more_vert,
-                            color: primaryYellow,
+                            color: Colors.black,
                             size: 32,
                           ),
                           onPressed: _showLinkOptions,
@@ -634,7 +634,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
-                          backgroundColor: Colors.grey[900],
+                          backgroundColor: Colors.white,
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               top: Radius.circular(24),
@@ -680,9 +680,9 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                 MainAxisAlignment.center,
                                             children: [
                                               IconButton(
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.arrow_left,
-                                                  color: modalYellow,
+                                                  color: Colors.black,
                                                   size: 32,
                                                 ),
                                                 onPressed: () {
@@ -699,15 +699,15 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                     .textTheme
                                                     .titleLarge
                                                     ?.copyWith(
-                                                      color: modalYellow,
+                                                      color: Colors.black,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
                                               ),
                                               IconButton(
-                                                icon: Icon(
+                                                icon: const Icon(
                                                   Icons.arrow_right,
-                                                  color: modalYellow,
+                                                  color: Colors.black,
                                                   size: 32,
                                                 ),
                                                 onPressed: () {
@@ -1145,12 +1145,12 @@ class LinkOptionsDrawer extends StatelessWidget {
           width: drawerWidth,
           height: MediaQuery.of(context).size.height * 0.8,
           decoration: BoxDecoration(
-            color: Colors.grey[900]!.withOpacity(0.9),
+            color: Colors.grey[900],
             borderRadius: const BorderRadius.horizontal(
               left: Radius.circular(10),
             ),
             boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 10),
+              BoxShadow(color: Colors.white.withOpacity(0.5), blurRadius: 10),
             ],
           ),
           child: Column(
