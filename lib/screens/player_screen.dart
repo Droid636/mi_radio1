@@ -603,7 +603,22 @@ class _PlayerScreenState extends State<PlayerScreen>
                 // -------------------------------
                 // Programación: card-style + día actual
                 // -------------------------------
-                if (stationPrograms[station.id] != null)
+                if (station.id == 'ljr')
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 24.0),
+                      child: Text(
+                        'No hay programas disponibles',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  )
+                else if (stationPrograms[station.id] != null)
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: GestureDetector(
