@@ -1072,7 +1072,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.grey[900],
+                          color: const Color.fromARGB(255, 83, 82, 82),
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(24),
                           ),
@@ -1093,7 +1093,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                               height: 6,
                               margin: const EdgeInsets.only(bottom: 8),
                               decoration: BoxDecoration(
-                                color: Colors.white24,
+                                color: const Color.fromARGB(103, 255, 255, 255),
                                 borderRadius: BorderRadius.circular(3),
                               ),
                             ),
@@ -1101,7 +1101,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                               'Programación',
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(
-                                    color: primaryYellow,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
@@ -1140,7 +1140,7 @@ class LinkOptionsDrawer extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: Material(
-        color: Colors.transparent,
+        color: const Color.fromARGB(160, 111, 109, 109),
         child: Container(
           width: drawerWidth,
           height: MediaQuery.of(context).size.height * 0.8,
