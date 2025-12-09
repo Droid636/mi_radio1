@@ -552,7 +552,7 @@ class HomeScreen extends StatelessWidget {
 
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 1.0,
+                                horizontal: 18.0,
                               ),
                               child: RichText(
                                 text: TextSpan(
