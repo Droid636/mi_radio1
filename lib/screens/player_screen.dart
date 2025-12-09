@@ -26,14 +26,16 @@ class _PlayerScreenState extends State<PlayerScreen>
         ProgramModel(
           id: 'p1',
           title: 'Mañana Alternativa',
-          description: 'Rock alternativo y entrevistas exclusivas.',
+          description:
+              'Rock alternativo y entrevistas exclusivas. Disfruta de las mejores bandas y conoce historias detrás de la música. Ideal para empezar el día con energía y buena vibra.',
           schedule: {'Lunes': '08:00 - 10:00'},
           image: 'assets/images/Program1.jpg',
         ),
         ProgramModel(
           id: 'p2',
           title: 'Tarde Indie',
-          description: 'Indie, electrónica y tendencias underground.',
+          description:
+              'Indie, electrónica y tendencias underground. Descubre nuevos sonidos y artistas emergentes que están revolucionando la escena musical.',
           schedule: {'Lunes': '16:00 - 18:00'},
           image: 'assets/images/Program2.jpg',
         ),
@@ -42,14 +44,16 @@ class _PlayerScreenState extends State<PlayerScreen>
         ProgramModel(
           id: 'p3',
           title: 'Jazz Fusion',
-          description: 'Jazz experimental y fusiones modernas.',
+          description:
+              'Jazz experimental y fusiones modernas. Un espacio para los amantes de la improvisación y la innovación musical.',
           schedule: {'Martes': '10:00 - 12:00'},
           image: 'assets/images/Program3.jpg',
         ),
         ProgramModel(
           id: 'p4',
           title: 'Noches Urbanas',
-          description: 'Hip-hop, rap y cultura urbana.',
+          description:
+              'Hip-hop, rap y cultura urbana. Ritmos intensos y letras que cuentan historias de la ciudad.',
           schedule: {'Martes': '20:00 - 22:00'},
           image: 'assets/images/Program4.jpg',
         ),
@@ -58,7 +62,8 @@ class _PlayerScreenState extends State<PlayerScreen>
         ProgramModel(
           id: 'p5',
           title: 'Electro Vibes',
-          description: 'Electrónica y dance para mitad de semana.',
+          description:
+              'Electrónica y dance para mitad de semana. Sube el volumen y déjate llevar por los beats más frescos.',
           schedule: {'Miércoles': '18:00 - 20:00'},
           image: 'assets/images/Program5.jpg',
         ),
@@ -67,7 +72,8 @@ class _PlayerScreenState extends State<PlayerScreen>
         ProgramModel(
           id: 'p6',
           title: 'Retro Hits',
-          description: 'Clásicos de los 80s y 90s.',
+          description:
+              'Clásicos de los 80s y 90s. Revive los éxitos que marcaron época y déjate llevar por la nostalgia.',
           schedule: {'Jueves': '14:00 - 16:00'},
           image: 'assets/images/Program6.jpg',
         ),
@@ -76,7 +82,8 @@ class _PlayerScreenState extends State<PlayerScreen>
         ProgramModel(
           id: 'p7',
           title: 'Fiesta Latina',
-          description: 'Reggaetón, salsa y ritmos latinos.',
+          description:
+              'Reggaetón, salsa y ritmos latinos. La mejor fiesta para arrancar el fin de semana con sabor y alegría.',
           schedule: {'Viernes': '20:00 - 23:00'},
           image: 'assets/images/Program7.jpg',
         ),
@@ -86,14 +93,16 @@ class _PlayerScreenState extends State<PlayerScreen>
         ProgramModel(
           id: 'p14',
           title: 'Sábado Retro',
-          description: 'Lo mejor de los clásicos para el fin de semana.',
+          description:
+              'Lo mejor de los clásicos para el fin de semana. Canciones que nunca pasan de moda y recuerdos inolvidables.',
           schedule: {'Sábado': '12:00 - 15:00'},
           image: 'assets/images/Program8.jpg',
         ),
         ProgramModel(
           id: 'p15',
           title: 'Noches de DJ',
-          description: 'Sets de DJ y remixes para la noche sabatina.',
+          description:
+              'Sets de DJ y remixes para la noche sabatina. Vive la fiesta con mezclas exclusivas y la mejor energía.',
           schedule: {'Sábado': '22:00 - 02:00'},
           image: 'assets/images/Program9.jpg',
         ),
@@ -102,87 +111,14 @@ class _PlayerScreenState extends State<PlayerScreen>
         ProgramModel(
           id: 'p16',
           title: 'Domingo Chill',
-          description: 'Música relajada para cerrar la semana.',
+          description:
+              'Música relajada para cerrar la semana. Relájate y disfruta de melodías suaves y ambientes tranquilos.',
           schedule: {'Domingo': '10:00 - 13:00'},
           image: 'assets/images/Program10.jpg',
         ),
       ],
     },
-    'ljr': {
-      'Lunes': [
-        ProgramModel(
-          id: 'p8',
-          title: 'Jazz Matutino',
-          description: 'Clásicos y nuevos sonidos del jazz para tu mañana.',
-          schedule: {'Lunes': '08:00 - 10:00'},
-          image: '',
-        ),
-        ProgramModel(
-          id: 'p9',
-          title: 'Smooth Jazz',
-          description: 'Jazz suave para relajarse.',
-          schedule: {'Lunes': '16:00 - 18:00'},
-          image: '',
-        ),
-      ],
-      'Martes': [
-        ProgramModel(
-          id: 'p10',
-          title: 'Jazz Latino',
-          description: 'Fusión de jazz con ritmos latinos.',
-          schedule: {'Martes': '10:00 - 12:00'},
-          image: '',
-        ),
-      ],
-      'Miércoles': [
-        ProgramModel(
-          id: 'p11',
-          title: 'Jazz Instrumental',
-          description: 'Instrumentistas destacados y solos.',
-          schedule: {'Miércoles': '18:00 - 20:00'},
-          image: '',
-        ),
-      ],
-      'Jueves': [
-        ProgramModel(
-          id: 'p12',
-          title: 'Jazz Fusion',
-          description: 'Fusión de géneros y experimentación.',
-          schedule: {'Jueves': '14:00 - 16:00'},
-          image: '',
-        ),
-      ],
-      'Viernes': [
-        ProgramModel(
-          id: 'p13',
-          title: 'Jazz en Vivo',
-          description: 'Conciertos y sesiones en vivo.',
-          schedule: {'Viernes': '20:00 - 23:00'},
-          image: '',
-        ),
-      ],
-      // Sábado y Domingo añadidos
-      'Sábado': [
-        ProgramModel(
-          id: 'p17',
-          title: 'Sábado de Standards',
-          description: 'Standards de jazz y covers en vivo.',
-          schedule: {'Sábado': '11:00 - 14:00'},
-          image: '',
-        ),
-      ],
-      'Domingo': [
-        ProgramModel(
-          id: 'p18',
-          title: 'Noche de Big Band',
-          description: 'Selección de grandes arreglos y orquestaciones.',
-          schedule: {'Domingo': '19:00 - 22:00'},
-          image: '',
-        ),
-      ],
-    },
   };
-
   final List<Map<String, dynamic>> linkItems = const [
     {
       'label': 'Facebook',
