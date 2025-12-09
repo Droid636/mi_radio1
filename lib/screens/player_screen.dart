@@ -357,7 +357,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                             ? IconButton(
                                 icon: Icon(
                                   Icons.keyboard_arrow_down,
-                                  color: Colors.black,
+                                  color: primaryYellow,
                                   size: 32,
                                 ),
                                 onPressed: () {
@@ -369,7 +369,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                         IconButton(
                           icon: Icon(
                             Icons.more_vert,
-                            color: Colors.black,
+                            color: primaryYellow,
                             size: 32,
                           ),
                           onPressed: _showLinkOptions,
