@@ -970,7 +970,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                                                                     child: IconButton(
                                                                                       icon: const Icon(
                                                                                         Icons.close,
-                                                                                        color: Colors.black,
+                                                                                        color: Colors.white,
                                                                                         size: 28,
                                                                                       ),
                                                                                       onPressed: () => Navigator.pop(
