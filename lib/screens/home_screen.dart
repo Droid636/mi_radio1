@@ -548,11 +548,11 @@ class HomeScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 50),
+                            const SizedBox(height: 20),
 
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 18.0,
+                                horizontal: 1.0,
                               ),
                               child: RichText(
                                 text: TextSpan(

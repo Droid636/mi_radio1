@@ -514,7 +514,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                         );
                       },
                     ),
-                    const Spacer(),
+                    const SizedBox(height: 40),
 
                     Consumer<AudioProvider>(
                       builder: (context, audioProv, child) {
@@ -596,7 +596,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                         );
                       },
                     ),
-                    const Spacer(),
+                    const SizedBox(height: 40),
                   ],
                 ),
 
