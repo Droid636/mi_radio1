@@ -17,6 +17,7 @@ void main() async {
       androidNotificationChannelId: 'com.mi_radio1.channel.audio',
       androidNotificationChannelName: 'Reproducción de radio',
       androidNotificationOngoing: true,
+      androidNotificationIcon: 'drawable/logo_splash',
     ),
   );
 
