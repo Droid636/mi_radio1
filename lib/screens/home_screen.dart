@@ -573,7 +573,6 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
 
-                            // Eliminado para pegar más el título y las estaciones
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -586,7 +585,7 @@ class HomeScreen extends StatelessWidget {
                                     vertical: 0.0,
                                   ),
                                   child: SizedBox(
-                                    height: 90,
+                                    height: 112,
                                     child: StationCard(
                                       station: s,
                                       onTap: () async {

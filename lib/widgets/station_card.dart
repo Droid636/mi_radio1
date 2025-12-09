@@ -25,13 +25,13 @@ class StationCard extends StatelessWidget {
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          padding: const EdgeInsets.all(10),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 50,
-                height: 50,
+                width: 80,
+                height: 510,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                 ),
